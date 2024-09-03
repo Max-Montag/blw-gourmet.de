@@ -20,7 +20,7 @@ interface RecipeData {
   ingredients: Ingredient[];
   tools: string[];
   instructions: Instruction[];
-  dining_time: string | null;
+  dining_times: string  [];
   preparation_time: number | null;
   rest_time: number | null;
 }
@@ -33,7 +33,7 @@ const AddRecipe: React.FC = () => {
     ingredients: [{ ingredient: '', amount: 0, unit: '' }],
     tools: [''],
     instructions: [{ name: '', ingredients: [{ ingredient: '', amount: 0, unit: '' }], tools: [''], instruction: '' }],
-    dining_time: 'dinner',
+    dining_times: [''],
     preparation_time: null,
     rest_time: null,
   });
@@ -64,6 +64,34 @@ const AddRecipe: React.FC = () => {
     } catch (error) {
       // JSON not valid
     }
+  };
+
+  const handleDiningTimeChange = (index: number, value: string) => {
+    const newDiningTimes = recipeData.dining_times.map((time, i) =>
+      i === index ? value : time
+    );
+  
+    if (index === recipeData.dining_times.length - 1 && value !== '') {
+      newDiningTimes.push('');
+    }
+  
+    setRecipeData(prevData => ({
+      ...prevData,
+      dining_times: newDiningTimes
+    }));
+  };
+
+  const handleRemoveDiningTime = (index: number) => {
+    const newDiningTimes = recipeData.dining_times.filter((_, i) => i !== index);
+  
+    if (newDiningTimes.length === 0) {
+      newDiningTimes.push('');
+    }
+  
+    setRecipeData(prevData => ({
+      ...prevData,
+      dining_times: newDiningTimes
+    }));
   };
 
   const handleIngredientChange = (index: number, field: keyof Ingredient, value: string | number) => {
@@ -239,7 +267,7 @@ const AddRecipe: React.FC = () => {
       ingredients: [{ ingredient: '', amount: 0, unit: '' }],
       tools: [''],
       instructions: [{ name: '', ingredients: [{ ingredient: '', amount: 0, unit: '' }], tools: [''], instruction: '' }],
-      dining_time: 'dinner',
+      dining_times: [''],
       preparation_time: null,
       rest_time: null,
     });
@@ -270,18 +298,29 @@ const AddRecipe: React.FC = () => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Dining Time:</label>
-          <select
-            name="dining_time"
-            value={recipeData.dining_time ?? ''}
-            onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            <option value="snack">Snack</option>
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
-          </select>
+          <label className="block text-sm font-medium text-gray-700">Dining Times:</label>
+          {recipeData.dining_times.map((time, index) => (
+            <div key={index} className="flex space-x-2 mb-2">
+              <select
+                name={`dining_time_${index}`}
+                value={time ?? ''}
+                onChange={(e) => handleDiningTimeChange(index, e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="">Select a dining time</option>
+                <option value="snack">Snack</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+              </select>
+              <button 
+                onClick={() => handleRemoveDiningTime(index)} 
+                className="text-red-500"
+              >
+                x
+              </button>
+            </div>
+          ))}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Preparation Time:</label>
