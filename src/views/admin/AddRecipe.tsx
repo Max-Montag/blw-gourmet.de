@@ -16,11 +16,11 @@ interface Instruction {
 
 interface RecipeData {
   name: string | null;
-  labels: string | null;
+  labels: string[];
   ingredients: Ingredient[];
   tools: string[];
   instructions: Instruction[];
-  dining_times: string  [];
+  dining_times: string[];
   preparation_time: number | null;
   rest_time: number | null;
 }
@@ -29,7 +29,7 @@ const AddRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [recipeData, setRecipeData] = useState<RecipeData>({
     name: null,
-    labels: null,
+    labels: [''],
     ingredients: [{ ingredient: '', amount: 0, unit: '' }],
     tools: [''],
     instructions: [{ name: '', ingredients: [{ ingredient: '', amount: 0, unit: '' }], tools: [''], instruction: '' }],
@@ -37,6 +37,7 @@ const AddRecipe: React.FC = () => {
     preparation_time: null,
     rest_time: null,
   });
+  
   
   const [jsonInput, setJsonInput] = useState('');
 
@@ -65,6 +66,34 @@ const AddRecipe: React.FC = () => {
       // JSON not valid
     }
   };
+
+  const handleLabelChange = (index: number, value: string) => {
+    const newLabels = recipeData.labels.map((label, i) =>
+      i === index ? value : label
+    );
+  
+    if (index === recipeData.labels.length - 1 && value !== '') {
+      newLabels.push('');
+    }
+  
+    setRecipeData(prevData => ({
+      ...prevData,
+      labels: newLabels
+    }));
+  };
+  
+  const handleRemoveLabel = (index: number) => {
+    const newLabels = recipeData.labels.filter((_, i) => i !== index);
+  
+    if (newLabels.length === 0) {
+      newLabels.push('');
+    }
+  
+    setRecipeData(prevData => ({
+      ...prevData,
+      labels: newLabels
+    }));
+  };  
 
   const handleDiningTimeChange = (index: number, value: string) => {
     const newDiningTimes = recipeData.dining_times.map((time, i) =>
@@ -237,15 +266,24 @@ const AddRecipe: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
+      const validDiningTimes = ["lunch", "snack", "breakfast", "dinner"];
       const filteredData = {
         ...recipeData,
-        ingredients: recipeData.ingredients.filter(ingredient => ingredient.ingredient !== '' || ingredient.amount !== 0 || ingredient.unit !== ''),
+        dining_times: recipeData.dining_times.filter(time => validDiningTimes.includes(time)),
+        labels: recipeData.labels.filter(label => label !== ''),
+        ingredients: recipeData.ingredients.filter(
+          ingredient => ingredient.ingredient !== '' || ingredient.amount !== 0 || ingredient.unit !== ''
+        ),
         tools: recipeData.tools.filter(tool => tool !== ''),
         instructions: recipeData.instructions.map(instruction => ({
           ...instruction,
-          ingredients: instruction.ingredients.filter(ingredient => ingredient.ingredient !== '' || ingredient.amount !== 0 || ingredient.unit !== ''),
+          ingredients: instruction.ingredients.filter(
+            ingredient => ingredient.ingredient !== '' || ingredient.amount !== 0 || ingredient.unit !== ''
+          ),
           tools: instruction.tools.filter(tool => tool !== ''),
-        })).filter(instruction => instruction.name !== '' || instruction.instruction !== '' || instruction.ingredients.length > 0 || instruction.tools.length > 0)
+        })).filter(
+          instruction => instruction.name !== '' || instruction.instruction !== '' || instruction.ingredients.length > 0 || instruction.tools.length > 0
+        )
       };
   
       const dataToSend = JSON.stringify(filteredData);
@@ -259,11 +297,11 @@ const AddRecipe: React.FC = () => {
       alert('Failed to create recipe');
     }
   };  
-
+  
   const handleClear = () => {
     setRecipeData({
       name: null,
-      labels: null,
+      labels: [''],
       ingredients: [{ ingredient: '', amount: 0, unit: '' }],
       tools: [''],
       instructions: [{ name: '', ingredients: [{ ingredient: '', amount: 0, unit: '' }], tools: [''], instruction: '' }],
@@ -289,13 +327,22 @@ const AddRecipe: React.FC = () => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Labels:</label>
-          <input
-            type="text"
-            name="labels"
-            value={recipeData.labels ?? ''}
-            onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-          />
+          {recipeData.labels.map((label, index) => (
+            <div key={index} className="flex space-x-2 mb-2">
+              <input
+                type="text"
+                value={label}
+                onChange={(e) => handleLabelChange(index, e.target.value)}
+                className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <button 
+                onClick={() => handleRemoveLabel(index)} 
+                className="text-red-500"
+              >
+                x
+              </button>
+            </div>
+          ))}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Dining Times:</label>
