@@ -38,7 +38,7 @@ const AddRecipe: React.FC = () => {
     rest_time: null,
   });
   
-  
+
   const [jsonInput, setJsonInput] = useState('');
 
   useEffect(() => {

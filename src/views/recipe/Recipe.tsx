@@ -1,0 +1,131 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
+interface Ingredient {
+  ingredient: string;
+  amount: number;
+  unit: string;
+}
+
+interface Instruction {
+  name: string;
+  ingredients: Ingredient[];
+  tools: string[];
+  instruction: string;
+}
+
+interface RecipeData {
+  name: string;
+  labels: string[];
+  ingredients: Ingredient[];
+  tools: string[];
+  instructions: Instruction[];
+  dining_times: string[];
+  preparation_time: number | null;
+  rest_time: number | null;
+  optimized_image?: string | null;
+}
+
+const Recipe: React.FC = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const { url_identifier } = useParams<{ url_identifier: string }>();
+  const [recipe, setRecipe] = useState<RecipeData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        const response = await axios.get<RecipeData>(`${apiUrl}/recipe/${url_identifier}/`);
+        setRecipe(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load recipe. Please try again later.');
+        setLoading(false);
+      }
+    };
+
+    fetchRecipe();
+  }, [url_identifier]);
+
+  if (loading) {
+    return <div className="text-center mt-10 text-gray-500">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-10 text-red-500">{error}</div>;
+  }
+
+  if (!recipe) {
+    return <div className="text-center mt-10 text-gray-500">Recipe not found.</div>;
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md">
+      {recipe.optimized_image && (
+        <img
+          src={recipe.optimized_image}
+          alt={recipe.name}
+          className="w-full h-64 object-cover rounded-md mb-6"
+        />
+      )}
+      <h1 className="text-3xl font-bold mb-4 text-gray-800">{recipe.name}</h1>
+      <div className="flex flex-wrap mb-6">
+        {recipe.labels.map((label, index) => (
+          <span key={index} className="bg-indigo-200 text-indigo-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
+            {label}
+          </span>
+        ))}
+      </div>
+      <div className="mb-6">
+        <p className="text-gray-700"><strong>Mahlzeit:</strong> {recipe.dining_times.join(', ')}</p>
+        {recipe.preparation_time && (
+          <p className="text-gray-700"><strong>Zubereitungszeit:</strong> {recipe.preparation_time} Minuten</p>
+        )}
+        {recipe.rest_time && (
+          <p className="text-gray-700"><strong>Warte oder Back-Zeit:</strong> {recipe.rest_time} Minuten</p>
+        )}
+      </div>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-gray-700">Zutaten</h2>
+        <ul className="list-disc pl-5">
+          {recipe.ingredients.map((ingredient, index) => (
+            <li key={index} className="text-gray-700">
+              {ingredient.amount} {ingredient.unit} {ingredient.ingredient}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-gray-700">Utensilien</h2>
+        <ul className="list-disc pl-5">
+          {recipe.tools.map((tool, index) => (
+            <li key={index} className="text-gray-700">{tool}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="mb-6">
+        <h2 className="text-2xl font-semibold text-gray-700 mb-2">Anweisungen</h2>
+        {recipe.instructions.map((instruction, index) => (
+          <div key={index} className="mb-4">
+            <h3 className="text-lg font-medium text-gray-800">{instruction.name}</h3>
+            <p className="text-gray-700 mt-1">{instruction.instruction}</p>
+            <ul className="list-disc pl-5 mt-2">
+              {instruction.ingredients.map((ingredient, ingIndex) => (
+                <li key={ingIndex} className="text-gray-700">
+                  {ingredient.amount} {ingredient.unit} {ingredient.ingredient}
+                </li>
+              ))}
+            </ul>
+            <p className="text-gray-700 mt-2">
+              <strong>Utensilien:</strong> {instruction.tools.join(', ')}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Recipe;
