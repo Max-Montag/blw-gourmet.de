@@ -124,9 +124,9 @@ const Recipe: React.FC = () => {
             sind OpenType-Funktionalitä.
           </p>
         )}
-        <div className="mb-6 text-gray-700 flex items-center justify-evenly text-center space-x-2">
+        <div className="text-gray-700 flex flex-wrap items-center justify-evenly text-center space-x-2">
           {recipe.preparation_time ? (
-            <div className="text-center ">
+            <div className="text-center mb-6 ">
               <strong>Zubereitung</strong>
               <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-zinc-300 ring-2 ring-cyan-100">
                 {" "}
@@ -136,7 +136,7 @@ const Recipe: React.FC = () => {
             </div>
           ) : null}
           {recipe.rest_time ? (
-            <div className="text-center">
+            <div className="text-center mb-6">
               <strong>Ruhen/Backen</strong>
               <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-zinc-300 ring-2 ring-cyan-100">
                 {" "}
@@ -146,9 +146,9 @@ const Recipe: React.FC = () => {
             </div>
           ) : null}
         </div>
-        <div className="w-full max-w-full mb-6 flex flex-row justify-around">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
+        <div className="w-full flex flex-wrap justify-around">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-700 text-center mb-2 ml-2 underline">
               Zutaten
             </h2>
             <ul className="list-disc pl-5">
@@ -159,8 +159,8 @@ const Recipe: React.FC = () => {
               ))}
             </ul>
           </div>
-          <div>
-            <h2 className="text-xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-700 text-center mb-2 ml-2 underline">
               Utensilien
             </h2>
             <ul className="list-disc pl-5">
@@ -173,7 +173,7 @@ const Recipe: React.FC = () => {
           </div>
         </div>
         <div className="mb-6 divide-y">
-          <h2 className="w-full text-center text-2xl md:text-4xl font-semibold text-gray-700 mb-3">
+          <h2 className="w-full text-center text-3xl md:text-4xl font-semibold text-gray-700 mb-3">
             Rezept
           </h2>
           {recipe.instructions.map((instruction, index) => (
