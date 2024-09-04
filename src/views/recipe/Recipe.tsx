@@ -19,6 +19,7 @@ interface Instruction {
 
 interface RecipeData {
   name: string;
+  description: string;
   labels: string[];
   ingredients: Ingredient[];
   tools: string[];
@@ -77,6 +78,7 @@ const Recipe: React.FC = () => {
         />
       )}
       <h1 className="text-3xl font-bold mb-4 text-gray-800">{recipe.name}</h1>
+      <p className="text-gray-700 mb-6">{recipe.description}</p>
       <div className="flex flex-wrap mb-6">
         {recipe.labels.map((label, index) => (
           <div

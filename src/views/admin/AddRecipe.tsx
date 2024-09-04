@@ -16,6 +16,7 @@ interface Instruction {
 
 interface RecipeData {
   name: string | null;
+  description: string | null;
   labels: string[];
   ingredients: Ingredient[];
   tools: string[];
@@ -29,6 +30,7 @@ const AddRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [recipeData, setRecipeData] = useState<RecipeData>({
     name: null,
+    description: null,
     labels: [""],
     ingredients: [{ ingredient: "", amount: 0, unit: "" }],
     tools: [""],
@@ -390,6 +392,7 @@ const AddRecipe: React.FC = () => {
   const handleClear = () => {
     setRecipeData({
       name: null,
+      description: null,
       labels: [""],
       ingredients: [{ ingredient: "", amount: 0, unit: "" }],
       tools: [""],
@@ -419,6 +422,17 @@ const AddRecipe: React.FC = () => {
             type="text"
             name="name"
             value={recipeData.name ?? ""}
+            onChange={handleInputChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Description:
+          </label>
+          <textarea
+            name="description"
+            value={recipeData.description ?? ""}
             onChange={handleInputChange}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
           />
