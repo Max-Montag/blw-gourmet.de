@@ -85,12 +85,12 @@ const Recipe: React.FC = () => {
           />
         )}
         {combinedLabels.length > 0 && (
-          <div className="absolute w-full bottom-0 p-2 flex flex-wrap ">
+          <div className="absolute w-full bottom-0 p-2 flex flex-wrap-reverse ">
             {combinedLabels.length > 0 &&
               combinedLabels.map((label, index) => (
                 <div
                   key={index}
-                  className="bg-emerald-200 bg-opacity-60 text-emerald-950 text-xs sm:text-sm font-bold sm:font-semibold m-1 px-2 py-1 rounded-lg border border-emerald-950"
+                  className="bg-emerald-50 bg-opacity-100 text-emerald-950 text-xs sm:text-sm font-bold sm:font-semibold m-1 px-2 py-1 rounded-full border-2 border-emerald-900 ring-offset-1 ring-2 ring-emerald-950"
                 >
                   <IconText text={label} />
                 </div>
@@ -154,7 +154,9 @@ const Recipe: React.FC = () => {
             </div>
           </div>
         ) : null}
+        {(recipe.tools.length > 0 || recipe.ingredients.length > 0) && (
         <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
+          {recipe.tools.length > 0 && (
           <div className="mb-6 mr-6">
             <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
               Zutaten
@@ -168,6 +170,8 @@ const Recipe: React.FC = () => {
               ))}
             </ul>
           </div>
+          )}
+          {recipe.tools.length > 0 && (
           <div className="mb-6">
             <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 ml-2 underline">
               Utensilien
@@ -180,11 +184,10 @@ const Recipe: React.FC = () => {
               ))}
             </ul>
           </div>
+          )}
         </div>
-        <div className="my-2">
-          {/* <h2 className="w-full text-center text-3xl md:text-4xl font-semibold text-gray-700 mb-3">
-            Anleitung
-          </h2> */}
+      )}
+        <div>
           {recipe.instructions.map((instruction, index) => (
             <div key={index} className="py-4">
               <h3 className="text-xl font-semibold text-center text-gray-800 bg-emerald-50 shadow-md px-6 md:mx-8 py-3 mb-6 rounded-b-full">

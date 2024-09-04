@@ -1,7 +1,8 @@
 import React from "react";
 import { TbFridge } from "react-icons/tb";
 import { FaRegSnowflake } from "react-icons/fa";
-import { FaHand, FaRegCalendarCheck, FaCookieBite } from "react-icons/fa6";
+import {  FaRegCalendarCheck, FaCookieBite } from "react-icons/fa6";
+import { IoHandLeftOutline } from "react-icons/io5";
 import { LuVegan } from "react-icons/lu";
 import { TbMeat, TbMeatOff } from "react-icons/tb";
 import { LuClock7, LuClock9, LuClock12 } from "react-icons/lu";
@@ -14,7 +15,7 @@ const icons: { [key: string]: JSX.Element } = {
   kühlschrank: <TbFridge />,
   gefrier: <FaRegSnowflake />,
   tiefkühl: <FaRegSnowflake />,
-  fingerfood: <FaHand />,
+  fingerfood: <IoHandLeftOutline  />,
   vegan: <LuVegan />,
   vegetarisch: <TbMeatOff />,
   fleisch: <TbMeat />,
