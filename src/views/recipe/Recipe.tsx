@@ -86,14 +86,15 @@ const Recipe: React.FC = () => {
         )}
         {combinedLabels.length > 0 && (
           <div className="absolute w-full bottom-0 p-2 flex flex-wrap ">
-            {combinedLabels.length > 0 && combinedLabels.map((label, index) => (
-              <div
-                key={index}
-                className="bg-emerald-200 bg-opacity-70 text-emerald-950 text-xs md:text-sm font-semibold m-1 px-2 py-1 rounded-lg border border-emerald-950"
-              >
-                <IconText text={label} />
-              </div>
-            ))}
+            {combinedLabels.length > 0 &&
+              combinedLabels.map((label, index) => (
+                <div
+                  key={index}
+                  className="bg-emerald-200 bg-opacity-60 text-emerald-950 text-xs sm:text-sm font-bold sm:font-semibold m-1 px-2 py-1 rounded-lg border border-emerald-950"
+                >
+                  <IconText text={label} />
+                </div>
+              ))}
           </div>
         )}
       </div>
@@ -125,32 +126,36 @@ const Recipe: React.FC = () => {
         )}
         {recipe.preparation_time || recipe.rest_time ? (
           <div className="w-full flex justify-center items-center">
-        <div className="max-w-96 text-gray-700 flex flex-wrap items-center justify-evenly pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 text-center bg-emerald-50 rounded-xl">
-          {recipe.preparation_time ? (
-            <div className="text-center mb-6 ">
-              <strong>Zubereitung</strong>
-              <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
-                {" "}
-                <PiTimerFill className="text-emerald-950"/>
-                <span className="ml-1 text-zinc-800 font-semibold">{recipe.preparation_time} min</span>
-              </div>
+            <div className="max-w-96 text-gray-700 flex flex-wrap items-center justify-evenly pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 text-center bg-emerald-50 rounded-xl">
+              {recipe.preparation_time ? (
+                <div className="text-center mb-6 ">
+                  <strong>Zubereitung</strong>
+                  <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
+                    {" "}
+                    <PiTimerFill className="text-emerald-950" />
+                    <span className="ml-1 text-zinc-800 font-semibold">
+                      {recipe.preparation_time} min
+                    </span>
+                  </div>
+                </div>
+              ) : null}
+              {recipe.rest_time ? (
+                <div className="text-center mb-6">
+                  <strong>Ruhen/Backen</strong>
+                  <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
+                    {" "}
+                    <PiTimerFill className="text-emerald-950" />
+                    <span className="ml-1 text-zinc-800 font-semibold">
+                      {recipe.rest_time} min
+                    </span>
+                  </div>
+                </div>
+              ) : null}
             </div>
-          ) : null}
-          {recipe.rest_time ? (
-            <div className="text-center mb-6">
-              <strong>Ruhen/Backen</strong>
-              <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
-                {" "}
-                <PiTimerFill className="text-emerald-950"/>
-                <span className="ml-1 text-zinc-800 font-semibold">{recipe.rest_time} min</span>
-              </div>
-            </div>
-          ) : null}
-        </div>
-      </div>
+          </div>
         ) : null}
-        <div className="w-full flex flex-wrap justify-around">
-          <div className="mb-6">
+        <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
+          <div className="mb-6 mr-6">
             <h2 className="text-xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
               Zutaten
             </h2>
@@ -163,7 +168,7 @@ const Recipe: React.FC = () => {
             </ul>
           </div>
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
+            <h2 className="text-xl font-semibold text-gray-700 mb-2 ml-2 underline">
               Utensilien
             </h2>
             <ul className="list-disc pl-5">
@@ -175,31 +180,31 @@ const Recipe: React.FC = () => {
             </ul>
           </div>
         </div>
-        <div className="mb-6 divide-y">
+        <div className="mb-6">
           <h2 className="w-full text-center text-3xl md:text-4xl font-semibold text-gray-700 mb-3">
             Anleitung
           </h2>
           {recipe.instructions.map((instruction, index) => (
             <div key={index} className="py-4">
-              <h3 className="text-lg font-semibold text-gray-800 marcellus-regular">
+              <h3 className="text-xl font-semibold text-center text-gray-800 bg-emerald-50 px-6 py-3 mb-6 rounded-b-full">
                 Schritt {index + 1} - {instruction.name}
               </h3>
               {instruction.tools.length > 0 && (
-                <p className="text-gray-700 mt-2">
-                  <span className="teachers-semibold">Utensilien:</span>{" "}
+                <p className="text-gray-700 md:text-lg mt-2">
+                  <span className="teachers-semibold">Benötigt:</span>{" "}
                   {instruction.tools.join(", ")}
                 </p>
               )}
               <ul className="list-disc pl-5 mt-2">
                 {instruction.ingredients.map((ingredient, ingIndex) => (
-                  <li key={ingIndex} className="text-gray-700">
+                  <li key={ingIndex} className="text-gray-700 md:text-lg">
                     {ingredient.amount}
                     {" "}
                     {ingredient.unit} {ingredient.ingredient}
                   </li>
                 ))}
               </ul>
-              <p className="text-gray-700 mt-4 teachers-semibold">
+              <p className="text-gray-900 text-lg xs:text-xl mt-4 teachers-semibold">
                 {instruction.instruction}
               </p>
             </div>
