@@ -1,8 +1,8 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './views/Home';
-import Recipe from './views/recipe/Recipe';
-import AddRecipe from './views/admin/AddRecipe';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./views/Home";
+import Recipe from "./views/recipe/Recipe";
+import AddRecipe from "./views/admin/AddRecipe";
 
 const App: React.FC = () => {
   return (
@@ -14,6 +14,6 @@ const App: React.FC = () => {
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;
