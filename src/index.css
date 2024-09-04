@@ -17,6 +17,12 @@ body {
   font-style: normal;
 }
 
+.marcellus-semibold {
+  font-family: "Marcellus", serif;
+  font-weight: 600;
+  font-style: bold;
+}
+
 .teachers-regular {
   font-family: "Teachers", sans-serif;
   font-optical-sizing: auto;

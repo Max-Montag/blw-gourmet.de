@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { PiTimerFill } from "react-icons/pi";
 import IconText from "../components/IconText";
 import { mapDiningTime } from "../utils/diningTimeUtil";
+import "./styles/recipe.css";
 
 interface Ingredient {
   ingredient: string;
@@ -68,6 +70,11 @@ const Recipe: React.FC = () => {
     );
   }
 
+  const combinedLabels = [
+    ...recipe.dining_times.map(mapDiningTime),
+    ...recipe.labels,
+  ];
+
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
@@ -78,64 +85,95 @@ const Recipe: React.FC = () => {
             className="w-full h-72 object-cover"
           />
         )}
-        <div className="absolute w-full bottom-0 p-2 flex bg-zinc-100 bg-opacity-50 flex-wrap">
-          {recipe.labels.map((label, index) => (
-            <div
-              key={index}
-              className="bg-indigo-200 text-indigo-800 text-xs font-medium m-1 px-2 py-1 rounded"
-            >
-              <IconText text={label} />
-            </div>
-          ))}
-        </div>
+        {combinedLabels.length > 0 && (
+          <div className="absolute w-full bottom-0 p-2 pt-[14px] bg-zinc-400 bg-opacity-40 flex flex-wrap frayed-edge">
+            {combinedLabels.map((label, index) => (
+              <div
+                key={index}
+                className="bg-indigo-200 text-indigo-800 text-xs font-medium m-1 px-2 py-1 rounded"
+              >
+                <IconText text={label} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="p-6">
-        <h1 className="text-3xl font-bold mb-4 text-gray-800">{recipe.name}</h1>
-        {recipe.description && (
-          <p className="text-gray-700 mb-4">{recipe.description}</p>
-        )}
-
-        <div className="mb-6">
-          <p className="text-gray-700">
-            <strong>Kategorie: </strong>
-            {recipe.dining_times.map((diningTime, index) => (
-              <span key={index}>{mapDiningTime(diningTime)} </span>
-            ))}
+        <h1 className="text-2xl lg:text-4xl font-bold mb-4 text-center text-gray-800 marcellus-semibold">
+          {recipe.name}
+        </h1>
+        {recipe.description ? (
+          <p className="text-gray-700 mb-4 text-center">{recipe.description}</p>
+        ) : (
+          <p className="text-gray-700 mb-4 text-center">
+            Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle
+            Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte
+            wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu
+            testen. Manchmal Sätze, die alle Buchstaben des Alphabets enthalten
+            - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The
+            quick brown fox jumps over the lazy old dog. Oft werden in
+            Typoblindtexte auch fremdsprachige Satzteile eingebaut (AVAIL® and
+            Wefox™ are testing aussi la Kerning), um die Wirkung in anderen
+            Sprachen zu testen. In Lateinisch sieht zum Beispiel fast jede
+            Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den
+            meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem
+            Jahr 2034 Zahlen in 86 der Texte zur Pflicht werden. Nichteinhaltung
+            wird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind
+            mittlerweile auch Âçcèñtë, die in neueren Schriften aber fast immer
+            enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld
+            sind OpenType-Funktionalitä.
           </p>
+        )}
+        <div className="mb-6 text-gray-700 flex items-center justify-evenly text-center space-x-2">
           {recipe.preparation_time ? (
-            <p className="text-gray-700">
-              <strong>Zubereitungszeit:</strong> {recipe.preparation_time}{" "}
-              Minuten
-            </p>
+            <div className="text-center ">
+              <strong>Zubereitung</strong>
+              <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-zinc-300 ring-2 ring-cyan-100">
+                {" "}
+                <PiTimerFill />
+                <span className="ml-1">{recipe.preparation_time} min</span>
+              </div>
+            </div>
           ) : null}
           {recipe.rest_time ? (
-            <p className="text-gray-700">
-              <strong>Warte oder Back-Zeit:</strong> {recipe.rest_time} Minuten
-            </p>
+            <div className="text-center">
+              <strong>Ruhen/Backen</strong>
+              <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-zinc-300 ring-2 ring-cyan-100">
+                {" "}
+                <PiTimerFill />
+                <span className="ml-1">{recipe.rest_time} min</span>
+              </div>
+            </div>
           ) : null}
         </div>
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-700">Zutaten</h2>
-          <ul className="list-disc pl-5">
-            {recipe.ingredients.map((ingredient, index) => (
-              <li key={index} className="text-gray-700">
-                {ingredient.amount} {ingredient.unit} {ingredient.ingredient}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-700">Utensilien</h2>
-          <ul className="list-disc pl-5">
-            {recipe.tools.map((tool, index) => (
-              <li key={index} className="text-gray-700">
-                <IconText text={tool} />
-              </li>
-            ))}
-          </ul>
+        <div className="w-full max-w-full mb-6 flex flex-row justify-around">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
+              Zutaten
+            </h2>
+            <ul className="list-disc pl-5">
+              {recipe.ingredients.map((ingredient, index) => (
+                <li key={index} className="text-gray-700">
+                  {ingredient.amount} {ingredient.unit} {ingredient.ingredient}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
+              Utensilien
+            </h2>
+            <ul className="list-disc pl-5">
+              {recipe.tools.map((tool, index) => (
+                <li key={index} className="text-gray-700">
+                  <IconText text={tool} />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div className="mb-6 divide-y">
-          <h2 className="w-full text-center text-2xl md:text-4xl font-semibold text-gray-700 mb-2">
+          <h2 className="w-full text-center text-2xl md:text-4xl font-semibold text-gray-700 mb-3">
             Rezept
           </h2>
           {recipe.instructions.map((instruction, index) => (

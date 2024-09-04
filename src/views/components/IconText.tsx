@@ -1,9 +1,10 @@
 import React from "react";
 import { TbFridge } from "react-icons/tb";
 import { FaRegSnowflake } from "react-icons/fa";
-import { FaHand, FaRegCalendarCheck } from "react-icons/fa6";
+import { FaHand, FaRegCalendarCheck, FaCookieBite } from "react-icons/fa6";
 import { LuVegan } from "react-icons/lu";
 import { TbMeat, TbMeatOff } from "react-icons/tb";
+import { LuClock7, LuClock9, LuClock12 } from "react-icons/lu";
 
 interface IconTextProps {
   text: string;
@@ -20,6 +21,10 @@ const icons: { [key: string]: JSX.Element } = {
   beikostreife: <FaRegCalendarCheck />,
   jahr: <FaRegCalendarCheck />,
   monat: <FaRegCalendarCheck />,
+  snack: <FaCookieBite />,
+  frühstück: <LuClock9 />,
+  mittagessen: <LuClock12 />,
+  abendessen: <LuClock7 />,
 };
 
 const IconText: React.FC<IconTextProps> = ({ text }) => {
