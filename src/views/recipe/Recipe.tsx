@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { PiTimerFill } from "react-icons/pi";
 import IconText from "../components/IconText";
 import { mapDiningTime } from "../utils/diningTimeUtil";
-import "./styles/recipe.css";
 
 interface Ingredient {
   ingredient: string;
@@ -86,11 +85,11 @@ const Recipe: React.FC = () => {
           />
         )}
         {combinedLabels.length > 0 && (
-          <div className="absolute w-full bottom-0 p-2 pt-[14px] bg-zinc-400 bg-opacity-40 flex flex-wrap frayed-edge">
-            {combinedLabels.map((label, index) => (
+          <div className="absolute w-full bottom-0 p-2 flex flex-wrap ">
+            {combinedLabels.length > 0 && combinedLabels.map((label, index) => (
               <div
                 key={index}
-                className="bg-indigo-200 text-indigo-800 text-xs font-medium m-1 px-2 py-1 rounded"
+                className="bg-emerald-200 bg-opacity-70 text-emerald-950 text-xs md:text-sm font-semibold m-1 px-2 py-1 rounded-lg border border-emerald-950"
               >
                 <IconText text={label} />
               </div>
@@ -124,31 +123,35 @@ const Recipe: React.FC = () => {
             sind OpenType-Funktionalitä.
           </p>
         )}
-        <div className="text-gray-700 flex flex-wrap items-center justify-evenly text-center space-x-2">
+        {recipe.preparation_time || recipe.rest_time ? (
+          <div className="w-full flex justify-center items-center">
+        <div className="max-w-96 text-gray-700 flex flex-wrap items-center justify-evenly pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 text-center bg-emerald-50 rounded-xl">
           {recipe.preparation_time ? (
             <div className="text-center mb-6 ">
               <strong>Zubereitung</strong>
-              <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-zinc-300 ring-2 ring-cyan-100">
+              <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
                 {" "}
-                <PiTimerFill />
-                <span className="ml-1">{recipe.preparation_time} min</span>
+                <PiTimerFill className="text-emerald-950"/>
+                <span className="ml-1 text-zinc-800 font-semibold">{recipe.preparation_time} min</span>
               </div>
             </div>
           ) : null}
           {recipe.rest_time ? (
             <div className="text-center mb-6">
               <strong>Ruhen/Backen</strong>
-              <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-zinc-300 ring-2 ring-cyan-100">
+              <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
                 {" "}
-                <PiTimerFill />
-                <span className="ml-1">{recipe.rest_time} min</span>
+                <PiTimerFill className="text-emerald-950"/>
+                <span className="ml-1 text-zinc-800 font-semibold">{recipe.rest_time} min</span>
               </div>
             </div>
           ) : null}
         </div>
+      </div>
+        ) : null}
         <div className="w-full flex flex-wrap justify-around">
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-700 text-center mb-2 ml-2 underline">
+            <h2 className="text-xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
               Zutaten
             </h2>
             <ul className="list-disc pl-5">
@@ -160,7 +163,7 @@ const Recipe: React.FC = () => {
             </ul>
           </div>
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-700 text-center mb-2 ml-2 underline">
+            <h2 className="text-xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
               Utensilien
             </h2>
             <ul className="list-disc pl-5">
@@ -174,7 +177,7 @@ const Recipe: React.FC = () => {
         </div>
         <div className="mb-6 divide-y">
           <h2 className="w-full text-center text-3xl md:text-4xl font-semibold text-gray-700 mb-3">
-            Rezept
+            Anleitung
           </h2>
           {recipe.instructions.map((instruction, index) => (
             <div key={index} className="py-4">
