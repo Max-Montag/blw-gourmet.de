@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { PiTimerFill } from "react-icons/pi";
+import { PiTimer } from "react-icons/pi";
 import IconText from "../components/IconText";
 import { mapDiningTime } from "../utils/diningTimeUtil";
 
@@ -105,7 +105,7 @@ const Recipe: React.FC = () => {
         {recipe.description ? (
           <p className="text-gray-700 mb-4 text-center">{recipe.description}</p>
         ) : (
-          <p className="text-gray-700 mb-4 text-center">
+          <p className="text-gray-700 text-lg lg:text-xl mb-4 text-center">
             Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle
             Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte
             wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu
@@ -126,15 +126,15 @@ const Recipe: React.FC = () => {
         )}
         {recipe.preparation_time || recipe.rest_time ? (
           <div className="w-full flex justify-center items-center">
-            <div className="max-w-96 text-gray-700 flex flex-wrap items-center justify-evenly pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 text-center bg-emerald-50 rounded-xl">
+            <div className="max-w-96 text-gray-700 flex flex-wrap items-center justify-evenly shadow-md pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 text-center bg-emerald-50 rounded-xl">
               {recipe.preparation_time ? (
                 <div className="text-center mb-6 ">
                   <strong>Zubereitung</strong>
                   <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
                     {" "}
-                    <PiTimerFill className="text-emerald-950" />
+                    <PiTimer className="text-emerald-950" />
                     <span className="ml-1 text-zinc-800 font-semibold">
-                      {recipe.preparation_time} min
+                      {recipe.preparation_time} Min
                     </span>
                   </div>
                 </div>
@@ -144,9 +144,9 @@ const Recipe: React.FC = () => {
                   <strong>Ruhen/Backen</strong>
                   <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
                     {" "}
-                    <PiTimerFill className="text-emerald-950" />
+                    <PiTimer className="text-emerald-950" />
                     <span className="ml-1 text-zinc-800 font-semibold">
-                      {recipe.rest_time} min
+                      {recipe.rest_time} Min
                     </span>
                   </div>
                 </div>
@@ -156,37 +156,38 @@ const Recipe: React.FC = () => {
         ) : null}
         <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
           <div className="mb-6 mr-6">
-            <h2 className="text-xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
+            <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
               Zutaten
             </h2>
             <ul className="list-disc pl-5">
               {recipe.ingredients.map((ingredient, index) => (
-                <li key={index} className="text-gray-700">
-                  {ingredient.amount} {ingredient.unit} {ingredient.ingredient}
+                <li key={index} className="text-gray-700 text-lg lg:text-xl">
+                  {ingredient.amount} {ingredient.unit}{" "}
+                  <span className="font-semibold">{ingredient.ingredient}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-700 mb-2 ml-2 underline">
+            <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 ml-2 underline">
               Utensilien
             </h2>
             <ul className="list-disc pl-5">
               {recipe.tools.map((tool, index) => (
-                <li key={index} className="text-gray-700">
+                <li key={index} className="text-gray-700 text-lg lg:text-xl">
                   <IconText text={tool} />
                 </li>
               ))}
             </ul>
           </div>
         </div>
-        <div className="mb-6">
-          <h2 className="w-full text-center text-3xl md:text-4xl font-semibold text-gray-700 mb-3">
+        <div className="my-2">
+          {/* <h2 className="w-full text-center text-3xl md:text-4xl font-semibold text-gray-700 mb-3">
             Anleitung
-          </h2>
+          </h2> */}
           {recipe.instructions.map((instruction, index) => (
             <div key={index} className="py-4">
-              <h3 className="text-xl font-semibold text-center text-gray-800 bg-emerald-50 px-6 py-3 mb-6 rounded-b-full">
+              <h3 className="text-xl font-semibold text-center text-gray-800 bg-emerald-50 shadow-md px-6 md:mx-8 py-3 mb-6 rounded-b-full">
                 Schritt {index + 1} - {instruction.name}
               </h3>
               {instruction.tools.length > 0 && (
