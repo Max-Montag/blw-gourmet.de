@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import IconText from "../components/IconText";
+import { mapDiningTime } from "../utils/diningTimeUtil";
 
 interface Ingredient {
   ingredient: string;
@@ -67,7 +68,7 @@ const Recipe: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md teachers-regular">
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md scroll-smooth teachers-regular">
       {recipe.optimized_image && (
         <img
           src={recipe.optimized_image}
@@ -88,7 +89,10 @@ const Recipe: React.FC = () => {
       </div>
       <div className="mb-6">
         <p className="text-gray-700">
-          <strong>Mahlzeit:</strong> {recipe.dining_times.join(", ")}
+          <strong>Kategorie: </strong>
+          {recipe.dining_times.map((diningTime, index) => (
+            <span key={index}>{mapDiningTime(diningTime)} </span>
+          ))}
         </p>
         {recipe.preparation_time ? (
           <p className="text-gray-700">
