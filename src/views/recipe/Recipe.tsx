@@ -75,9 +75,8 @@ const Recipe: React.FC = () => {
     ...recipe.labels,
   ];
 
-  const ingredientStrings = (input: Instruction | RecipeData) => {
-    const ingredients = "ingredients" in input ? input.ingredients : input;
-    return ingredients.map((ingredient) => {
+  const ingredientStrings = (instruction: Instruction ) => {
+    return instruction.ingredients.map((ingredient) => {
       let ingredientString = "";
       if (ingredient.amount !== null) ingredientString += ingredient.amount + " ";
       if (ingredient.unit !== null) ingredientString += ingredient.unit + " ";
@@ -86,7 +85,6 @@ const Recipe: React.FC = () => {
     });
   };
   
-
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
@@ -141,7 +139,7 @@ const Recipe: React.FC = () => {
               ) : null}
               {recipe.rest_time ? (
                 <div className="flex flex-col justify-center items-center mb-4">
-                    <span className="font-medium">Ruhezeit</span>
+                    <span className="font-medium">Wartezeit</span>
                     <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
                     <span className="text-zinc-800 font-semibold">
                       {recipe.rest_time} Min
@@ -155,31 +153,48 @@ const Recipe: React.FC = () => {
           <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
             {recipe.ingredients.length > 0 && (
               <div className="mb-6 mr-6">
-                <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
+                <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 underline">
                   Zutaten
                 </h2>
-                <ul className="list-disc pl-5">
-                  {ingredientStrings(recipe).map((ingredient, index) => (
-                    <li
-                      key={index}
-                      className="text-zinc-700 font-medium text-lg lg:text-xl"
-                    >
-                      {ingredient}
-                    </li>
-                  ))}
-                </ul>
+                <div className="flex">
+                  <div>
+                    <ul>
+                      {recipe.ingredients.map((ingredient, index) => (
+                        <li
+                          key={index}
+                          className="text-zinc-700 font-semibold text-lg lg:text-xl"
+                        >
+                          {ingredient.amount && ingredient.amount}{ingredient.unit && " " + ingredient.unit}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <ul className="pl-4">
+                      {recipe.ingredients.map((ingredient, index) => (
+                        <li
+                          key={index}
+                          className="text-zinc-700 font-medium text-lg lg:text-xl"
+                        >
+                          {ingredient.ingredient}
+                        </li>
+                      ))}
+                    </ul>
+                  
+                  </div>
+                </div>
               </div>
             )}
             {recipe.tools.length > 0 && (
               <div className="mb-6">
-                <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 ml-2 underline">
+                <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 underline">
                   Utensilien
                 </h2>
-                <ul className="list-disc pl-5">
+                <ul>
                   {recipe.tools.map((tool, index) => (
                     <li
                       key={index}
-                      className="text-gray-700 text-lg lg:text-xl"
+                      className="text-zinc-700 font-medium text-lg lg:text-xl"
                     >
                       <IconText text={tool} />
                     </li>
