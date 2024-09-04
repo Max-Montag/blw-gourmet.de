@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { PiTimer } from "react-icons/pi";
+import { PiTimer, PiCookingPot } from "react-icons/pi";
+import { CiShoppingBasket } from "react-icons/ci";
 import IconText from "../components/IconText";
 import { mapDiningTime } from "../utils/diningTimeUtil";
 
@@ -74,6 +75,17 @@ const Recipe: React.FC = () => {
     ...recipe.labels,
   ];
 
+  const ingredientStrings = (instruction: Instruction) => {
+    return instruction.ingredients.map((ingredient) => {
+      let ingredientString = "";
+      if (ingredient.amount !== null)
+        ingredientString += ingredient.amount + " ";
+      if (ingredient.unit !== null) ingredientString += ingredient.unit + " ";
+      ingredientString += ingredient.ingredient;
+      return ingredientString;
+    });
+  };
+
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
@@ -90,7 +102,7 @@ const Recipe: React.FC = () => {
               combinedLabels.map((label, index) => (
                 <div
                   key={index}
-                  className="bg-emerald-50 bg-opacity-100 text-emerald-950 text-xs sm:text-sm font-bold sm:font-semibold m-1 px-2 py-1 rounded-full border-2 border-emerald-900 ring-offset-1 ring-2 ring-emerald-950"
+                  className="bg-cyan-50 text-cyan-700 text-sm md:text-md font-bold m-1 px-2 py-1 rounded-xl border-2 border-cyan-700"
                 >
                   <IconText text={label} />
                 </div>
@@ -126,13 +138,13 @@ const Recipe: React.FC = () => {
         )}
         {recipe.preparation_time || recipe.rest_time ? (
           <div className="w-full flex justify-center items-center">
-            <div className="max-w-96 text-gray-700 flex flex-wrap items-center justify-evenly shadow-md pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 text-center bg-emerald-50 rounded-xl">
+            <div className="max-w-96 text-gray-700 flex flex-wrap items-center justify-evenly shadow-md pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 text-center bg-cyan-50 rounded-xl">
               {recipe.preparation_time ? (
                 <div className="text-center mb-6 ">
                   <strong>Zubereitung</strong>
-                  <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
+                  <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-cyan-100 ring-2 ring-cyan-200">
                     {" "}
-                    <PiTimer className="text-emerald-950" />
+                    <PiTimer className="text-cyan-950" />
                     <span className="ml-1 text-zinc-800 font-semibold">
                       {recipe.preparation_time} Min
                     </span>
@@ -142,9 +154,9 @@ const Recipe: React.FC = () => {
               {recipe.rest_time ? (
                 <div className="text-center mb-6">
                   <strong>Ruhen/Backen</strong>
-                  <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-emerald-100 ring-2 ring-emerald-200">
+                  <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-cyan-100 ring-2 ring-cyan-200">
                     {" "}
-                    <PiTimer className="text-emerald-950" />
+                    <PiTimer className="text-cyan-950" />
                     <span className="ml-1 text-zinc-800 font-semibold">
                       {recipe.rest_time} Min
                     </span>
@@ -155,59 +167,69 @@ const Recipe: React.FC = () => {
           </div>
         ) : null}
         {(recipe.tools.length > 0 || recipe.ingredients.length > 0) && (
-        <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
-          {recipe.tools.length > 0 && (
-          <div className="mb-6 mr-6">
-            <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
-              Zutaten
-            </h2>
-            <ul className="list-disc pl-5">
-              {recipe.ingredients.map((ingredient, index) => (
-                <li key={index} className="text-gray-700 text-lg lg:text-xl">
-                  {ingredient.amount} {ingredient.unit}{" "}
-                  <span className="font-semibold">{ingredient.ingredient}</span>
-                </li>
-              ))}
-            </ul>
+          <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
+            {recipe.tools.length > 0 && (
+              <div className="mb-6 mr-6">
+                <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
+                  Zutaten
+                </h2>
+                <ul className="list-disc pl-5">
+                  {recipe.ingredients.map((ingredient, index) => (
+                    <li
+                      key={index}
+                      className="text-gray-700 text-lg lg:text-xl"
+                    >
+                      {ingredient.amount} {ingredient.unit}{" "}
+                      <span className="font-semibold">
+                        {ingredient.ingredient}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {recipe.tools.length > 0 && (
+              <div className="mb-6">
+                <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 ml-2 underline">
+                  Utensilien
+                </h2>
+                <ul className="list-disc pl-5">
+                  {recipe.tools.map((tool, index) => (
+                    <li
+                      key={index}
+                      className="text-gray-700 text-lg lg:text-xl"
+                    >
+                      <IconText text={tool} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
-          )}
-          {recipe.tools.length > 0 && (
-          <div className="mb-6">
-            <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 ml-2 underline">
-              Utensilien
-            </h2>
-            <ul className="list-disc pl-5">
-              {recipe.tools.map((tool, index) => (
-                <li key={index} className="text-gray-700 text-lg lg:text-xl">
-                  <IconText text={tool} />
-                </li>
-              ))}
-            </ul>
-          </div>
-          )}
-        </div>
-      )}
+        )}
         <div>
           {recipe.instructions.map((instruction, index) => (
             <div key={index} className="py-4">
-              <h3 className="text-xl font-semibold text-center text-gray-800 bg-emerald-50 shadow-md px-6 md:mx-8 py-3 mb-6 rounded-b-full">
-                Schritt {index + 1} - {instruction.name}
-              </h3>
+              <div className="text-xl font-semibold text-cyan-800 bg-cyan-50 flex justify-between shadow-sm px-6 -ml-6 py-2 mb-6 -px-16 rounded-br-full">
+                <span className="rounded-full border-4 border-cyan-800 flex items-center justify-center mr-2 w-10 h-10">
+                  {index + 1}
+                </span>
+                <h3 className="flex-1 text-center self-center">
+                  {instruction.name}
+                </h3>
+              </div>
               {instruction.tools.length > 0 && (
-                <p className="text-gray-700 md:text-lg mt-2">
-                  <span className="teachers-semibold">Benötigt:</span>{" "}
-                  {instruction.tools.join(", ")}
-                </p>
+                <div className="text-gray-700 md:text-lg flex items-center mt-2">
+                  <PiCookingPot className="text-cyan-800 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] mr-2" />
+                  <span>{instruction.tools.join(" - ")}</span>
+                </div>
               )}
-              <ul className="list-disc pl-5 mt-2">
-                {instruction.ingredients.map((ingredient, ingIndex) => (
-                  <li key={ingIndex} className="text-gray-700 md:text-lg">
-                    {ingredient.amount}
-                    {" "}
-                    {ingredient.unit} {ingredient.ingredient}
-                  </li>
-                ))}
-              </ul>
+              {instruction.ingredients.length > 0 && (
+                <div className="text-gray-700 md:text-lg flex items-center mt-2">
+                  <CiShoppingBasket className="text-cyan-800 min-w-[26px] min-h-[26px] max-w-[26px] max-h-[26px] mr-2" />
+                  <span>{ingredientStrings(instruction).join(" - ")}</span>
+                </div>
+              )}
               <p className="text-gray-900 text-lg xs:text-xl mt-4 teachers-semibold">
                 {instruction.instruction}
               </p>
