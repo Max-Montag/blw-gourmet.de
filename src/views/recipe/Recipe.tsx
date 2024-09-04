@@ -75,16 +75,17 @@ const Recipe: React.FC = () => {
     ...recipe.labels,
   ];
 
-  const ingredientStrings = (instruction: Instruction) => {
-    return instruction.ingredients.map((ingredient) => {
+  const ingredientStrings = (input: Instruction | RecipeData) => {
+    const ingredients = "ingredients" in input ? input.ingredients : input;
+    return ingredients.map((ingredient) => {
       let ingredientString = "";
-      if (ingredient.amount !== null)
-        ingredientString += ingredient.amount + " ";
+      if (ingredient.amount !== null) ingredientString += ingredient.amount + " ";
       if (ingredient.unit !== null) ingredientString += ingredient.unit + " ";
       ingredientString += ingredient.ingredient;
       return ingredientString;
     });
   };
+  
 
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
@@ -123,44 +124,28 @@ const Recipe: React.FC = () => {
             wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu
             testen. Manchmal Sätze, die alle Buchstaben des Alphabets enthalten
             - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The
-            quick brown fox jumps over the lazy old dog. Oft werden in
-            Typoblindtexte auch fremdsprachige Satzteile eingebaut (AVAIL® and
-            Wefox™ are testing aussi la Kerning), um die Wirkung in anderen
-            Sprachen zu testen. In Lateinisch sieht zum Beispiel fast jede
-            Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den
-            meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem
-            Jahr 2034 Zahlen in 86 der Texte zur Pflicht werden. Nichteinhaltung
-            wird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind
-            mittlerweile auch Âçcèñtë, die in neueren Schriften aber fast immer
-            enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld
-            sind OpenType-Funktionalitä.
+            quick brown fox jumps over the lazy old dog. 
           </p>
         )}
         {recipe.preparation_time || recipe.rest_time ? (
           <div className="w-full flex justify-center items-center">
-            <div className="max-w-96 text-gray-700 flex flex-wrap items-center justify-evenly shadow-md pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 text-center bg-cyan-50 rounded-xl">
+            <div className="max-w-96 bg-cyan-50 text-center text-gray-700 flex flex-wrap items-center justify-evenly shadow-md pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 rounded-xl">
               {recipe.preparation_time ? (
-                <div className="text-center mb-6 ">
-                  <strong>Zubereitung</strong>
-                  <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-cyan-100 ring-2 ring-cyan-200">
-                    {" "}
-                    <PiTimer className="text-cyan-950" />
-                    <span className="ml-1 text-zinc-800 font-semibold">
+                <div className="flex flex-col justify-center items-center mb-4 ">
+                    <span className="font-medium">Zubereitung</span>
+                    <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
+                    <span className="text-zinc-800 font-semibold">
                       {recipe.preparation_time} Min
                     </span>
-                  </div>
                 </div>
               ) : null}
               {recipe.rest_time ? (
-                <div className="text-center mb-6">
-                  <strong>Ruhen/Backen</strong>
-                  <div className="rounded-full px-2 py-1 mt-1 ml-2 flex justify-center items-center bg-cyan-100 ring-2 ring-cyan-200">
-                    {" "}
-                    <PiTimer className="text-cyan-950" />
-                    <span className="ml-1 text-zinc-800 font-semibold">
+                <div className="flex flex-col justify-center items-center mb-4">
+                    <span className="font-medium">Ruhezeit</span>
+                    <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
+                    <span className="text-zinc-800 font-semibold">
                       {recipe.rest_time} Min
                     </span>
-                  </div>
                 </div>
               ) : null}
             </div>
@@ -168,21 +153,18 @@ const Recipe: React.FC = () => {
         ) : null}
         {(recipe.tools.length > 0 || recipe.ingredients.length > 0) && (
           <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
-            {recipe.tools.length > 0 && (
+            {recipe.ingredients.length > 0 && (
               <div className="mb-6 mr-6">
                 <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 text-start mb-2 ml-2 underline">
                   Zutaten
                 </h2>
                 <ul className="list-disc pl-5">
-                  {recipe.ingredients.map((ingredient, index) => (
+                  {ingredientStrings(recipe).map((ingredient, index) => (
                     <li
                       key={index}
-                      className="text-gray-700 text-lg lg:text-xl"
+                      className="text-zinc-700 font-medium text-lg lg:text-xl"
                     >
-                      {ingredient.amount} {ingredient.unit}{" "}
-                      <span className="font-semibold">
-                        {ingredient.ingredient}
-                      </span>
+                      {ingredient}
                     </li>
                   ))}
                 </ul>
