@@ -69,93 +69,101 @@ const Recipe: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md scroll-smooth teachers-regular">
-      {recipe.optimized_image && (
-        <img
-          src={recipe.optimized_image}
-          alt={recipe.name}
-          className="w-full h-64 object-cover rounded-md mb-6"
-        />
-      )}
-      <h1 className="text-3xl font-bold mb-4 text-gray-800">{recipe.name}</h1>
-      <p className="text-gray-700 mb-6">{recipe.description}</p>
-      <div className="flex flex-wrap mb-6">
-        {recipe.labels.map((label, index) => (
-          <div
-            key={index}
-            className="bg-indigo-200 text-indigo-800 text-xs font-medium mr-2 px-2 py-1 rounded"
-          >
-            <IconText text={label} />
-          </div>
-        ))}
-      </div>
-      <div className="mb-6">
-        <p className="text-gray-700">
-          <strong>Kategorie: </strong>
-          {recipe.dining_times.map((diningTime, index) => (
-            <span key={index}>{mapDiningTime(diningTime)} </span>
+    <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
+      <div className="relative">
+        {recipe.optimized_image && (
+          <img
+            src={recipe.optimized_image}
+            alt={recipe.name}
+            className="w-full h-72 object-cover"
+          />
+        )}
+        <div className="absolute w-full bottom-0 p-2 flex bg-zinc-100 bg-opacity-50 flex-wrap">
+          {recipe.labels.map((label, index) => (
+            <div
+              key={index}
+              className="bg-indigo-200 text-indigo-800 text-xs font-medium m-1 px-2 py-1 rounded"
+            >
+              <IconText text={label} />
+            </div>
           ))}
-        </p>
-        {recipe.preparation_time ? (
+        </div>
+      </div>
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-4 text-gray-800">{recipe.name}</h1>
+        {recipe.description && (
+          <p className="text-gray-700 mb-4">{recipe.description}</p>
+        )}
+
+        <div className="mb-6">
           <p className="text-gray-700">
-            <strong>Zubereitungszeit:</strong> {recipe.preparation_time} Minuten
+            <strong>Kategorie: </strong>
+            {recipe.dining_times.map((diningTime, index) => (
+              <span key={index}>{mapDiningTime(diningTime)} </span>
+            ))}
           </p>
-        ) : null}
-        {recipe.rest_time ? (
-          <p className="text-gray-700">
-            <strong>Warte oder Back-Zeit:</strong> {recipe.rest_time} Minuten
-          </p>
-        ) : null}
-      </div>
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-700">Zutaten</h2>
-        <ul className="list-disc pl-5">
-          {recipe.ingredients.map((ingredient, index) => (
-            <li key={index} className="text-gray-700">
-              {ingredient.amount} {ingredient.unit} {ingredient.ingredient}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-700">Utensilien</h2>
-        <ul className="list-disc pl-5">
-          {recipe.tools.map((tool, index) => (
-            <li key={index} className="text-gray-700">
-              <IconText text={tool} />
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="mb-6 divide-y">
-        <h2 className="w-full text-center text-2xl md:text-4xl font-semibold text-gray-700 mb-2">
-          Rezept
-        </h2>
-        {recipe.instructions.map((instruction, index) => (
-          <div key={index} className="py-4">
-            <h3 className="text-lg font-semibold text-gray-800 marcellus-regular">
-              Schritt {index + 1} - {instruction.name}
-            </h3>
-            {instruction.tools.length > 0 && (
-              <p className="text-gray-700 mt-2">
-                <span className="teachers-semibold">Utensilien:</span>{" "}
-                {instruction.tools.join(", ")}
-              </p>
-            )}
-            <ul className="list-disc pl-5 mt-2">
-              {instruction.ingredients.map((ingredient, ingIndex) => (
-                <li key={ingIndex} className="text-gray-700">
-                  {ingredient.amount}
-                  {" "}
-                  {ingredient.unit} {ingredient.ingredient}
-                </li>
-              ))}
-            </ul>
-            <p className="text-gray-700 mt-4 teachers-semibold">
-              {instruction.instruction}
+          {recipe.preparation_time ? (
+            <p className="text-gray-700">
+              <strong>Zubereitungszeit:</strong> {recipe.preparation_time}{" "}
+              Minuten
             </p>
-          </div>
-        ))}
+          ) : null}
+          {recipe.rest_time ? (
+            <p className="text-gray-700">
+              <strong>Warte oder Back-Zeit:</strong> {recipe.rest_time} Minuten
+            </p>
+          ) : null}
+        </div>
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-700">Zutaten</h2>
+          <ul className="list-disc pl-5">
+            {recipe.ingredients.map((ingredient, index) => (
+              <li key={index} className="text-gray-700">
+                {ingredient.amount} {ingredient.unit} {ingredient.ingredient}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-700">Utensilien</h2>
+          <ul className="list-disc pl-5">
+            {recipe.tools.map((tool, index) => (
+              <li key={index} className="text-gray-700">
+                <IconText text={tool} />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="mb-6 divide-y">
+          <h2 className="w-full text-center text-2xl md:text-4xl font-semibold text-gray-700 mb-2">
+            Rezept
+          </h2>
+          {recipe.instructions.map((instruction, index) => (
+            <div key={index} className="py-4">
+              <h3 className="text-lg font-semibold text-gray-800 marcellus-regular">
+                Schritt {index + 1} - {instruction.name}
+              </h3>
+              {instruction.tools.length > 0 && (
+                <p className="text-gray-700 mt-2">
+                  <span className="teachers-semibold">Utensilien:</span>{" "}
+                  {instruction.tools.join(", ")}
+                </p>
+              )}
+              <ul className="list-disc pl-5 mt-2">
+                {instruction.ingredients.map((ingredient, ingIndex) => (
+                  <li key={ingIndex} className="text-gray-700">
+                    {ingredient.amount}
+                    {" "}
+                    {ingredient.unit} {ingredient.ingredient}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-gray-700 mt-4 teachers-semibold">
+                {instruction.instruction}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
