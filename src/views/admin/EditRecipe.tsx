@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Ingredient, Instruction, RecipeData } from "../../types/recipeTypes";
+import RecipeDisplay from "../recipe/RecipeDisplay";
 
 interface EditRecipeProps {
   initialRecipe?: RecipeData;
@@ -13,8 +14,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
   const [jsonInput, setJsonInput] = useState("");
   const [recipeData, setRecipeData] = useState<RecipeData>(
     initialRecipe || {
-      name: null,
-      description: null,
+      name: "",
+      description: "",
       labels: [""],
       ingredients: [{ ingredient: "", amount: 0, unit: "" }],
       tools: [""],
@@ -27,8 +28,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
         },
       ],
       dining_times: [""],
-      preparation_time: null,
-      rest_time: null,
+      preparation_time: 0,
+      rest_time: 0,
     },
   );
 
@@ -297,8 +298,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
 
   const handleClear = () => {
     setRecipeData({
-      name: null,
-      description: null,
+      name: "",
+      description: "",
       labels: [""],
       ingredients: [{ ingredient: "", amount: 0, unit: "" }],
       tools: [""],
@@ -311,317 +312,328 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
         },
       ],
       dining_times: [""],
-      preparation_time: null,
-      rest_time: null,
+      preparation_time: 0,
+      rest_time: 0,
     });
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Name:
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={recipeData.name ?? ""}
-            onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Description:
-          </label>
-          <textarea
-            name="description"
-            value={recipeData.description ?? ""}
-            onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Labels:
-          </label>
-          {recipeData.labels.map((label, index) => (
-            <div key={index} className="flex space-x-2 mb-2">
-              <input
-                type="text"
-                value={label}
-                onChange={(e) => handleLabelChange(index, e.target.value)}
-                className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <button
-                onClick={() => handleRemoveLabel(index)}
-                className="text-red-500"
-              >
-                x
-              </button>
-            </div>
-          ))}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Dining Times:
-          </label>
-          {recipeData.dining_times.map((time, index) => (
-            <div key={index} className="flex space-x-2 mb-2">
-              <select
-                name={`dining_time_${index}`}
-                value={time ?? ""}
-                onChange={(e) => handleDiningTimeChange(index, e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="">Select a dining time</option>
-                <option value="snack">Snack</option>
-                <option value="breakfast">Breakfast</option>
-                <option value="lunch">Lunch</option>
-                <option value="dinner">Dinner</option>
-              </select>
-              <button
-                onClick={() => handleRemoveDiningTime(index)}
-                className="text-red-500"
-              >
-                x
-              </button>
-            </div>
-          ))}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Preparation Time:
-          </label>
-          <input
-            type="number"
-            name="preparation_time"
-            value={recipeData.preparation_time ?? 0}
-            onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Rest Time:
-          </label>
-          <input
-            type="number"
-            name="rest_time"
-            value={recipeData.rest_time ?? 0}
-            onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Ingredients:
-          </label>
-          {recipeData.ingredients.map((ingredient, index) => (
-            <div key={index} className="flex space-x-2 mb-2">
-              <input
-                type="text"
-                placeholder="Ingredient"
-                value={ingredient.ingredient}
-                onChange={(e) =>
-                  handleIngredientChange(index, "ingredient", e.target.value)
-                }
-                className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <input
-                type="number"
-                placeholder="Amount"
-                value={ingredient.amount}
-                onChange={(e) =>
-                  handleIngredientChange(
-                    index,
-                    "amount",
-                    parseInt(e.target.value),
-                  )
-                }
-                className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <input
-                type="text"
-                placeholder="Unit"
-                value={ingredient.unit}
-                onChange={(e) =>
-                  handleIngredientChange(index, "unit", e.target.value)
-                }
-                className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <button
-                onClick={() => handleRemoveIngredient(index)}
-                className="text-red-500"
-              >
-                x
-              </button>
-            </div>
-          ))}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Tools:
-          </label>
-          {recipeData.tools.map((tool, index) => (
-            <div key={index} className="flex space-x-2 mb-2">
-              <input
-                type="text"
-                value={tool}
-                onChange={(e) => handleToolChange(index, e.target.value)}
-                className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <button
-                onClick={() => handleRemoveTool(index)}
-                className="text-red-500"
-              >
-                x
-              </button>
-            </div>
-          ))}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Instructions:
-          </label>
-          {recipeData.instructions.map((instruction, index) => (
-            <div
-              key={index}
-              className="space-y-2 mb-4 p-4 border border-gray-300 rounded-md shadow-sm"
-            >
-              <input
-                type="text"
-                placeholder="Instruction Name"
-                value={instruction.name}
-                onChange={(e) =>
-                  handleInstructionChange(index, "name", e.target.value)
-                }
-                className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Instruction Ingredients:
-                </label>
-                {instruction.ingredients.map((ingredient, ingIndex) => (
-                  <div key={ingIndex} className="flex space-x-2 mb-2">
-                    <input
-                      type="text"
-                      placeholder="Ingredient"
-                      value={ingredient.ingredient}
-                      onChange={(e) =>
-                        handleInstructionIngredientChange(
-                          index,
-                          ingIndex,
-                          "ingredient",
-                          e.target.value,
-                        )
-                      }
-                      className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Amount"
-                      value={ingredient.amount}
-                      onChange={(e) =>
-                        handleInstructionIngredientChange(
-                          index,
-                          ingIndex,
-                          "amount",
-                          parseInt(e.target.value),
-                        )
-                      }
-                      className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Unit"
-                      value={ingredient.unit}
-                      onChange={(e) =>
-                        handleInstructionIngredientChange(
-                          index,
-                          ingIndex,
-                          "unit",
-                          e.target.value,
-                        )
-                      }
-                      className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <button
-                      onClick={() =>
-                        handleRemoveInstructionIngredient(index, ingIndex)
-                      }
-                      className="text-red-500"
-                    >
-                      x
-                    </button>
-                  </div>
-                ))}
+    <div className="flex space-x-4 w-full">
+      <div className="w-1/2 mx-auto p-6 bg-white shadow-md rounded-md">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Name:
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={recipeData.name ?? ""}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Description:
+            </label>
+            <textarea
+              name="description"
+              value={recipeData.description ?? ""}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Labels:
+            </label>
+            {recipeData.labels.map((label, index) => (
+              <div key={index} className="flex space-x-2 mb-2">
+                <input
+                  type="text"
+                  value={label}
+                  onChange={(e) => handleLabelChange(index, e.target.value)}
+                  className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                />
+                <button
+                  onClick={() => handleRemoveLabel(index)}
+                  className="text-red-500"
+                >
+                  x
+                </button>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Instruction Tools:
-                </label>
-                {instruction.tools.map((tool, toolIndex) => (
-                  <div key={toolIndex} className="flex space-x-2 mb-2">
-                    <input
-                      type="text"
-                      value={tool}
-                      onChange={(e) =>
-                        handleInstructionToolChange(
-                          index,
-                          toolIndex,
-                          e.target.value,
-                        )
-                      }
-                      className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <button
-                      onClick={() =>
-                        handleRemoveInstructionTool(index, toolIndex)
-                      }
-                      className="text-red-500"
-                    >
-                      x
-                    </button>
-                  </div>
-                ))}
+            ))}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Dining Times:
+            </label>
+            {recipeData.dining_times.map((time, index) => (
+              <div key={index} className="flex space-x-2 mb-2">
+                <select
+                  name={`dining_time_${index}`}
+                  value={time ?? ""}
+                  onChange={(e) =>
+                    handleDiningTimeChange(index, e.target.value)
+                  }
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  <option value="">Select a dining time</option>
+                  <option value="snack">Snack</option>
+                  <option value="breakfast">Breakfast</option>
+                  <option value="lunch">Lunch</option>
+                  <option value="dinner">Dinner</option>
+                </select>
+                <button
+                  onClick={() => handleRemoveDiningTime(index)}
+                  className="text-red-500"
+                >
+                  x
+                </button>
               </div>
-              <textarea
-                placeholder="Instruction Details"
-                value={instruction.instruction}
-                onChange={(e) =>
-                  handleInstructionChange(index, "instruction", e.target.value)
-                }
-                className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <button
-                onClick={() => handleRemoveInstruction(index)}
-                className="text-red-500"
+            ))}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Preparation Time:
+            </label>
+            <input
+              type="number"
+              name="preparation_time"
+              value={recipeData.preparation_time ?? 0}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Rest Time:
+            </label>
+            <input
+              type="number"
+              name="rest_time"
+              value={recipeData.rest_time ?? 0}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Ingredients:
+            </label>
+            {recipeData.ingredients.map((ingredient, index) => (
+              <div key={index} className="flex space-x-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="Ingredient"
+                  value={ingredient.ingredient}
+                  onChange={(e) =>
+                    handleIngredientChange(index, "ingredient", e.target.value)
+                  }
+                  className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                />
+                <input
+                  type="number"
+                  placeholder="Amount"
+                  value={ingredient.amount}
+                  onChange={(e) =>
+                    handleIngredientChange(
+                      index,
+                      "amount",
+                      parseInt(e.target.value),
+                    )
+                  }
+                  className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                />
+                <input
+                  type="text"
+                  placeholder="Unit"
+                  value={ingredient.unit}
+                  onChange={(e) =>
+                    handleIngredientChange(index, "unit", e.target.value)
+                  }
+                  className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                />
+                <button
+                  onClick={() => handleRemoveIngredient(index)}
+                  className="text-red-500"
+                >
+                  x
+                </button>
+              </div>
+            ))}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Tools:
+            </label>
+            {recipeData.tools.map((tool, index) => (
+              <div key={index} className="flex space-x-2 mb-2">
+                <input
+                  type="text"
+                  value={tool}
+                  onChange={(e) => handleToolChange(index, e.target.value)}
+                  className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                />
+                <button
+                  onClick={() => handleRemoveTool(index)}
+                  className="text-red-500"
+                >
+                  x
+                </button>
+              </div>
+            ))}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Instructions:
+            </label>
+            {recipeData.instructions.map((instruction, index) => (
+              <div
+                key={index}
+                className="space-y-2 mb-4 p-4 border border-gray-300 rounded-md shadow-sm"
               >
-                Remove Instruction
-              </button>
-            </div>
-          ))}
+                <input
+                  type="text"
+                  placeholder="Instruction Name"
+                  value={instruction.name}
+                  onChange={(e) =>
+                    handleInstructionChange(index, "name", e.target.value)
+                  }
+                  className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Instruction Ingredients:
+                  </label>
+                  {instruction.ingredients.map((ingredient, ingIndex) => (
+                    <div key={ingIndex} className="flex space-x-2 mb-2">
+                      <input
+                        type="text"
+                        placeholder="Ingredient"
+                        value={ingredient.ingredient}
+                        onChange={(e) =>
+                          handleInstructionIngredientChange(
+                            index,
+                            ingIndex,
+                            "ingredient",
+                            e.target.value,
+                          )
+                        }
+                        className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Amount"
+                        value={ingredient.amount}
+                        onChange={(e) =>
+                          handleInstructionIngredientChange(
+                            index,
+                            ingIndex,
+                            "amount",
+                            parseInt(e.target.value),
+                          )
+                        }
+                        className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Unit"
+                        value={ingredient.unit}
+                        onChange={(e) =>
+                          handleInstructionIngredientChange(
+                            index,
+                            ingIndex,
+                            "unit",
+                            e.target.value,
+                          )
+                        }
+                        className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      />
+                      <button
+                        onClick={() =>
+                          handleRemoveInstructionIngredient(index, ingIndex)
+                        }
+                        className="text-red-500"
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Instruction Tools:
+                  </label>
+                  {instruction.tools.map((tool, toolIndex) => (
+                    <div key={toolIndex} className="flex space-x-2 mb-2">
+                      <input
+                        type="text"
+                        value={tool}
+                        onChange={(e) =>
+                          handleInstructionToolChange(
+                            index,
+                            toolIndex,
+                            e.target.value,
+                          )
+                        }
+                        className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      />
+                      <button
+                        onClick={() =>
+                          handleRemoveInstructionTool(index, toolIndex)
+                        }
+                        className="text-red-500"
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <textarea
+                  placeholder="Instruction Details"
+                  value={instruction.instruction}
+                  onChange={(e) =>
+                    handleInstructionChange(
+                      index,
+                      "instruction",
+                      e.target.value,
+                    )
+                  }
+                  className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                />
+                <button
+                  onClick={() => handleRemoveInstruction(index)}
+                  className="text-red-500"
+                >
+                  Remove Instruction
+                </button>
+              </div>
+            ))}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Recipe JSON:
+            </label>
+            <textarea
+              rows={10}
+              value={jsonInput}
+              onChange={handleJsonChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Recipe JSON:
-          </label>
-          <textarea
-            rows={10}
-            value={jsonInput}
-            onChange={handleJsonChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
+        <button
+          onClick={handleClear}
+          className="mt-2 w-full bg-red-600 text-white py-2 px-4 rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Clear Recipe
+        </button>
       </div>
-      <button
-        onClick={handleClear}
-        className="mt-2 w-full bg-red-600 text-white py-2 px-4 rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-      >
-        Clear Recipe
-      </button>
+      <div className="w-1/2">
+        <RecipeDisplay recipe={recipeData} />
+      </div>
     </div>
   );
 };
