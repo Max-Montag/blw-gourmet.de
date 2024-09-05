@@ -5,6 +5,11 @@ import { PiTimer, PiCookingPot } from "react-icons/pi";
 import { CiShoppingBasket } from "react-icons/ci";
 import IconText from "../components/IconText";
 import { mapDiningTime } from "../utils/diningTimeUtil";
+import Fraction from 'fraction.js';
+
+interface DecimalToFractionProps {
+  decimal: number;
+}
 
 interface Ingredient {
   ingredient: string;
@@ -43,7 +48,7 @@ const Recipe: React.FC = () => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get<RecipeData>(
-          `${apiUrl}/recipe/${url_identifier}/`,
+          `${apiUrl}/recipe/${url_identifier}/`
         );
         setRecipe(response.data);
         setLoading(false);
@@ -56,6 +61,11 @@ const Recipe: React.FC = () => {
     fetchRecipe();
   }, [url_identifier]);
 
+  const DecimalToFraction: React.FC<DecimalToFractionProps> = ({ decimal }) => {
+    const fraction = new Fraction(decimal).toFraction(true);
+    return <>{fraction}</>;
+  };
+
   if (loading) {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;
   }
@@ -65,9 +75,7 @@ const Recipe: React.FC = () => {
   }
 
   if (!recipe) {
-    return (
-      <div className="text-center mt-10 text-gray-500">Recipe not found.</div>
-    );
+    return <div className="text-center mt-10 text-gray-500">Recipe not found.</div>;
   }
 
   const combinedLabels = [
@@ -75,16 +83,6 @@ const Recipe: React.FC = () => {
     ...recipe.labels,
   ];
 
-  const ingredientStrings = (instruction: Instruction ) => {
-    return instruction.ingredients.map((ingredient) => {
-      let ingredientString = "";
-      if (ingredient.amount !== null) ingredientString += ingredient.amount + " ";
-      if (ingredient.unit !== null) ingredientString += ingredient.unit + " ";
-      ingredientString += ingredient.ingredient;
-      return ingredientString;
-    });
-  };
-  
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
@@ -97,15 +95,14 @@ const Recipe: React.FC = () => {
         )}
         {combinedLabels.length > 0 && (
           <div className="absolute w-full bottom-0 p-2 flex flex-wrap-reverse ">
-            {combinedLabels.length > 0 &&
-              combinedLabels.map((label, index) => (
-                <div
-                  key={index}
-                  className="bg-cyan-50 text-cyan-700 text-sm md:text-md font-bold m-1 px-2 py-1 rounded-xl border-2 border-cyan-700"
-                >
-                  <IconText text={label} />
-                </div>
-              ))}
+            {combinedLabels.map((label, index) => (
+              <div
+                key={index}
+                className="bg-cyan-50 text-cyan-700 text-sm md:text-md font-semibold m-1 px-1.5 py-0.5 rounded-xl border-2 border-cyan-700"
+              >
+                <IconText text={label} />
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -122,28 +119,28 @@ const Recipe: React.FC = () => {
             wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu
             testen. Manchmal Sätze, die alle Buchstaben des Alphabets enthalten
             - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The
-            quick brown fox jumps over the lazy old dog. 
+            quick brown fox jumps over the lazy old dog.
           </p>
         )}
         {recipe.preparation_time || recipe.rest_time ? (
           <div className="w-full flex justify-center items-center">
-            <div className="max-w-96 bg-cyan-50 text-center text-gray-700 flex flex-wrap items-center justify-evenly shadow-md pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 rounded-xl">
+            <div className="max-w-96 bg-cyan-50 text-center text-gray-700 flex flex-wrap items-center justify-evenly shadow-sm pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 rounded-xl">
               {recipe.preparation_time ? (
                 <div className="flex flex-col justify-center items-center mb-4 ">
-                    <span className="font-medium">Zubereitung</span>
-                    <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
-                    <span className="text-zinc-800 font-semibold">
-                      {recipe.preparation_time} Min
-                    </span>
+                  <span className="font-medium">Zubereitung</span>
+                  <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
+                  <span className="text-zinc-800 font-semibold">
+                    {recipe.preparation_time} Min
+                  </span>
                 </div>
               ) : null}
               {recipe.rest_time ? (
                 <div className="flex flex-col justify-center items-center mb-4">
-                    <span className="font-medium">Wartezeit</span>
-                    <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
-                    <span className="text-zinc-800 font-semibold">
-                      {recipe.rest_time} Min
-                    </span>
+                  <span className="font-medium">Wartezeit</span>
+                  <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
+                  <span className="text-zinc-800 font-semibold">
+                    {recipe.rest_time} Min
+                  </span>
                 </div>
               ) : null}
             </div>
@@ -162,9 +159,14 @@ const Recipe: React.FC = () => {
                       {recipe.ingredients.map((ingredient, index) => (
                         <li
                           key={index}
-                          className="text-zinc-700 font-semibold text-lg lg:text-xl"
+                          className="text-zinc-700 flex font-semibold text-lg lg:text-xl"
                         >
-                          {ingredient.amount && ingredient.amount}{ingredient.unit && " " + ingredient.unit}
+                          {ingredient.amount && (
+                            <>
+                              <DecimalToFraction decimal={ingredient.amount} />
+                              {ingredient.unit && ` ${ingredient.unit}`}
+                            </>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -180,7 +182,6 @@ const Recipe: React.FC = () => {
                         </li>
                       ))}
                     </ul>
-                  
                   </div>
                 </div>
               </div>
@@ -224,7 +225,20 @@ const Recipe: React.FC = () => {
               {instruction.ingredients.length > 0 && (
                 <div className="text-gray-700 md:text-lg flex items-center mt-2">
                   <CiShoppingBasket className="text-cyan-800 min-w-[26px] min-h-[26px] max-w-[26px] max-h-[26px] mr-2" />
-                  <span>{ingredientStrings(instruction).join(" - ")}</span>
+                  <span>
+                    {instruction.ingredients.map((ingredient, idx) => (
+                      <span key={idx}>
+                        {ingredient.amount && (
+                          <>
+                            <DecimalToFraction decimal={ingredient.amount} />
+                            {ingredient.unit && ` ${ingredient.unit} `}
+                          </>
+                        )}
+                        {ingredient.ingredient}
+                        {idx < instruction.ingredients.length - 1 && " - "}
+                      </span>
+                    ))}
+                  </span>
                 </div>
               )}
               <p className="text-gray-900 text-lg xs:text-xl mt-4 teachers-semibold">

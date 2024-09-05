@@ -36,7 +36,7 @@ const IconText: React.FC<IconTextProps> = ({ text }) => {
   );
 
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row items-center justify-center">
       <span>{text}</span>
       {matchedIcon && <span className="ml-1">{icons[matchedIcon]}</span>}
     </div>
