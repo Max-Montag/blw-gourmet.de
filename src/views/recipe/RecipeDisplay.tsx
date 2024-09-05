@@ -4,35 +4,10 @@ import { CiShoppingBasket } from "react-icons/ci";
 import IconText from "../components/IconText";
 import { mapDiningTime } from "../utils/diningTimeUtil";
 import Fraction from "fraction.js";
+import { RecipeData } from "../../types/recipeTypes";
 
 interface DecimalToFractionProps {
   decimal: number;
-}
-
-interface Ingredient {
-  ingredient: string;
-  amount: number;
-  unit: string;
-}
-
-interface Instruction {
-  name: string;
-  ingredients: Ingredient[];
-  tools: string[];
-  instruction: string;
-}
-
-interface RecipeData {
-  name: string;
-  description: string;
-  labels: string[];
-  ingredients: Ingredient[];
-  tools: string[];
-  instructions: Instruction[];
-  dining_times: string[];
-  preparation_time: number | null;
-  rest_time: number | null;
-  optimized_image?: string | null;
 }
 
 interface RecipeDisplayProps {
@@ -56,7 +31,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
         {recipe.optimized_image && (
           <img
             src={recipe.optimized_image}
-            alt={recipe.name}
+            alt={(recipe.name || "Recipe") + " Image"}
             className="w-full h-72 object-cover"
           />
         )}
@@ -74,9 +49,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
         )}
       </div>
       <div className="p-6">
-        <h1 className="text-2xl lg:text-4xl font-bold mb-4 text-center text-gray-800 marcellus-semibold">
-          {recipe.name}
-        </h1>
+        {recipe.name && (
+          <h1 className="text-2xl lg:text-4xl font-bold mb-4 text-center text-gray-800 marcellus-semibold">
+            {recipe.name}
+          </h1>
+        )}
         {recipe.description ? (
           <p className="text-gray-700 mb-4 text-center">{recipe.description}</p>
         ) : (

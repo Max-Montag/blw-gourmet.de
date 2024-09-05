@@ -1,25 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { RecipeData } from "../../types/recipeTypes";
 import RecipeDisplay from "./RecipeDisplay";
-
-interface RecipeData {
-  name: string;
-  description: string;
-  labels: string[];
-  ingredients: { ingredient: string; amount: number; unit: string }[];
-  tools: string[];
-  instructions: {
-    name: string;
-    ingredients: { ingredient: string; amount: number; unit: string }[];
-    tools: string[];
-    instruction: string;
-  }[];
-  dining_times: string[];
-  preparation_time: number | null;
-  rest_time: number | null;
-  optimized_image?: string | null;
-}
 
 const RecipeLoader: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
