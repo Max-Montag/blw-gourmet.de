@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import React from "react";
 import { PiTimer, PiCookingPot } from "react-icons/pi";
 import { CiShoppingBasket } from "react-icons/ci";
 import IconText from "../components/IconText";
 import { mapDiningTime } from "../utils/diningTimeUtil";
-import Fraction from 'fraction.js';
+import Fraction from "fraction.js";
 
 interface DecimalToFractionProps {
   decimal: number;
@@ -37,47 +35,16 @@ interface RecipeData {
   optimized_image?: string | null;
 }
 
-const Recipe: React.FC = () => {
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const { url_identifier } = useParams<{ url_identifier: string }>();
-  const [recipe, setRecipe] = useState<RecipeData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+interface RecipeDisplayProps {
+  recipe: RecipeData;
+}
 
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      try {
-        const response = await axios.get<RecipeData>(
-          `${apiUrl}/recipe/${url_identifier}/`
-        );
-        setRecipe(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError("Failed to load recipe. Please try again later.");
-        setLoading(false);
-      }
-    };
+const DecimalToFraction: React.FC<DecimalToFractionProps> = ({ decimal }) => {
+  const fraction = new Fraction(decimal).toFraction(true);
+  return <>{fraction}</>;
+};
 
-    fetchRecipe();
-  }, [url_identifier]);
-
-  const DecimalToFraction: React.FC<DecimalToFractionProps> = ({ decimal }) => {
-    const fraction = new Fraction(decimal).toFraction(true);
-    return <>{fraction}</>;
-  };
-
-  if (loading) {
-    return <div className="text-center mt-10 text-gray-500">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center mt-10 text-red-500">{error}</div>;
-  }
-
-  if (!recipe) {
-    return <div className="text-center mt-10 text-gray-500">Recipe not found.</div>;
-  }
-
+const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
   const combinedLabels = [
     ...recipe.dining_times.map(mapDiningTime),
     ...recipe.labels,
@@ -115,14 +82,10 @@ const Recipe: React.FC = () => {
         ) : (
           <p className="text-gray-700 text-lg lg:text-xl mb-4 text-center">
             Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle
-            Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte
-            wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu
-            testen. Manchmal Sätze, die alle Buchstaben des Alphabets enthalten
-            - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The
-            quick brown fox jumps over the lazy old dog.
+            Buchstaben da sind und wie sie aussehen...
           </p>
         )}
-        {recipe.preparation_time || recipe.rest_time ? (
+        {(recipe.preparation_time || recipe.rest_time) && (
           <div className="w-full flex justify-center items-center">
             <div className="max-w-96 bg-cyan-50 text-center text-gray-700 flex flex-wrap items-center justify-evenly shadow-sm pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 rounded-xl">
               {recipe.preparation_time ? (
@@ -145,7 +108,7 @@ const Recipe: React.FC = () => {
               ) : null}
             </div>
           </div>
-        ) : null}
+        )}
         {(recipe.tools.length > 0 || recipe.ingredients.length > 0) && (
           <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
             {recipe.ingredients.length > 0 && (
@@ -197,7 +160,7 @@ const Recipe: React.FC = () => {
                       key={index}
                       className="text-zinc-700 font-medium text-lg lg:text-xl"
                     >
-                      <IconText text={tool} />
+                      {tool}
                     </li>
                   ))}
                 </ul>
@@ -208,7 +171,7 @@ const Recipe: React.FC = () => {
         <div>
           {recipe.instructions.map((instruction, index) => (
             <div key={index} className="py-4">
-              <div className="text-xl font-semibold text-cyan-800 bg-cyan-50 flex justify-between shadow-sm px-6 -ml-6 py-2 mb-6 -px-16 rounded-br-full">
+              <div className="text-xl font-semibold text-cyan-800 bg-cyan-50 flex justify-between shadow-sm px-6 py-2 -ml-6 mb-6 rounded-br-full">
                 <span className="rounded-full border-4 border-cyan-800 flex items-center justify-center mr-2 w-10 h-10">
                   {index + 1}
                 </span>
@@ -228,12 +191,12 @@ const Recipe: React.FC = () => {
                   <span>
                     {instruction.ingredients.map((ingredient, idx) => (
                       <span key={idx}>
-                        {ingredient.amount && (
+                        {ingredient.amount ? (
                           <>
                             <DecimalToFraction decimal={ingredient.amount} />
-                            {ingredient.unit && ` ${ingredient.unit} `}
+                            {ingredient.unit ? ` ${ingredient.unit} ` : null}
                           </>
-                        )}
+                        ) : null}
                         {ingredient.ingredient}
                         {idx < instruction.ingredients.length - 1 && " - "}
                       </span>
@@ -252,4 +215,4 @@ const Recipe: React.FC = () => {
   );
 };
 
-export default Recipe;
+export default RecipeDisplay;
