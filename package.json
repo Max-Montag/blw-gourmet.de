@@ -10,6 +10,7 @@
     "@types/node": "^16.18.106",
     "axios": "^1.7.7",
     "blw-gourmet.de": "file:",
+    "date-fns": "^3.6.0",
     "fraction.js": "^4.3.7",
     "prettier": "^3.3.3",
     "react": "^18.3.1",

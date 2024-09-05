@@ -23,3 +23,26 @@ export interface RecipeData {
   rest_time: number | null;
   optimized_image?: string | null;
 }
+
+export interface RecipePreview {
+  name: string;
+  url_identifier: string;
+  description: string;
+  preparation_time: number | null;
+  rest_time: number | null;
+  dining_times: string[];
+  labels: string[];
+  thumbnail: string | null;
+}
+
+export interface AdminRecipePreview {
+  name: string;
+  url_identifier: string;
+  description: string | null;
+  creation_time: string | null;
+  last_changed: string | null;
+  owner: number | null;
+  dining_times: string[];
+  labels: string[];
+  thumbnail: string | null;
+}

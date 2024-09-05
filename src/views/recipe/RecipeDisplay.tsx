@@ -49,7 +49,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                 >
                   <IconText text={label} />
                 </div>
-              ) : null
+              ) : null,
             )}
           </div>
         )}
@@ -92,11 +92,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
         ) : null}
         {(recipe.tools.filter((tool) => tool !== "").length > 0 ||
           recipe.ingredients.filter(
-            (ingredient) => ingredient.ingredient !== ""
+            (ingredient) => ingredient.ingredient !== "",
           ).length > 0) && (
           <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
             {recipe.ingredients.filter(
-              (ingredient) => ingredient.ingredient !== ""
+              (ingredient) => ingredient.ingredient !== "",
             ).length > 0 && (
               <div className="mb-6 mr-6">
                 <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 underline">
@@ -167,7 +167,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
             recipe.instructions
               .filter(
                 (instruction) =>
-                  instruction.name !== "" || instruction.instruction !== ""
+                  instruction.name !== "" || instruction.instruction !== "",
               )
               .map((instruction, index) => (
                 <div key={index} className="py-4">
@@ -206,7 +206,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                               {ingredient.ingredient}
                               {idx <
                                 instruction.ingredients.filter(
-                                  (ingredient) => ingredient.ingredient !== ""
+                                  (ingredient) => ingredient.ingredient !== "",
                                 ).length -
                                   1 && " - "}
                             </span>

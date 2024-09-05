@@ -44,10 +44,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
       ...data,
       labels: data.labels.filter((label) => label !== ""),
       ingredients: data.ingredients.filter(
-        (ingredient) =>
-          ingredient.ingredient !== "" ||
-          ingredient.amount !== 0 ||
-          ingredient.unit !== "",
+        (ingredient) => ingredient.ingredient !== "",
       ),
       tools: data.tools.filter((tool) => tool !== ""),
       instructions: data.instructions.filter(
@@ -55,10 +52,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
           instruction.name !== "" ||
           instruction.instruction !== "" ||
           instruction.ingredients.some(
-            (ingredient) =>
-              ingredient.ingredient !== "" ||
-              ingredient.amount !== 0 ||
-              ingredient.unit !== "",
+            (ingredient) => ingredient.ingredient !== "",
           ) ||
           instruction.tools.some((tool) => tool !== ""),
       ),
