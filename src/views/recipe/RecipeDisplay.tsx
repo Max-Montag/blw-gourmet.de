@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { PiTimer, PiCookingPot } from "react-icons/pi";
 import { CiShoppingBasket } from "react-icons/ci";
 import IconText from "../components/IconText";
@@ -31,10 +31,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
       <div className="relative">
         {/* {recipe.optimized_image && ( */}
         <img
-          src={
-            recipe.optimized_image ||
-            `${apiUrl}/media/recipe_images/optimized/default_optim.jpg`
-          }
+          key={recipe.optimized_image}
+          src={`${apiUrl}${recipe.optimized_image}`}
           alt={(recipe.name || "Recipe") + " Image"}
           className="w-full h-72 object-cover"
         />

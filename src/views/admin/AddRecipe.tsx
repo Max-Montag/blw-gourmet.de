@@ -1,23 +1,41 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaRegSave } from "react-icons/fa";
+import { IoSaveOutline } from "react-icons/io5";
 import EditRecipeDisplay from "./EditRecipeDisplay";
 import { RecipeData } from "../../types/recipeTypes";
+import RecipeDisplay from "../recipe/RecipeDisplay";
 
 const AddRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const [recipe, setRecipe] = useState<RecipeData | null>(null);
   const navigate = useNavigate();
+
+  const [recipe, setRecipe] = useState<RecipeData>({
+    url: "",
+    name: "",
+    description: "",
+    labels: [""],
+    ingredients: [{ ingredient: "", amount: 0, unit: "" }],
+    tools: [""],
+    instructions: [
+      {
+        name: "",
+        ingredients: [{ ingredient: "", amount: 0, unit: "" }],
+        tools: [""],
+        instruction: "",
+      },
+    ],
+    dining_times: [""],
+    preparation_time: 0,
+    rest_time: 0,
+    optimized_image: "",
+  });
 
   const handleRecipeChange = (updatedRecipe: RecipeData) => {
     setRecipe(updatedRecipe);
   };
 
-  // TODO this code is duplicated in EditRecipe.tsx (use formik!)
   const handleSubmit = async () => {
-    if (!recipe) return;
-
     try {
       const validDiningTimes = ["lunch", "snack", "breakfast", "dinner"];
       const filteredData = {
@@ -47,8 +65,9 @@ const AddRecipe: React.FC = () => {
 
       const response = await axios.post(
         `${apiUrl}/recipe/create/`,
-        JSON.stringify(filteredData),
+        filteredData,
       );
+
       if (response.status === 201) {
         navigate(`/admin/dashboard`);
       }
@@ -60,10 +79,23 @@ const AddRecipe: React.FC = () => {
 
   return (
     <div className="w-full mx-auto p-6 bg-white shadow-md rounded-md">
-      <div className="absolute z-10 top-6 right-10" onClick={handleSubmit}>
-        <FaRegSave className="w-16 h-16 text-zinc-800 hover:text-zinc-500 hover:cursor-pointer" />
+      <div className="absolute z-10 top-6 right-10">
+        <IoSaveOutline
+          className="w-14 h-14 text-zinc-800 hover:text-zinc-500 hover:cursor-pointer"
+          onClick={handleSubmit}
+        />
       </div>
-      <EditRecipeDisplay onRecipeChange={handleRecipeChange} />
+      <div className="w-full flex space-x-4">
+        <div className="w-1/2">
+          <EditRecipeDisplay
+            recipe={recipe}
+            onRecipeChange={handleRecipeChange}
+          />
+        </div>
+        <div className="w-1/2">
+          <RecipeDisplay recipe={recipe} />
+        </div>
+      </div>
     </div>
   );
 };

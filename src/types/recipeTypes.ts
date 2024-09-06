@@ -13,6 +13,7 @@ export interface Instruction {
 
 export interface RecipeData {
   name: string | null;
+  url: string;
   description: string | null;
   labels: string[];
   ingredients: Ingredient[];
