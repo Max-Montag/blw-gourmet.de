@@ -74,7 +74,7 @@ const AdminRecipeList: React.FC = () => {
         {recipes.map((recipe) => (
           <li
             key={recipe.url}
-            className="bg-white shadow-md rounded-md p-4 relative"
+            className="bg-white shadow-md hover:shadow-xl rounded-md p-4 relative"
           >
             <Link to={`/admin/edit-recipe/${recipe.url}`}>
               <img

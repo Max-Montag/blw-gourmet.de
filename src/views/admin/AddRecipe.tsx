@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { TiArrowBack } from "react-icons/ti";
+import { FaRegSave } from "react-icons/fa";
 import EditRecipeDisplay from "./EditRecipeDisplay";
 import { RecipeData } from "../../types/recipeTypes";
 
@@ -61,7 +61,7 @@ const AddRecipe: React.FC = () => {
   return (
     <div className="w-full mx-auto p-6 bg-white shadow-md rounded-md">
       <div className="absolute z-10 top-6 right-10" onClick={handleSubmit}>
-        <TiArrowBack className="w-24 h-24 text-zinc-800 hover:text-zinc-500" />
+        <FaRegSave className="w-16 h-16 text-zinc-800 hover:text-zinc-500 hover:cursor-pointer" />
       </div>
       <EditRecipeDisplay onRecipeChange={handleRecipeChange} />
     </div>

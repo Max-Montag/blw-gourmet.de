@@ -179,13 +179,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                       {instruction.name}
                     </h3>
                   </div>
-                  {instruction.tools.length > 0 && (
+                  {instruction.tools.filter((tool) => tool != "").length >
+                    0 && (
                     <div className="text-gray-700 md:text-lg flex items-center mt-2">
                       <PiCookingPot className="text-cyan-800 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] mr-2" />
-                      <span>{instruction.tools.join(" - ")}</span>
+                      <span>{instruction.tools.filter((tool) => tool != "").join(" - ")}</span>
                     </div>
                   )}
-                  {instruction.ingredients.length > 0 && (
+                  {instruction.ingredients.filter((ingredient) => ingredient.ingredient !== "").length > 0 && (
                     <div className="text-gray-700 md:text-lg flex items-center mt-2">
                       <CiShoppingBasket className="text-cyan-800 min-w-[26px] min-h-[26px] max-w-[26px] max-h-[26px] mr-2" />
                       <span>
@@ -198,8 +199,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                                   <DecimalToFraction
                                     decimal={ingredient.amount}
                                   />
+                                  {" "}
                                   {ingredient.unit
-                                    ? ` ${ingredient.unit} `
+                                    ? `${ingredient.unit} `
                                     : null}
                                 </>
                               ) : null}

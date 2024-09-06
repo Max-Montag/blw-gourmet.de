@@ -34,10 +34,66 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   );
 
   useEffect(() => {
+    const ensureEmptyFields = (data: RecipeData): RecipeData => {
+      return {
+        ...data,
+        labels:
+          data.labels && data.labels[data.labels.length - 1] !== ""
+            ? [...data.labels, ""]
+            : data.labels || [""],
+        ingredients:
+          data.ingredients &&
+          data.ingredients.length > 0 &&
+          data.ingredients[data.ingredients.length - 1]?.ingredient !== ""
+            ? [...data.ingredients, { ingredient: "", amount: 0, unit: "" }]
+            : data.ingredients || [{ ingredient: "", amount: 0, unit: "" }],
+        tools:
+          data.tools && data.tools[data.tools.length - 1] !== ""
+            ? [...data.tools, ""]
+            : data.tools || [""],
+        instructions: data.instructions
+          ? data.instructions.map((instruction) => ({
+              ...instruction,
+              ingredients:
+                instruction.ingredients && instruction.ingredients.length > 0
+                  ? instruction.ingredients[instruction.ingredients.length - 1]
+                      ?.ingredient !== ""
+                    ? [
+                        ...instruction.ingredients,
+                        { ingredient: "", amount: 0, unit: "" },
+                      ]
+                    : instruction.ingredients
+                  : [{ ingredient: "", amount: 0, unit: "" }],
+              tools:
+                instruction.tools && instruction.tools.length > 0
+                  ? instruction.tools[instruction.tools.length - 1] !== ""
+                    ? [...instruction.tools, ""]
+                    : instruction.tools
+                  : [""],
+            }))
+          : [
+              {
+                name: "",
+                ingredients: [{ ingredient: "", amount: 0, unit: "" }],
+                tools: [""],
+                instruction: "",
+              },
+            ],
+        dining_times:
+          data.dining_times && data.dining_times[data.dining_times.length - 1] !== ""
+            ? [...data.dining_times, ""]
+            : data.dining_times || [""],
+      };
+    };
+  
+    setRecipeData((prevData) => ensureEmptyFields(prevData));
+  }, [initialRecipe, jsonInput]);
+  
+  useEffect(() => {
     const cleanedData = removeEmptyFields(recipeData);
     onRecipeChange(cleanedData);
     setJsonInput(JSON.stringify(cleanedData, null, 2));
-  }, [recipeData, onRecipeChange]);
+  }, [recipeData]);
 
   const removeEmptyFields = (data: RecipeData): RecipeData => {
     return {
@@ -314,7 +370,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
               name="description"
               value={recipeData.description ?? ""}
               onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 h-48 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div>
@@ -414,7 +470,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                     handleIngredientChange(
                       index,
                       "amount",
-                      parseInt(e.target.value),
+                      parseFloat(e.target.value),
                     )
                   }
                   className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
@@ -505,7 +561,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                             index,
                             ingIndex,
                             "amount",
-                            parseInt(e.target.value),
+                            parseFloat(e.target.value),
                           )
                         }
                         className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
