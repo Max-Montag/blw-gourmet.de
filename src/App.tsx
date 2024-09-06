@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./views/Home";
-import RecipeLoader from "./views/recipe/RecipeLoader";
+import LoadRecipe from "./views/recipe/LoadRecipe";
 import EditRecipe from "./views/admin/EditRecipe";
 import AdminDashboard from "./views/admin/AdminDashboard";
 
@@ -10,7 +10,7 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/recipe/:url/" element={<RecipeLoader />} />
+        <Route path="/recipe/:url/" element={<LoadRecipe />} />
         <Route path="/admin/edit-recipe/:url/" element={<EditRecipe />} />
         <Route path="/admin/dashboard/" element={<AdminDashboard />} />
       </Routes>

@@ -7,70 +7,11 @@ interface EditRecipeProps {
   onRecipeChange: (recipe: RecipeData) => void;
 }
 
+// TODO use formik!!
 const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   recipe,
   onRecipeChange,
 }) => {
-  const ensureEmptyFields = (data: RecipeData): RecipeData => {
-    return {
-      ...data,
-      labels:
-        data.labels && data.labels[data.labels.length - 1] !== ""
-          ? [...data.labels, ""]
-          : data.labels || [""],
-      ingredients:
-        data.ingredients &&
-        data.ingredients.length > 0 &&
-        data.ingredients[data.ingredients.length - 1]?.ingredient !== ""
-          ? [...data.ingredients, { ingredient: "", amount: 0, unit: "" }]
-          : data.ingredients || [{ ingredient: "", amount: 0, unit: "" }],
-      tools:
-        data.tools && data.tools[data.tools.length - 1] !== ""
-          ? [...data.tools, ""]
-          : data.tools || [""],
-      instructions: data.instructions
-        ? data.instructions.map((instruction) => ({
-            ...instruction,
-            ingredients:
-              instruction.ingredients && instruction.ingredients.length > 0
-                ? instruction.ingredients[instruction.ingredients.length - 1]
-                    ?.ingredient !== ""
-                  ? [
-                      ...instruction.ingredients,
-                      { ingredient: "", amount: 0, unit: "" },
-                    ]
-                  : instruction.ingredients
-                : [{ ingredient: "", amount: 0, unit: "" }],
-            tools:
-              instruction.tools && instruction.tools.length > 0
-                ? instruction.tools[instruction.tools.length - 1] !== ""
-                  ? [...instruction.tools, ""]
-                  : instruction.tools
-                : [""],
-          }))
-        : [
-            {
-              name: "",
-              ingredients: [{ ingredient: "", amount: 0, unit: "" }],
-              tools: [""],
-              instruction: "",
-            },
-          ],
-      dining_times:
-        data.dining_times &&
-        data.dining_times[data.dining_times.length - 1] !== ""
-          ? [...data.dining_times, ""]
-          : data.dining_times || [""],
-    };
-  };
-
-  useEffect(() => {
-    const updatedRecipe = ensureEmptyFields(recipe);
-    if (JSON.stringify(updatedRecipe) !== JSON.stringify(recipe)) {
-      onRecipeChange(updatedRecipe);
-    }
-  }, [recipe]);
-
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement

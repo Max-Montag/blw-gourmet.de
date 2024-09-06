@@ -7,7 +7,7 @@ import { RecipeData } from "../../types/recipeTypes";
 import EditRecipeDisplay from "./EditRecipeDisplay";
 import RecipeDisplay from "../recipe/RecipeDisplay";
 
-const RecipeLoader: React.FC = () => {
+const EditRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const { url } = useParams<{ url: string }>();
   const [recipe, setRecipe] = useState<RecipeData | null>(null);
@@ -16,13 +16,80 @@ const RecipeLoader: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const ensureEmptyFields = (data: RecipeData): RecipeData => {
+    return {
+      ...data,
+      labels:
+        data.labels && data.labels[data.labels.length - 1] !== ""
+          ? [...data.labels, ""]
+          : data.labels || [""],
+      ingredients: data.ingredients
+        ? data.ingredients.length > 0
+          ? data.ingredients[data.ingredients.length - 1]?.ingredient !== ""
+            ? [...data.ingredients, { ingredient: "", amount: 0, unit: "" }]
+            : data.ingredients || [{ ingredient: "", amount: 0, unit: "" }]
+          : [{ ingredient: "", amount: 0, unit: "" }]
+        : [{ ingredient: "", amount: 0, unit: "" }],
+      tools:
+        data.tools && data.tools[data.tools.length - 1] !== ""
+          ? [...data.tools, ""]
+          : data.tools || [""],
+      instructions: data.instructions
+        ? [
+            ...data.instructions.map((instruction) => ({
+              ...instruction,
+              ingredients:
+                instruction.ingredients && instruction.ingredients.length > 0
+                  ? instruction.ingredients[instruction.ingredients.length - 1]
+                      ?.ingredient !== ""
+                    ? [
+                        ...instruction.ingredients,
+                        { ingredient: "", amount: 0, unit: "" },
+                      ]
+                    : instruction.ingredients
+                  : [{ ingredient: "", amount: 0, unit: "" }],
+              tools:
+                instruction.tools && instruction.tools.length > 0
+                  ? instruction.tools[instruction.tools.length - 1] !== ""
+                    ? [...instruction.tools, ""]
+                    : instruction.tools
+                  : [""],
+            })),
+            ...(data.instructions.length === 0 ||
+            data.instructions[data.instructions.length - 1]?.instruction !== ""
+              ? [
+                  {
+                    name: "",
+                    ingredients: [{ ingredient: "", amount: 0, unit: "" }],
+                    tools: [""],
+                    instruction: "",
+                  },
+                ]
+              : []),
+          ]
+        : [
+            {
+              name: "",
+              ingredients: [{ ingredient: "", amount: 0, unit: "" }],
+              tools: [""],
+              instruction: "",
+            },
+          ],
+      dining_times:
+        data.dining_times &&
+        data.dining_times[data.dining_times.length - 1] !== ""
+          ? [...data.dining_times, ""]
+          : data.dining_times || [""],
+    };
+  };
+
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get<RecipeData>(
           `${apiUrl}/recipe/${url}/`,
         );
-        setRecipe(response.data);
+        setRecipe(ensureEmptyFields(response.data));
         setLoading(false);
       } catch (err) {
         setError("Failed to load recipe. Please try again later.");
@@ -33,7 +100,6 @@ const RecipeLoader: React.FC = () => {
     fetchRecipe();
   }, [url]);
 
-  // TODO this code is duplicated in AddRecipe.tsx (use formik!)
   const handleSubmit = async () => {
     if (!recipe) return;
 
@@ -113,6 +179,23 @@ const RecipeLoader: React.FC = () => {
     }
   };
 
+  const handleJsonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    try {
+      const updatedRecipe = ensureEmptyFields(JSON.parse(e.target.value));
+      const imageUrl = recipe?.optimized_image;
+      if (imageUrl) {
+        updatedRecipe.optimized_image = imageUrl;
+      }
+      setRecipe(updatedRecipe);
+    } catch (error) {
+      console.error("Invalid JSON format", error);
+    }
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+    e.target.select();
+  };
+
   if (loading) {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;
   }
@@ -153,12 +236,22 @@ const RecipeLoader: React.FC = () => {
         <div className="w-1/2">
           <EditRecipeDisplay recipe={recipe} onRecipeChange={setRecipe} />
         </div>
-        <div className="w-1/2">
-          <RecipeDisplay recipe={recipe} />
+        <div className="w-1/2 flex flex-col flex-grow">
+          <div className="min-h-48">
+            <RecipeDisplay recipe={recipe} />
+          </div>
+          <div className="flex-grow mt-4">
+            <textarea
+              value={JSON.stringify(recipe, null, 2)}
+              onChange={handleJsonChange}
+              onFocus={handleFocus}
+              className="w-full h-full p-2 bg-zinc-50 rounded-md text-sm"
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default RecipeLoader;
+export default EditRecipe;

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { RecipeData } from "../../types/recipeTypes";
 import RecipeDisplay from "./RecipeDisplay";
 
-const RecipeLoader: React.FC = () => {
+const LoadRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const { url } = useParams<{ url: string }>();
   const [recipe, setRecipe] = useState<RecipeData | null>(null);
@@ -28,6 +28,7 @@ const RecipeLoader: React.FC = () => {
     fetchRecipe();
   }, [url]);
 
+  // TODO: loading animation view
   if (loading) {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;
   }
@@ -45,4 +46,4 @@ const RecipeLoader: React.FC = () => {
   return <RecipeDisplay recipe={recipe} />;
 };
 
-export default RecipeLoader;
+export default LoadRecipe;

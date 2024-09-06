@@ -29,10 +29,8 @@ const icons: { [key: string]: JSX.Element } = {
 };
 
 const IconText: React.FC<IconTextProps> = ({ text }) => {
-  const lowerCaseText = text.toLowerCase();
-
   const matchedIcon = Object.keys(icons).find((key) =>
-    lowerCaseText.includes(key),
+    text.toLowerCase().includes(key),
   );
 
   return (

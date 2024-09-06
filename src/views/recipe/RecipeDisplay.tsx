@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { PiTimer, PiCookingPot } from "react-icons/pi";
 import { CiShoppingBasket } from "react-icons/ci";
 import IconText from "../components/IconText";
-import { mapDiningTime } from "../utils/diningTimeUtil";
+import { mapDiningTime } from "../../utils/diningTimeUtil";
 import Fraction from "fraction.js";
 import { RecipeData } from "../../types/recipeTypes";
 
@@ -27,7 +27,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
   ];
 
   return (
-    <div className="max-w-4xl min-h-48 mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
+    <div className="max-w-4xl min-h-48 mx-auto bg-zinc-50 shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
         {recipe.optimized_image && (
           <img
