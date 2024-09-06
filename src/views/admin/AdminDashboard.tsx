@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { format } from "date-fns";
 import { FaPlus } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { AdminRecipePreview } from "../../types/recipeTypes";
-import DeleteModal from "./../components/DeleteModal";
+import DeleteModal from "../components/DeleteModal";
 
-const AdminRecipeList: React.FC = () => {
+const AdminDashboard: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [recipes, setRecipes] = useState<AdminRecipePreview[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -16,6 +16,7 @@ const AdminRecipeList: React.FC = () => {
   const [selectedRecipeUrl, setSelectedRecipeUrl] = useState<string | null>(
     null,
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -33,6 +34,24 @@ const AdminRecipeList: React.FC = () => {
 
     fetchRecipes();
   }, [apiUrl]);
+
+  const handleAdd = async () => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/recipe/create/`,
+        JSON.stringify({}),
+      );
+
+      if (response.status === 201) {
+        console.log("Successfully created recipe!");
+        console.log(response.data);
+        navigate(`/admin/edit-recipe/${response.data.recipe_url}`);
+      }
+    } catch (error) {
+      console.error("There was an error creating the recipe!", error);
+      alert("Failed to create recipe");
+    }
+  };
 
   const handleDelete = async () => {
     if (selectedRecipeUrl) {
@@ -111,12 +130,16 @@ const AdminRecipeList: React.FC = () => {
             />
           </li>
         ))}
-        <li key={"add"} className="bg-zinc-100 shadow-md rounded-md p-4">
-          <Link to={`/admin/add-recipe/`}>
-            <div className="w-full h-full flex flex-col items-center justify-center">
-              <FaPlus className="w-32 h-32 text-gray-400" />
-            </div>
-          </Link>
+        <li
+          key={"add"}
+          className="bg-zinc-100 shadow-md rounded-md p-4 hover:cursor-pointer"
+        >
+          <div
+            className="w-full h-full flex flex-col items-center justify-center"
+            onClick={handleAdd}
+          >
+            <FaPlus className="w-32 h-32 text-gray-400 my-8" />
+          </div>
         </li>
       </ul>
       <DeleteModal
@@ -128,4 +151,4 @@ const AdminRecipeList: React.FC = () => {
   );
 };
 
-export default AdminRecipeList;
+export default AdminDashboard;
