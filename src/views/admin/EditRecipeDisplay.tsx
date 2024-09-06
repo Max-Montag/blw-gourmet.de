@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { MdDeleteOutline } from "react-icons/md";
 import { Ingredient, Instruction, RecipeData } from "../../types/recipeTypes";
 import RecipeDisplay from "../recipe/RecipeDisplay";
 
@@ -80,15 +81,16 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
               },
             ],
         dining_times:
-          data.dining_times && data.dining_times[data.dining_times.length - 1] !== ""
+          data.dining_times &&
+          data.dining_times[data.dining_times.length - 1] !== ""
             ? [...data.dining_times, ""]
             : data.dining_times || [""],
       };
     };
-  
+
     setRecipeData((prevData) => ensureEmptyFields(prevData));
   }, [initialRecipe, jsonInput]);
-  
+
   useEffect(() => {
     const cleanedData = removeEmptyFields(recipeData);
     onRecipeChange(cleanedData);
@@ -351,7 +353,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
       <div className="w-1/2 mx-auto p-6 bg-white shadow-md rounded-md">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Name:
             </label>
             <input
@@ -363,8 +365,8 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Description:
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Beschreibung:
             </label>
             <textarea
               name="description"
@@ -374,7 +376,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Labels:
             </label>
             {recipeData.labels.map((label, index) => (
@@ -389,14 +391,14 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   onClick={() => handleRemoveLabel(index)}
                   className="text-red-500"
                 >
-                  x
+                  <MdDeleteOutline className="w-5 h-5" />
                 </button>
               </div>
             ))}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Dining Times:
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Geeignet für: (Mehrfachauswahl möglich)
             </label>
             {recipeData.dining_times.map((time, index) => (
               <div key={index} className="flex space-x-2 mb-2">
@@ -408,24 +410,24 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   }
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
-                  <option value="">Select a dining time</option>
+                  <option value="">Bitte auswählen</option>
                   <option value="snack">Snack</option>
-                  <option value="breakfast">Breakfast</option>
-                  <option value="lunch">Lunch</option>
-                  <option value="dinner">Dinner</option>
+                  <option value="breakfast">Frühstück</option>
+                  <option value="lunch">Mitagessen</option>
+                  <option value="dinner">Abendessen</option>
                 </select>
                 <button
                   onClick={() => handleRemoveDiningTime(index)}
                   className="text-red-500"
                 >
-                  x
+                  <MdDeleteOutline className="w-5 h-5" />
                 </button>
               </div>
             ))}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Preparation Time:
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Zubereitungszeit:
             </label>
             <input
               type="number"
@@ -436,8 +438,8 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Rest Time:
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Warte- bzw. Backzeit:
             </label>
             <input
               type="number"
@@ -448,8 +450,8 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Ingredients:
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Zutaten:
             </label>
             {recipeData.ingredients.map((ingredient, index) => (
               <div key={index} className="flex space-x-2 mb-2">
@@ -488,14 +490,14 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   onClick={() => handleRemoveIngredient(index)}
                   className="text-red-500"
                 >
-                  x
+                  <MdDeleteOutline className="w-5 h-5" />
                 </button>
               </div>
             ))}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Tools:
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Utensilien:
             </label>
             {recipeData.tools.map((tool, index) => (
               <div key={index} className="flex space-x-2 mb-2">
@@ -509,32 +511,38 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   onClick={() => handleRemoveTool(index)}
                   className="text-red-500"
                 >
-                  x
+                  <MdDeleteOutline className="w-5 h-5" />
                 </button>
               </div>
             ))}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Instructions:
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Arbeitsschritte:
             </label>
             {recipeData.instructions.map((instruction, index) => (
               <div
                 key={index}
                 className="space-y-2 mb-4 p-4 border border-gray-300 rounded-md shadow-sm"
               >
-                <input
-                  type="text"
-                  placeholder="Instruction Name"
-                  value={instruction.name}
-                  onChange={(e) =>
-                    handleInstructionChange(index, "name", e.target.value)
-                  }
-                  className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                />
+                <div className="flex mb-6">
+                  <h3 className="text-3xl font-semibold w-1/3 mr-2">
+                    {" "}
+                    Schritt {index + 1}
+                  </h3>
+                  <input
+                    type="text"
+                    placeholder="Instruction Name"
+                    value={instruction.name}
+                    onChange={(e) =>
+                      handleInstructionChange(index, "name", e.target.value)
+                    }
+                    className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Instruction Ingredients:
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Zutaten für diesen Arbeitsschritt:
                   </label>
                   {instruction.ingredients.map((ingredient, ingIndex) => (
                     <div key={ingIndex} className="flex space-x-2 mb-2">
@@ -586,14 +594,14 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                         }
                         className="text-red-500"
                       >
-                        x
+                        <MdDeleteOutline className="w-5 h-5" />
                       </button>
                     </div>
                   ))}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Instruction Tools:
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Utensilien für diesen Arbeitsschritt:
                   </label>
                   {instruction.tools.map((tool, toolIndex) => (
                     <div key={toolIndex} className="flex space-x-2 mb-2">
@@ -615,11 +623,14 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                         }
                         className="text-red-500"
                       >
-                        x
+                        <MdDeleteOutline className="w-5 h-5" />
                       </button>
                     </div>
                   ))}
                 </div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Anleitung:
+                </label>
                 <textarea
                   placeholder="Instruction Details"
                   value={instruction.instruction}
@@ -636,14 +647,14 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   onClick={() => handleRemoveInstruction(index)}
                   className="text-red-500"
                 >
-                  Remove Instruction
+                  Arbeitsschritt entfernen
                 </button>
               </div>
             ))}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Recipe JSON:
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Rezept mit JSON Überschreiben:
             </label>
             <textarea
               rows={10}

@@ -91,7 +91,7 @@ const RecipeLoader: React.FC = () => {
   return (
     <div className="w-full mx-auto p-6 bg-white shadow-md rounded-md">
       <div className="absolute z-10 top-6 right-10" onClick={handleSubmit}>
-        <FaRegSave className="w-16 h-16 text-zinc-800 hover:text-zinc-500 hover:cursor-pointer" />
+        <FaRegSave className="w-16 h-16 text-zinc-700 hover:text-zinc-500 hover:cursor-pointer" />
       </div>
       <EditRecipeDisplay initialRecipe={recipe} onRecipeChange={setRecipe} />
     </div>

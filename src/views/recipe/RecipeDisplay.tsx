@@ -69,7 +69,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
         (recipe.rest_time && recipe.rest_time > 0) ? (
           <div className="w-full flex justify-center items-center">
             <div className="max-w-96 bg-cyan-50 text-center text-gray-700 flex flex-wrap items-center justify-evenly shadow-sm pt-4 px-12 mt-2 mb-6 md:mt-6 md:mb-10 gap-x-12 rounded-xl">
-              {recipe.preparation_time && recipe.preparation_time != 0 ? (
+              {recipe.preparation_time && recipe.preparation_time !== 0 ? (
                 <div className="flex flex-col justify-center items-center mb-4 ">
                   <span className="font-medium">Zubereitung</span>
                   <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
@@ -78,7 +78,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                   </span>
                 </div>
               ) : null}
-              {recipe.rest_time && recipe.rest_time != 0 ? (
+              {recipe.rest_time && recipe.rest_time !== 0 ? (
                 <div className="flex flex-col justify-center items-center mb-4">
                   <span className="font-medium">Wartezeit</span>
                   <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
@@ -120,7 +120,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                                 {ingredient.unit && ` ${ingredient.unit}`}
                               </>
                             ) : (
-                              " "
+                              <span>&nbsp;</span>
                             )}
                           </li>
                         ))}
@@ -179,14 +179,20 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                       {instruction.name}
                     </h3>
                   </div>
-                  {instruction.tools.filter((tool) => tool != "").length >
+                  {instruction.tools.filter((tool) => tool !== "").length >
                     0 && (
                     <div className="text-gray-700 md:text-lg flex items-center mt-2">
                       <PiCookingPot className="text-cyan-800 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] mr-2" />
-                      <span>{instruction.tools.filter((tool) => tool != "").join(" - ")}</span>
+                      <span>
+                        {instruction.tools
+                          .filter((tool) => tool !== "")
+                          .join(" - ")}
+                      </span>
                     </div>
                   )}
-                  {instruction.ingredients.filter((ingredient) => ingredient.ingredient !== "").length > 0 && (
+                  {instruction.ingredients.filter(
+                    (ingredient) => ingredient.ingredient !== "",
+                  ).length > 0 && (
                     <div className="text-gray-700 md:text-lg flex items-center mt-2">
                       <CiShoppingBasket className="text-cyan-800 min-w-[26px] min-h-[26px] max-w-[26px] max-h-[26px] mr-2" />
                       <span>
