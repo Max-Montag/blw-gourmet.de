@@ -1,18 +1,20 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./views/Home";
-import Recipe from "./views/recipe/RecipeLoader";
+import RecipeLoader from "./views/recipe/RecipeLoader";
 import AddRecipe from "./views/admin/AddRecipe";
-import ListAllRecipes from "./views/admin/ListAllRecipes";
+import EditRecipe from "./views/admin/EditRecipe";
+import AdminRecipeList from "./views/admin/AdminRecipeList";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/recipe/:url_identifier/" element={<Recipe />} />
+        <Route path="/recipe/:url/" element={<RecipeLoader />} />
         <Route path="/admin/add-recipe/" element={<AddRecipe />} />
-        <Route path="/admin/list-recipes/" element={<ListAllRecipes />} />
+        <Route path="/admin/edit-recipe/:url/" element={<EditRecipe />} />
+        <Route path="/admin/dashboard/" element={<AdminRecipeList />} />
       </Routes>
     </Router>
   );

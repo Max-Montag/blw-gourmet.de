@@ -6,7 +6,7 @@ import RecipeDisplay from "./RecipeDisplay";
 
 const RecipeLoader: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const { url_identifier } = useParams<{ url_identifier: string }>();
+  const { url } = useParams<{ url: string }>();
   const [recipe, setRecipe] = useState<RecipeData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +15,7 @@ const RecipeLoader: React.FC = () => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get<RecipeData>(
-          `${apiUrl}/recipe/${url_identifier}/`,
+          `${apiUrl}/recipe/${url}/`,
         );
         setRecipe(response.data);
         setLoading(false);
@@ -26,7 +26,7 @@ const RecipeLoader: React.FC = () => {
     };
 
     fetchRecipe();
-  }, [url_identifier]);
+  }, [url]);
 
   if (loading) {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;

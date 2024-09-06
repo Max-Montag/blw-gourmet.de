@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import EditRecipe from "./EditRecipe";
+import { TiArrowBack } from "react-icons/ti";
+import EditRecipeDisplay from "./EditRecipeDisplay";
 import { RecipeData } from "../../types/recipeTypes";
 
 const AddRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [recipe, setRecipe] = useState<RecipeData | null>(null);
+  const navigate = useNavigate();
 
   const handleRecipeChange = (updatedRecipe: RecipeData) => {
     setRecipe(updatedRecipe);
   };
 
+  // TODO this code is duplicated in EditRecipe.tsx (use formik!)
   const handleSubmit = async () => {
     if (!recipe) return;
 
@@ -46,7 +50,7 @@ const AddRecipe: React.FC = () => {
         JSON.stringify(filteredData),
       );
       if (response.status === 201) {
-        alert("Recipe successfully created!");
+        navigate(`/admin/dashboard`);
       }
     } catch (error) {
       console.error("There was an error creating the recipe!", error);
@@ -56,13 +60,10 @@ const AddRecipe: React.FC = () => {
 
   return (
     <div className="w-full mx-auto p-6 bg-white shadow-md rounded-md">
-      <EditRecipe onRecipeChange={handleRecipeChange} />
-      <button
-        onClick={handleSubmit}
-        className="mt-6 w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      >
-        Submit Recipe
-      </button>
+      <div className="absolute z-10 top-6 right-10" onClick={handleSubmit}>
+        <TiArrowBack className="w-24 h-24 text-zinc-800 hover:text-zinc-500" />
+      </div>
+      <EditRecipeDisplay onRecipeChange={handleRecipeChange} />
     </div>
   );
 };

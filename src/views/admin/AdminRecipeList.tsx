@@ -1,27 +1,82 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { FaPlus } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 import { AdminRecipePreview } from "../../types/recipeTypes";
+import DeleteModal from "./../components/DeleteModal";
 
-const formatDate = (dateString: string) => {
-  return format(new Date(dateString), "dd.MM.yyyy, HH:mm");
-};
+const AdminRecipeList: React.FC = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const [recipes, setRecipes] = useState<AdminRecipePreview[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [selectedRecipeUrl, setSelectedRecipeUrl] = useState<string | null>(
+    null,
+  );
 
-interface AdminRecipeListProps {
-  recipes: AdminRecipePreview[];
-}
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await axios.get<AdminRecipePreview[]>(
+          `${apiUrl}/recipes/`,
+        );
+        setRecipes(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to load recipes. Please try again later.");
+        setLoading(false);
+      }
+    };
 
-const AdminRecipeList: React.FC<AdminRecipeListProps> = ({ recipes }) => {
+    fetchRecipes();
+  }, [apiUrl]);
+
+  const handleDelete = async () => {
+    if (selectedRecipeUrl) {
+      try {
+        await axios.delete(`${apiUrl}/recipe/delete/${selectedRecipeUrl}/`);
+        setRecipes((prevRecipes) =>
+          prevRecipes.filter((recipe) => recipe.url !== selectedRecipeUrl),
+        );
+        setShowDeleteModal(false);
+        setSelectedRecipeUrl(null);
+      } catch (err) {
+        setError("Failed to delete the recipe. Please try again later.");
+        setShowDeleteModal(false);
+        setSelectedRecipeUrl(null);
+      }
+    }
+  };
+
+  const openDeleteModal = (recipeUrl: string) => {
+    setSelectedRecipeUrl(recipeUrl);
+    setShowDeleteModal(true);
+  };
+
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), "dd.MM.yyyy, HH:mm");
+  };
+
+  if (loading) {
+    return <div className="text-center mt-10 text-gray-500">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-10 text-red-500">{error}</div>;
+  }
+
   return (
     <div className="max-w-4xl mx-auto py-6">
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {recipes.map((recipe) => (
           <li
-            key={recipe.url_identifier}
-            className="bg-white shadow-md rounded-md p-4"
+            key={recipe.url}
+            className="bg-white shadow-md rounded-md p-4 relative"
           >
-            <Link to={`/recipe/${recipe.url_identifier}`}>
+            <Link to={`/admin/edit-recipe/${recipe.url}`}>
               <img
                 src={
                   recipe.thumbnail ||
@@ -50,6 +105,11 @@ const AdminRecipeList: React.FC<AdminRecipeListProps> = ({ recipes }) => {
                 </p>
               </div>
             </Link>
+            <MdDeleteOutline
+              className="absolute top-2 right-2 text-red-500 cursor-pointer"
+              size={24}
+              onClick={() => openDeleteModal(recipe.url)}
+            />
           </li>
         ))}
         <li key={"add"} className="bg-zinc-100 shadow-md rounded-md p-4">
@@ -60,6 +120,11 @@ const AdminRecipeList: React.FC<AdminRecipeListProps> = ({ recipes }) => {
           </Link>
         </li>
       </ul>
+      <DeleteModal
+        show={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 };

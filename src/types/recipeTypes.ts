@@ -26,7 +26,7 @@ export interface RecipeData {
 
 export interface RecipePreview {
   name: string;
-  url_identifier: string;
+  url: string;
   description: string;
   preparation_time: number | null;
   rest_time: number | null;
@@ -37,7 +37,7 @@ export interface RecipePreview {
 
 export interface AdminRecipePreview {
   name: string;
-  url_identifier: string;
+  url: string;
   description: string | null;
   creation_time: string | null;
   last_changed: string | null;
