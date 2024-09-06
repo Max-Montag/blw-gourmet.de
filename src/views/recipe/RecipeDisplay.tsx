@@ -27,16 +27,16 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
+    <div className="max-w-4xl min-h-48 mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
-        {/* {recipe.optimized_image && ( */}
-        <img
-          key={recipe.optimized_image}
-          src={`${apiUrl}${recipe.optimized_image}`}
-          alt={(recipe.name || "Recipe") + " Image"}
-          className="w-full h-72 object-cover"
-        />
-        {/* )} */}
+        {recipe.optimized_image && (
+          <img
+            key={recipe.optimized_image}
+            src={`${apiUrl}${recipe.optimized_image}`}
+            alt={(recipe.name || "Recipe") + " Image"}
+            className="w-full h-72 object-cover"
+          />
+        )}
         {combinedLabels.length > 0 && (
           <div className="absolute w-full bottom-0 p-2 flex flex-wrap-reverse">
             {combinedLabels.map((label, index) =>

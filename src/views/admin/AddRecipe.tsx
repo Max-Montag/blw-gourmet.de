@@ -65,7 +65,7 @@ const AddRecipe: React.FC = () => {
 
       const response = await axios.post(
         `${apiUrl}/recipe/create/`,
-        filteredData,
+        JSON.stringify(filteredData),
       );
 
       if (response.status === 201) {

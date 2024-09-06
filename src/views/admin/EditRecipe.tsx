@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { IoSaveOutline } from "react-icons/io5";
-import { LuImagePlus } from "react-icons/lu";
+import { LuImagePlus, LuSave } from "react-icons/lu";
 import { FaSpinner } from "react-icons/fa6";
 import { RecipeData } from "../../types/recipeTypes";
 import EditRecipeDisplay from "./EditRecipeDisplay";
@@ -131,7 +130,7 @@ const RecipeLoader: React.FC = () => {
   return (
     <div className="w-full mx-auto p-6 bg-white shadow-md rounded-md">
       <div className="absolute z-10 top-10 right-12" onClick={handleSubmit}>
-        <IoSaveOutline className="w-14 h-14 text-zinc-800 hover:text-zinc-500 hover:cursor-pointer" />
+        <LuSave className="w-14 h-14 text-zinc-800 hover:text-zinc-500 hover:cursor-pointer" />
       </div>
       <div className="absolute z-10 top-10 right-28">
         <label htmlFor="image-upload">

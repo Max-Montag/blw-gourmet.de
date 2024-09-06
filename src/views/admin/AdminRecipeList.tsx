@@ -74,35 +74,34 @@ const AdminRecipeList: React.FC = () => {
         {recipes.map((recipe) => (
           <li
             key={recipe.url}
-            className="bg-white shadow-md hover:shadow-xl rounded-md p-4 relative"
+            className="bg-white shadow-md hover:shadow-xl rounded-md relative"
           >
             <Link to={`/admin/edit-recipe/${recipe.url}`}>
               <img
-                src={
-                  recipe.thumbnail ||
-                  `${process.env.REACT_APP_API_URL}/media/recipe_images/thumbs/default_thumb.jpg`
-                }
+                src={`${process.env.REACT_APP_API_URL}${recipe.thumbnail}`}
                 alt={recipe.name || "Recipe Image"}
-                className="w-full h-40 object-cover rounded-md mb-4"
+                className="w-full h-40 object-cover"
               />
-              <h2 className="text-lg font-bold mb-2">{recipe.name}</h2>
-              <p className="text-gray-600 mb-4 line-clamp-3">
-                {recipe.description || "Keine Beschreibung verfügbar"}
-              </p>
-              <div className="gap-2 mt-2">
-                {recipe.creation_time && (
-                  <p className="text-sm text-gray-500">
-                    Erstellt: {formatDate(recipe.creation_time)}
-                  </p>
-                )}
-                {recipe.last_changed && (
-                  <p className="text-sm text-gray-500">
-                    Bearbeitet: {formatDate(recipe.last_changed)}
-                  </p>
-                )}
-                <p className="text-sm text-gray-500">
-                  Ersteller: {recipe.owner === 1 ? "Admin" : "User"}
+              <div className="p-4">
+                <h2 className="text-lg font-bold mb-2">{recipe.name}</h2>
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  {recipe.description || "Keine Beschreibung verfügbar"}
                 </p>
+                <div className="gap-2 mt-2">
+                  {recipe.creation_time && (
+                    <p className="text-sm text-gray-500">
+                      Erstellt: {formatDate(recipe.creation_time)}
+                    </p>
+                  )}
+                  {recipe.last_changed && (
+                    <p className="text-sm text-gray-500">
+                      Bearbeitet: {formatDate(recipe.last_changed)}
+                    </p>
+                  )}
+                  <p className="text-sm text-gray-500">
+                    Ersteller: {recipe.owner === 1 ? "Admin" : "User"}
+                  </p>
+                </div>
               </div>
             </Link>
             <MdDeleteOutline
