@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
           &copy; {new Date().getFullYear()} BLW-Gourmet.de. Alle Rechte
           vorbehalten.
         </p>
-        <nav className="space-x-4">
+        <nav className="flex flex-wrap justify-center gap-4">
           {footerLinks.map((item) => (
             <Link
               key={item.path}
