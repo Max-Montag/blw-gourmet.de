@@ -12,8 +12,8 @@ const menuItems = [
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true); // TODO!!!!!
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // TODO!!!!!
+  const [isAdmin, setIsAdmin] = useState(true); // TODO context!!!!
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // TODO context!!!!
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -57,6 +57,7 @@ const Header: React.FC = () => {
             <Link
               key={item.path}
               to={item.path}
+              onClick={toggleMenu}
               className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
             >
               {item.label}
@@ -69,23 +70,31 @@ const Header: React.FC = () => {
            isMenuOpen ? "max-h-40" : "max-h-0"
         }`}
       >
-        <div className="mt-6 divide-y divide-cyan-600">
+        <div className="mt-6 divide-y divide-cyan-600" onClick={toggleMenu}>
          {isAuthenticated ? (
             <Link
-              to="/profile"
+              to="/user/dashboard"
               className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
             >
-              Mein Profil
+              Meine Rezepte
             </Link>
           ) : (
+            <>
             <Link
               to="/login"
               className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
             >
               Anmelden
             </Link>
+            <Link
+              to="/register"
+              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+            >
+              Registrieren
+            </Link>
+            </>
           )}
-          {isAdmin && (
+          {isAuthenticated && isAdmin && (
             <Link
               to="/admin/dashboard"
               className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
