@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { CiSearch, CiMenuBurger } from "react-icons/ci";
+import { CiMenuBurger } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const menuItems = [
   { label: "Rezepte durchstöbern", path: "/stoebern" },
@@ -28,7 +29,7 @@ const Header: React.FC = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className="text-cyan-950 text-lg xl:text-xl font-semibold hover:text-white px-3"
+                className="text-cyan-950 text-lg xl:text-xl font-semibold hover:text-cyan-700 px-3"
               >
                 {item.label}
               </Link>
@@ -36,14 +37,7 @@ const Header: React.FC = () => {
           </nav>
         </div>
         <div className="hidden xxs:block">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search"
-              className="bg-cyan-50 text-white px-3 py-2 rounded-md focus:outline-cyan-500"
-            />
-            <CiSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-cyan-950" />
-          </div>
+          <SearchBar />
         </div>
         <div
           onClick={toggleMenu}
@@ -63,7 +57,7 @@ const Header: React.FC = () => {
             <Link
               key={item.path}
               to={item.path}
-              className="block text-cyan-950 hover:text-white pl-2 py-3"
+              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
             >
               {item.label}
             </Link>
@@ -79,14 +73,14 @@ const Header: React.FC = () => {
          {isAuthenticated ? (
             <Link
               to="/profile"
-              className="block text-cyan-950 hover:text-white pl-2 py-3"
+              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
             >
               Mein Profil
             </Link>
           ) : (
             <Link
               to="/login"
-              className="block text-cyan-950 hover:text-white pl-2 py-3"
+              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
             >
               Anmelden
             </Link>
@@ -94,7 +88,7 @@ const Header: React.FC = () => {
           {isAdmin && (
             <Link
               to="/admin/dashboard"
-              className="block text-cyan-950 hover:text-white pl-2 py-3"
+              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
             >
               Admin-Bereich
             </Link>
@@ -102,7 +96,7 @@ const Header: React.FC = () => {
           {isAuthenticated && (
             <Link
               to="/logout"
-              className="block text-cyan-950 hover:text-white pl-2 py-3"
+              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
             >
               Abmelden
             </Link>

@@ -4,8 +4,8 @@ import Landing from "./views/Landing";
 import LoadRecipe from "./views/recipe/LoadRecipe";
 import EditRecipe from "./views/admin/EditRecipe";
 import AdminDashboard from "./views/admin/AdminDashboard";
-import Header from "./views/components/Header";
-import Footer from "./views/components/Footer";
+import Header from "./views/components/Header/Header";
+import Footer from "./views/components/Footer/Footer";
 
 const App: React.FC = () => {
   return (
