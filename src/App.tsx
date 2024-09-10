@@ -5,17 +5,23 @@ import LoadRecipe from "./views/recipe/LoadRecipe";
 import EditRecipe from "./views/admin/EditRecipe";
 import AdminDashboard from "./views/admin/AdminDashboard";
 import Header from "./views/components/Header";
+import Footer from "./views/components/Footer";
 
 const App: React.FC = () => {
   return (
     <Router>
-            <Header />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/recipe/:url/" element={<LoadRecipe />} />
-        <Route path="/admin/edit-recipe/:url/" element={<EditRecipe />} />
-        <Route path="/admin/dashboard/" element={<AdminDashboard />} />
-      </Routes>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/recipe/:url/" element={<LoadRecipe />} />
+            <Route path="/admin/edit-recipe/:url/" element={<EditRecipe />} />
+            <Route path="/admin/dashboard/" element={<AdminDashboard />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 };
