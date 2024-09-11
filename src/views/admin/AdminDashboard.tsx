@@ -6,6 +6,7 @@ import { FaPlus } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { AdminRecipePreview } from "../../types/recipeTypes";
 import DeleteModal from "../components/DeleteModal";
+import LoadingAnimation from "../components/loadingAnimation/LoadingAnimation";
 
 const AdminDashboard: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -80,7 +81,7 @@ const AdminDashboard: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="text-center mt-10 text-gray-500">Loading...</div>;
+    return <div className="text-center mt-10"><LoadingAnimation /></div>;
   }
 
   if (error) {

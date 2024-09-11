@@ -20,7 +20,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-cyan-100 text-white py-4 px-6">
+    <header className="bg-cyan-100 text-white py-4 px-6 z-10 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <img src="/logo512.png" alt="Logo" className="h-8 w-8" />

@@ -4,8 +4,9 @@ import Landing from "./views/Landing";
 import LoadRecipe from "./views/recipe/LoadRecipe";
 import EditRecipe from "./views/admin/EditRecipe";
 import AdminDashboard from "./views/admin/AdminDashboard";
-import Header from "./views/components/Header/Header";
-import Footer from "./views/components/Footer/Footer";
+import Header from "./views/components/header/Header";
+import Footer from "./views/components/footer/Footer";
+import LoadingAnimation from "./views/components/loadingAnimation/LoadingAnimation";
 
 const App: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: React.FC = () => {
             <Route path="/recipe/:url/" element={<LoadRecipe />} />
             <Route path="/admin/edit-recipe/:url/" element={<EditRecipe />} />
             <Route path="/admin/dashboard/" element={<AdminDashboard />} />
+            <Route path="/loadingAnimationTest" element={<LoadingAnimation />} />
           </Routes>
         </main>
         <Footer />

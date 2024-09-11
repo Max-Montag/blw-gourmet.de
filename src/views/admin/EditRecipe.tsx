@@ -6,6 +6,7 @@ import { FaSpinner } from "react-icons/fa6";
 import { RecipeData } from "../../types/recipeTypes";
 import EditRecipeDisplay from "./EditRecipeDisplay";
 import RecipeDisplay from "../recipe/RecipeDisplay";
+import LoadingAnimation from "../components/loadingAnimation/LoadingAnimation";
 
 const EditRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -197,7 +198,7 @@ const EditRecipe: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="text-center mt-10 text-gray-500">Loading...</div>;
+    return <div className="text-center mt-10"><LoadingAnimation /></div>
   }
 
   if (error) {

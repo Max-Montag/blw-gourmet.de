@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { RecipeData } from "../../types/recipeTypes";
 import RecipeDisplay from "./RecipeDisplay";
+import LoadingAnimation from "../components/loadingAnimation/LoadingAnimation";
 
 const LoadRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -28,9 +29,8 @@ const LoadRecipe: React.FC = () => {
     fetchRecipe();
   }, [url]);
 
-  // TODO: loading animation view
   if (loading) {
-    return <div className="text-center mt-10 text-gray-500">Loading...</div>;
+    return <div className="text-center mt-10"><LoadingAnimation /></div>;
   }
 
   if (error) {

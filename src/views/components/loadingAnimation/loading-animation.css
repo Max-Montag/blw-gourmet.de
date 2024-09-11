@@ -1,0 +1,20 @@
+@keyframes hatMovement {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  65% {
+    transform: translateY(-100px) rotate(720deg);
+  }
+  90% {
+    transform: translateY(0) rotate(1440deg);
+  }
+  100% {
+    transform: translateY(0) rotate(1440deg);
+  }
+}
+
+.chef-hat {
+  position: absolute;
+  top: -55px;
+  animation: hatMovement 3s linear infinite;
+}
