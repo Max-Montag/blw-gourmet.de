@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import LoadingAnimation from "../components/loadingAnimation/LoadingAnimation";
 import { mapDiningTime } from "../../utils/diningTimeUtil";
-import NoRecipesAvailable from "./NoRecipesAvailable";
-
-interface RecipePreview {
-  name: string;
-  description: string;
-  thumbnail: string;
-  labels: string[];
-  dining_times: string[];
-}
+import NoRecipesAvailable from "./components/NoRecipesAvailable";
+import { RecipePreview } from "../../types/recipeTypes";
 
 const ListRecipes: React.FC = () => {
   const { category } = useParams<{ category: string }>();
@@ -57,14 +51,15 @@ const ListRecipes: React.FC = () => {
           <h1 className="text-xl text-zinc-900 font-semibold text-start mb-6">
             Kategorie: {category}
           </h1>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {recipes.map((recipe) => {
               const combinedLabels = [
                 ...recipe.dining_times.map(mapDiningTime),
                 ...recipe.labels,
               ];
               return (
-                <li
+                <Link
+                  to={`/rezept/${recipe.url}`}
                   key={recipe.name}
                   className="bg-white shadow-sm hover:shadow-md rounded-md cursor-pointer"
                 >
@@ -91,10 +86,10 @@ const ListRecipes: React.FC = () => {
                       </div>
                     )}
                   </div>
-                </li>
+                </Link>
               );
             })}
-          </ul>
+          </div>
         </>
       ) : (
         <NoRecipesAvailable />

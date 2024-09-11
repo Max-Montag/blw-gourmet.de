@@ -5,6 +5,7 @@ import IconText from "../components/IconText";
 import { mapDiningTime } from "../../utils/diningTimeUtil";
 import Fraction from "fraction.js";
 import { RecipeData } from "../../types/recipeTypes";
+import AccurateTimerIcon from "./components/AccurateTimerIcon";
 
 interface DecimalToFractionProps {
   decimal: number;
@@ -70,7 +71,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
               {recipe.preparation_time && recipe.preparation_time !== 0 ? (
                 <div className="flex flex-col justify-center items-center mb-4 ">
                   <span className="font-medium">Zubereitung</span>
-                  <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
+                  <AccurateTimerIcon timeInMinutes={recipe.preparation_time} />
                   <span className="text-zinc-800 font-semibold">
                     {recipe.preparation_time} Min
                   </span>
@@ -79,7 +80,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
               {recipe.rest_time && recipe.rest_time !== 0 ? (
                 <div className="flex flex-col justify-center items-center mb-4">
                   <span className="font-medium">Wartezeit</span>
-                  <PiTimer className="text-cyan-900 w-10 h-10 my-1" />
+                  <AccurateTimerIcon timeInMinutes={recipe.rest_time} />
                   <span className="text-zinc-800 font-semibold">
                     {recipe.rest_time} Min
                   </span>
