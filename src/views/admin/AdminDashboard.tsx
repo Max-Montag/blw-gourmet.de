@@ -81,7 +81,11 @@ const AdminDashboard: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="text-center mt-10"><LoadingAnimation /></div>;
+    return (
+      <div className="text-center mt-10">
+        <LoadingAnimation />
+      </div>
+    );
   }
 
   if (error) {

@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
 const menuItems = [
-  { label: "Rezepte durchstöbern", path: "/stoebern" },
-  { label: "Was ist BLW?", path: "/was-ist-blw" },
-  { label: "Tipps für den Beikoststart", path: "/tipps-beikoststart" },
+  { label: "Rezepte durchstöbern", path: "/rezepte/" },
+  { label: "Was ist BLW?", path: "/was-ist-blw/" },
+  { label: "Tipps für den Beikoststart", path: "/tipps-beikoststart/" },
 ];
 
 const Header: React.FC = () => {
@@ -39,10 +39,7 @@ const Header: React.FC = () => {
         <div className="hidden xxs:block">
           <SearchBar />
         </div>
-        <div
-          onClick={toggleMenu}
-          className="text-cyan-950 cursor-pointer"
-        >
+        <div onClick={toggleMenu} className="text-cyan-950 cursor-pointer">
           <CiMenuBurger className="block lg:hidden w-6 h-6" />
           <FaRegUserCircle className="hidden lg:block w-7 h-7" />
         </div>
@@ -53,6 +50,9 @@ const Header: React.FC = () => {
         }`}
       >
         <div className="mt-6 lg:hidden divide-y divide-cyan-600">
+          <div className="block xxs:hidden pb-4">
+            <SearchBar />
+          </div>
           {menuItems.map((item) => (
             <Link
               key={item.path}
@@ -67,11 +67,11 @@ const Header: React.FC = () => {
       </div>
       <div
         className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
-           isMenuOpen ? "max-h-40" : "max-h-0"
+          isMenuOpen ? "max-h-40" : "max-h-0"
         }`}
       >
         <div className="mt-6 divide-y divide-cyan-600" onClick={toggleMenu}>
-         {isAuthenticated ? (
+          {isAuthenticated ? (
             <Link
               to="/user/dashboard"
               className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
@@ -80,18 +80,18 @@ const Header: React.FC = () => {
             </Link>
           ) : (
             <>
-            <Link
-              to="/login"
-              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-            >
-              Anmelden
-            </Link>
-            <Link
-              to="/register"
-              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-            >
-              Registrieren
-            </Link>
+              <Link
+                to="/login"
+                className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+              >
+                Anmelden
+              </Link>
+              <Link
+                to="/register"
+                className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+              >
+                Registrieren
+              </Link>
             </>
           )}
           {isAuthenticated && isAdmin && (

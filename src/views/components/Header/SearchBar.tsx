@@ -6,7 +6,7 @@ import { RecipePreview } from "../../../types/recipeTypes";
 
 const SearchBar: React.FC = () => {
   const [searchQuery, setsearchQuery] = useState<string>("");
-  const [placeholder, setPlaceholder] = useState<string>("Search for recipes");
+  const [placeholder, setPlaceholder] = useState<string>("Rezepte durchsuchen");
   const [suggestions, setSuggestions] = useState<RecipePreview[]>([]);
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -31,7 +31,6 @@ const SearchBar: React.FC = () => {
     }, 300);
 
     return () => clearTimeout(debounceSearch);
-
   }, [searchQuery]);
 
   const handleLinkClick = (suggestionName: string) => {
@@ -71,7 +70,9 @@ const SearchBar: React.FC = () => {
               )}
               <div className="flex flex-col">
                 <span className="font-bold text-black">{suggestion.name}</span>
-                <p className="text-sm text-gray-500 line-clamp-2">{suggestion.description}</p>
+                <p className="text-sm text-gray-500 line-clamp-2">
+                  {suggestion.description}
+                </p>
               </div>
             </Link>
           ))}

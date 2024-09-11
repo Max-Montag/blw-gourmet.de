@@ -4,12 +4,12 @@ import "./loading-animation.css";
 
 const LoadingAnimation: React.FC = () => {
   return (
-    <div className="w-full flex justify-center items-center mt-32">
+    <div className="w-full flex justify-center mt-44">
       <div className="relative flex flex-col items-center">
         <div className="chef-hat text-cyan-200">
           <PiChefHat size={75} />
         </div>
-        <PiBaby size={100} className="text-cyan-500"/>
+        <PiBaby size={100} className="text-cyan-500" />
       </div>
     </div>
   );

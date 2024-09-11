@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./views/Landing";
+import BrowseRecipes from "./views/browse/BrowseRecipes";
+import ListRecipes from "./views/browse/ListRecipes";
 import LoadRecipe from "./views/recipe/LoadRecipe";
 import EditRecipe from "./views/admin/EditRecipe";
 import AdminDashboard from "./views/admin/AdminDashboard";
@@ -16,10 +18,15 @@ const App: React.FC = () => {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/rezepte/" element={<BrowseRecipes />} />
+            <Route path="/rezepte/:category/" element={<ListRecipes />} />
             <Route path="/recipe/:url/" element={<LoadRecipe />} />
             <Route path="/admin/edit-recipe/:url/" element={<EditRecipe />} />
             <Route path="/admin/dashboard/" element={<AdminDashboard />} />
-            <Route path="/loadingAnimationTest" element={<LoadingAnimation />} />
+            <Route
+              path="/loadingAnimationTest"
+              element={<LoadingAnimation />}
+            />
           </Routes>
         </main>
         <Footer />
