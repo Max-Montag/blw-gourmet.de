@@ -14,6 +14,10 @@ const LoadRecipe: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get<RecipeData>(

@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BrowseRecipes from "./browse/BrowseRecipes";
 
 const Landing: React.FC = () => {
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div className="text-center px-2 md:px-4 lg:px-16">
       <h1 className="text-4xl md:text-5xl lg:text-7xl text-cyan-800 mt-8 md:mt-16 lg:mt-28">

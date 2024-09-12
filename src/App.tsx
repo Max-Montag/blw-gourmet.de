@@ -9,6 +9,11 @@ import AdminDashboard from "./views/admin/AdminDashboard";
 import Header from "./views/components/header/Header";
 import Footer from "./views/components/footer/Footer";
 import LoadingAnimation from "./views/components/loadingAnimation/LoadingAnimation";
+import Impressum from "./views/legal/Impressum";
+import PrivacyPolicy from "./views/legal/PrivacyPolicy";
+import TermsOfService from "./views/legal/TermsOfService";
+import WhatIsBLW from "./views/informative/WhatIsBlw";
+import TipsForStartingSolids from "./views/informative/TipsForStartingSolids";
 
 const App: React.FC = () => {
   return (
@@ -21,8 +26,14 @@ const App: React.FC = () => {
             <Route path="/rezepte/" element={<BrowseRecipes />} />
             <Route path="/rezepte/:category/" element={<ListRecipes />} />
             <Route path="/rezept/:url/" element={<LoadRecipe />} />
+            <Route path="/impressum/" element={<Impressum />} />
+            <Route path="/datenschutz/" element={<PrivacyPolicy />} />
+            <Route path="/nutzungsbedingungen/" element={<TermsOfService />} />
+            <Route path="/was-ist-blw/" element={<WhatIsBLW />} />
+            <Route path="/tipps-beikoststart/" element={<TipsForStartingSolids />} />
             <Route path="/admin/edit-recipe/:url/" element={<EditRecipe />} />
             <Route path="/admin/dashboard/" element={<AdminDashboard />} />
+            {/* TODO remove: */}
             <Route
               path="/loadingAnimationTest"
               element={<LoadingAnimation />}

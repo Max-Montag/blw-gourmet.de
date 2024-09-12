@@ -16,6 +16,10 @@ const ListRecipes: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     const fetchRecipes = async () => {
       try {
         const response = await axios.get<RecipePreview[]>(

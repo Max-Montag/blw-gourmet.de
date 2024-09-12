@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 interface CategoryCardProps {
@@ -30,6 +30,10 @@ const BrowseRecipes: React.FC = () => {
     { name: "schnell", icon: "🚀" },
     { name: "tiefkühlgeeignet", icon: "❄️" },
   ];
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center p-8">

@@ -18,6 +18,10 @@ const EditRecipe: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const ensureEmptyFields = (data: RecipeData): RecipeData => {
     return {
       ...data,

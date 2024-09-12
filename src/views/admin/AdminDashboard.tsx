@@ -21,6 +21,10 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     const fetchRecipes = async () => {
       try {
         const response = await axios.get<AdminRecipePreview[]>(
