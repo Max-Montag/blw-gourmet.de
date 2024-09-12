@@ -52,7 +52,7 @@ const ListRecipes: React.FC = () => {
           <h1 className="text-1.5xl text-zinc-700 font-semibold text-start px-4 mb-2">
             Kategorie: {category}
           </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 scroll-smooth">
             {recipes.map((recipe) => {
               const combinedLabels = [...recipe.dining_times, ...recipe.labels];
               return (

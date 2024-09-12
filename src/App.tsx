@@ -15,7 +15,7 @@ const App: React.FC = () => {
     <Router>
       <div className="flex flex-col min-h-screen">
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow mt-16">
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/rezepte/" element={<BrowseRecipes />} />

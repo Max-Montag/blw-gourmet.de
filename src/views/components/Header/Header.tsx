@@ -14,6 +14,8 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(true); // TODO context!!!!
   const [isAuthenticated, setIsAuthenticated] = useState(true); // TODO context!!!!
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
   const headerRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
@@ -33,19 +35,36 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      setIsVisible(false);
+    } else {
+      setIsVisible(true);
+    }
+
+    setLastScrollY(currentScrollY);
+  };
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [lastScrollY]);
 
   return (
     <header
       ref={headerRef}
-      className="bg-cyan-100 text-white py-4 px-6 z-10 shadow-sm"
+      className={`fixed h-16 w-full top-0 left-0 bg-cyan-100 py-4 px-6 z-10 shadow-sm transition-transform duration-300 ${
+        isVisible ? "transform translate-y-0" : "transform -translate-y-full"
+      }`}
     >
-      <div className="flex items-center justify-between">
+      <div className="h-full flex items-center justify-between">
         <div className="flex items-center">
           <Link
             to="/"
