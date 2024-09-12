@@ -6,6 +6,7 @@ import LoadingAnimation from "../components/loadingAnimation/LoadingAnimation";
 import NoRecipesAvailable from "./components/NoRecipesAvailable";
 import { RecipePreview } from "../../types/recipeTypes";
 import IconText from "../components/IconText";
+import ErrorMessage from "../components/error/ErrorMessage";
 
 const ListRecipes: React.FC = () => {
   const { category } = useParams<{ category: string }>();
@@ -40,7 +41,7 @@ const ListRecipes: React.FC = () => {
   }
 
   if (error) {
-    return <div className="text-center mt-10 text-red-500">{error}</div>;
+    return <ErrorMessage message={error} />;
   }
 
   return (
@@ -48,7 +49,7 @@ const ListRecipes: React.FC = () => {
       {recipes.length > 0 ? (
         <>
           {" "}
-          <h1 className="text-1.5xl text-zinc-900 font-semibold text-start px-4 mb-2">
+          <h1 className="text-1.5xl text-zinc-700 font-semibold text-start px-4 mb-2">
             Kategorie: {category}
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

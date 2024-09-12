@@ -76,7 +76,7 @@ const Header: React.FC = () => {
       </div>
       <div
         className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
-          isMenuOpen ? "max-h-40" : "max-h-0"
+          isMenuOpen ? "max-h-56" : "max-h-0"
         }`}
       >
         <div className="mt-6 lg:hidden divide-y divide-cyan-600">
