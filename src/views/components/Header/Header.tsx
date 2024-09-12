@@ -38,7 +38,7 @@ const Header: React.FC = () => {
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
 
-    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+    if (currentScrollY > lastScrollY && currentScrollY > 100 && !isMenuOpen) {
       setIsVisible(false);
     } else {
       setIsVisible(true);
@@ -60,11 +60,11 @@ const Header: React.FC = () => {
   return (
     <header
       ref={headerRef}
-      className={`fixed h-16 w-full top-0 left-0 bg-cyan-100 py-4 px-6 z-10 shadow-sm transition-transform duration-300 ${
+      className={`fixed h-16 w-full top-0 left-0 bg-cyan-100 py-4 z-10 shadow-sm transition-transform duration-300 ${
         isVisible ? "transform translate-y-0" : "transform -translate-y-full"
       }`}
     >
-      <div className="h-full flex items-center justify-between">
+      <div className="h-full flex items-center justify-between px-6">
         <div className="flex items-center">
           <Link
             to="/"
@@ -93,8 +93,9 @@ const Header: React.FC = () => {
           <FaRegUserCircle className="hidden lg:block w-7 h-7" />
         </div>
       </div>
+      <div className="bg-cyan-100">
       <div
-        className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
+        className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
           isMenuOpen ? "max-h-56" : "max-h-0"
         }`}
       >
@@ -114,9 +115,10 @@ const Header: React.FC = () => {
           ))}
         </div>
       </div>
+      
       <div
-        className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
-          isMenuOpen ? "max-h-40" : "max-h-0"
+        className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
+          isMenuOpen ? "max-h-48" : "max-h-0"
         }`}
         onClick={closeMenu}
       >
@@ -161,6 +163,9 @@ const Header: React.FC = () => {
             </Link>
           )}
         </div>
+        
+        
+      </div>
       </div>
     </header>
   );
