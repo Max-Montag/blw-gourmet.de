@@ -105,7 +105,12 @@ const EditRecipe: React.FC = () => {
     if (!recipe) return;
 
     try {
-      const validDiningTimes = ["lunch", "snack", "breakfast", "dinner"];
+      const validDiningTimes = [
+        "Frühstück",
+        "Mittagessen",
+        "Abendessen",
+        "Snack",
+      ];
       const filteredData = {
         ...recipe,
         dining_times: recipe.dining_times.filter((time) =>
@@ -216,14 +221,15 @@ const EditRecipe: React.FC = () => {
   }
 
   return (
-    <div className="w-full mx-auto p-6 bg-white shadow-md rounded-md">
-      <div className="absolute z-10 top-10 right-12" onClick={handleSubmit}>
-        <LuSave className="w-14 h-14 text-zinc-800 hover:text-zinc-500 hover:cursor-pointer" />
-      </div>
-      <div className="absolute z-10 top-10 right-28">
+    <div className="relative w-full mx-auto lg:p-6 bg-white shadow-md rounded-md">
+      <div className="mt-4 lg:mt-0 flex justify-center space-x-4 z-10 lg:absolute lg:top-12 lg:right-12">
+        <LuSave
+          className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer"
+          onClick={handleSubmit}
+        />
         <label htmlFor="image-upload">
           {!imageUploading && (
-            <LuImagePlus className="w-14 h-14 text-zinc-800 hover:text-zinc-500 hover:cursor-pointer" />
+            <LuImagePlus className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
           )}
         </label>
         <input
@@ -234,14 +240,14 @@ const EditRecipe: React.FC = () => {
           className="hidden"
         />
         {imageUploading && (
-          <FaSpinner className="w-14 h-14 text-zinc-800 hover:text-zinc-500 hover:cursor-pointer animate-spin" />
+          <FaSpinner className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer animate-spin" />
         )}
       </div>
-      <div className="w-full flex space-x-4">
-        <div className="w-1/2">
+      <div className="w-full flex flex-col lg:flex-row space-x-0 lg:space-x-4">
+        <div className="w-full lg:w-1/2">
           <EditRecipeDisplay recipe={recipe} onRecipeChange={setRecipe} />
         </div>
-        <div className="w-1/2 flex flex-col flex-grow">
+        <div className="w-full lg:w-1/2 flex flex-col flex-grow">
           <div className="min-h-48">
             <RecipeDisplay recipe={recipe} />
           </div>
@@ -250,7 +256,7 @@ const EditRecipe: React.FC = () => {
               value={JSON.stringify(recipe, null, 2)}
               onChange={handleJsonChange}
               onFocus={handleFocus}
-              className="w-full h-full p-2 bg-zinc-50 rounded-md text-sm"
+              className="w-full h-full min-h-[600px] p-2 bg-zinc-50 rounded-md text-sm"
             />
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MdDeleteOutline } from "react-icons/md";
 import { Ingredient, Instruction, RecipeData } from "../../types/recipeTypes";
 
@@ -265,10 +265,10 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               >
                 <option value="">Bitte auswählen</option>
-                <option value="snack">Snack</option>
-                <option value="breakfast">Frühstück</option>
-                <option value="lunch">Mitagessen</option>
-                <option value="dinner">Abendessen</option>
+                <option value="Snack">Snack</option>
+                <option value="Frühstück">Frühstück</option>
+                <option value="Mittagessen">Mittagessen</option>
+                <option value="Abendessen">Abendessen</option>
               </select>
               <button
                 onClick={() => handleRemoveDiningTime(index)}

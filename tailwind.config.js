@@ -6,6 +6,11 @@ module.exports = {
         xxs: "370px",
         xs: "450px",
       },
+      fontSize: {
+        xs: "0.6rem",
+        "1.5xl": "1.375rem",
+        "md+": "1.125rem",
+      },
     },
   },
   plugins: [],

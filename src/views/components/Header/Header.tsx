@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -14,21 +14,51 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(true); // TODO context!!!!
   const [isAuthenticated, setIsAuthenticated] = useState(true); // TODO context!!!!
+  const headerRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      headerRef.current &&
+      !headerRef.current.contains(event.target as Node)
+    ) {
+      setIsMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <header className="bg-cyan-100 text-white py-4 px-6 z-10 shadow-sm">
+    <header
+      ref={headerRef}
+      className="bg-cyan-100 text-white py-4 px-6 z-10 shadow-sm"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <img src="/logo512.png" alt="Logo" className="h-8 w-8" />
+          <Link
+            to="/"
+            className="text-2xl font-bold text-cyan-950 cursor-pointer"
+          >
+            <img src="/logo512.png" alt="Logo" className="h-8 w-8" />
+          </Link>
           <nav className="ml-4 divide-x divide-cyan-600 hidden lg:block">
             {menuItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={closeMenu}
                 className="text-cyan-950 text-lg xl:text-xl font-semibold hover:text-cyan-700 px-3"
               >
                 {item.label}
@@ -37,7 +67,7 @@ const Header: React.FC = () => {
           </nav>
         </div>
         <div className="hidden xxs:block">
-          <SearchBar />
+          <SearchBar closeMenu={closeMenu} />
         </div>
         <div onClick={toggleMenu} className="text-cyan-950 cursor-pointer">
           <CiMenuBurger className="block lg:hidden w-6 h-6" />
@@ -50,14 +80,14 @@ const Header: React.FC = () => {
         }`}
       >
         <div className="mt-6 lg:hidden divide-y divide-cyan-600">
-          <div className="block xxs:hidden pb-4">
-            <SearchBar />
+          <div className="xxs:hidden pb-4">
+            <SearchBar closeMenu={closeMenu} />
           </div>
           {menuItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              onClick={toggleMenu}
+              onClick={closeMenu}
               className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
             >
               {item.label}
@@ -69,8 +99,9 @@ const Header: React.FC = () => {
         className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
           isMenuOpen ? "max-h-40" : "max-h-0"
         }`}
+        onClick={closeMenu}
       >
-        <div className="mt-6 divide-y divide-cyan-600" onClick={toggleMenu}>
+        <div className="mt-6 divide-y divide-cyan-600">
           {isAuthenticated ? (
             <Link
               to="/user/dashboard"

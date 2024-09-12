@@ -1,8 +1,7 @@
 import React from "react";
-import { PiTimer, PiCookingPot } from "react-icons/pi";
+import { PiCookingPot } from "react-icons/pi";
 import { CiShoppingBasket } from "react-icons/ci";
 import IconText from "../components/IconText";
-import { mapDiningTime } from "../../utils/diningTimeUtil";
 import Fraction from "fraction.js";
 import { RecipeData } from "../../types/recipeTypes";
 import AccurateTimerIcon from "./components/AccurateTimerIcon";
@@ -22,10 +21,7 @@ const DecimalToFraction: React.FC<DecimalToFractionProps> = ({ decimal }) => {
 
 const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const combinedLabels = [
-    ...recipe.dining_times.map(mapDiningTime),
-    ...recipe.labels,
-  ];
+  const combinedLabels = [...recipe.dining_times, ...recipe.labels];
 
   return (
     <div className="max-w-4xl min-h-48 mx-auto bg-zinc-50 shadow-md rounded-md scroll-smooth teachers-regular">
@@ -44,7 +40,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
               label !== "" ? (
                 <div
                   key={index}
-                  className="bg-cyan-50 text-cyan-700 text-sm md:text-md font-semibold m-1 px-1.5 py-0.5 rounded-xl border-2 border-cyan-700"
+                  className="bg-cyan-50 text-cyan-700 text-sm md:text-base font-semibold m-0.5 px-1.5 py-0.5 rounded-xl border border-cyan-700"
                 >
                   <IconText text={label} />
                 </div>

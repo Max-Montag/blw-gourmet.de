@@ -137,7 +137,7 @@ const AdminDashboard: React.FC = () => {
         ))}
         <li
           key={"add"}
-          className="bg-zinc-100 shadow-md rounded-md p-4 hover:cursor-pointer"
+          className="bg-zinc-100 shadow-md rounded-md p-4 cursor-pointer"
         >
           <div
             className="w-full h-full flex flex-col items-center justify-center"

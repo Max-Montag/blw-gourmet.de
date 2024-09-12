@@ -22,9 +22,9 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, icon }) => {
 const BrowseRecipes: React.FC = () => {
   const categories = [
     { name: "Frühstück", icon: "⏰" },
-    { name: "Mitagessen", icon: "🍴" },
+    { name: "Mittagessen", icon: "🍴" },
     { name: "Abendessen", icon: "🕕" },
-    { name: "snack", icon: "🍌" },
+    { name: "Snack", icon: "🍌" },
     { name: "vegetarisch", icon: "🥦" },
     { name: "vegan", icon: "🥗" },
     { name: "schnell", icon: "🚀" },
