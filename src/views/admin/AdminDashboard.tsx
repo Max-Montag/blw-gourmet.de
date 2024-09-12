@@ -7,6 +7,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { AdminRecipePreview } from "../../types/recipeTypes";
 import DeleteModal from "../components/DeleteModal";
 import LoadingAnimation from "../components/loadingAnimation/LoadingAnimation";
+import ErrorMessage from "../components/error/ErrorMessage";
 
 const AdminDashboard: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -28,7 +29,7 @@ const AdminDashboard: React.FC = () => {
         setRecipes(response.data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to load recipes. Please try again later.");
+        setError("Fehler beim Laden der Rezepte.");
         setLoading(false);
       }
     };
@@ -44,13 +45,11 @@ const AdminDashboard: React.FC = () => {
       );
 
       if (response.status === 201) {
-        console.log("Successfully created recipe!");
-        console.log(response.data);
         navigate(`/admin/edit-recipe/${response.data.recipe_url}`);
       }
     } catch (error) {
-      console.error("There was an error creating the recipe!", error);
-      alert("Failed to create recipe");
+      console.error("Fehler beim anlegen!", error);
+      alert("Fehler beim anlegen!");
     }
   };
 
@@ -64,7 +63,7 @@ const AdminDashboard: React.FC = () => {
         setShowDeleteModal(false);
         setSelectedRecipeUrl(null);
       } catch (err) {
-        setError("Failed to delete the recipe. Please try again later.");
+        setError("Fehler beim Löschen.");
         setShowDeleteModal(false);
         setSelectedRecipeUrl(null);
       }
@@ -89,7 +88,7 @@ const AdminDashboard: React.FC = () => {
   }
 
   if (error) {
-    return <div className="text-center mt-10 text-red-500">{error}</div>;
+    return <ErrorMessage message={error} />;
   }
 
   return (

@@ -24,7 +24,7 @@ const ListRecipes: React.FC = () => {
         setRecipes(response.data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to load recipes. Please try again later.");
+        setError("Fehler beim abrufen vom Server.");
         setLoading(false);
       }
     };

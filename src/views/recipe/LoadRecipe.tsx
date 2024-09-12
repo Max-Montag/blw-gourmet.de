@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { RecipeData } from "../../types/recipeTypes";
 import RecipeDisplay from "./RecipeDisplay";
 import LoadingAnimation from "../components/loadingAnimation/LoadingAnimation";
+import ErrorMessage from "../components/error/ErrorMessage";
 
 const LoadRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -21,7 +22,7 @@ const LoadRecipe: React.FC = () => {
         setRecipe(response.data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to load recipe. Please try again later.");
+        setError("Fehler beim abrufen vom Server.");
         setLoading(false);
       }
     };
@@ -38,13 +39,11 @@ const LoadRecipe: React.FC = () => {
   }
 
   if (error) {
-    return <div className="text-center mt-10 text-red-500">{error}</div>;
+    return <ErrorMessage message={error} />;
   }
 
   if (!recipe) {
-    return (
-      <div className="text-center mt-10 text-gray-500">Recipe not found.</div>
-    );
+    return <ErrorMessage message="Rezept nicht gefunden!" />;
   }
 
   return <RecipeDisplay recipe={recipe} />;

@@ -7,6 +7,7 @@ import { RecipeData } from "../../types/recipeTypes";
 import EditRecipeDisplay from "./EditRecipeDisplay";
 import RecipeDisplay from "../recipe/RecipeDisplay";
 import LoadingAnimation from "../components/loadingAnimation/LoadingAnimation";
+import ErrorMessage from "../components/error/ErrorMessage";
 
 const EditRecipe: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -93,7 +94,7 @@ const EditRecipe: React.FC = () => {
         setRecipe(ensureEmptyFields(response.data));
         setLoading(false);
       } catch (err) {
-        setError("Failed to load recipe. Please try again later.");
+        setError("Fehler beim abrufen vom Server.");
         setLoading(false);
       }
     };
@@ -144,8 +145,8 @@ const EditRecipe: React.FC = () => {
         navigate(`/admin/dashboard/`);
       }
     } catch (error) {
-      console.error("There was an error updating the recipe!", error);
-      alert("Failed to update recipe");
+      console.error("Es ist ein Fehler aufgetreten:", error);
+      alert("Fehler beim Speichern!");
     }
   };
 
@@ -178,7 +179,7 @@ const EditRecipe: React.FC = () => {
           );
         }
       } catch (error) {
-        console.error("Image upload failed:", error);
+        console.error("Bildupload fehlgeschlagen:", error);
       } finally {
         setImageUploading(false);
       }
@@ -194,7 +195,7 @@ const EditRecipe: React.FC = () => {
       }
       setRecipe(updatedRecipe);
     } catch (error) {
-      console.error("Invalid JSON format", error);
+      console.error("Ungültiges JSON-Format", error);
     }
   };
 
@@ -211,13 +212,11 @@ const EditRecipe: React.FC = () => {
   }
 
   if (error) {
-    return <div className="text-center mt-10 text-red-500">{error}</div>;
+    return <ErrorMessage message={error} />;
   }
 
   if (!recipe) {
-    return (
-      <div className="text-center mt-10 text-gray-500">Recipe not found.</div>
-    );
+    return <ErrorMessage message="Rezept nicht gefunden!" />;
   }
 
   return (
