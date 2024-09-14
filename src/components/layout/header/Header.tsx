@@ -9,7 +9,7 @@ import SearchBar from "./SearchBar";
 const menuItems = [
   { label: "Rezepte durchstöbern", path: "/rezepte/" },
   { label: "Was ist BLW?", path: "/was-ist-blw/" },
-  { label: "Tipps für den Beikoststart", path: "/tipps-beikoststart/" },
+  { label: "Tipps für den Beikoststart", path: "/artikel/" },
 ];
 
 const Header: React.FC = () => {
