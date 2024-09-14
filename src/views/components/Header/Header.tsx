@@ -94,78 +94,76 @@ const Header: React.FC = () => {
         </div>
       </div>
       <div className="bg-cyan-100">
-      <div
-        className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
-          isMenuOpen ? "max-h-56" : "max-h-0"
-        }`}
-      >
-        <div className="mt-6 lg:hidden divide-y divide-cyan-600">
-          <div className="xxs:hidden pb-4">
-            <SearchBar closeMenu={closeMenu} />
+        <div
+          className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
+            isMenuOpen ? "max-h-56" : "max-h-0"
+          }`}
+        >
+          <div className="mt-6 lg:hidden divide-y divide-cyan-600">
+            <div className="xxs:hidden pb-4">
+              <SearchBar closeMenu={closeMenu} />
+            </div>
+            {menuItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={closeMenu}
+                className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
-          {menuItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={closeMenu}
-              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-            >
-              {item.label}
-            </Link>
-          ))}
         </div>
-      </div>
-      
-      <div
-        className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
-          isMenuOpen ? "max-h-48" : "max-h-0"
-        }`}
-        onClick={closeMenu}
-      >
-        <div className="mt-6 divide-y divide-cyan-600">
-          {isAuthenticated ? (
-            <Link
-              to="/user/dashboard"
-              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-            >
-              Meine Rezepte
-            </Link>
-          ) : (
-            <>
+
+        <div
+          className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
+            isMenuOpen ? "max-h-48" : "max-h-0"
+          }`}
+          onClick={closeMenu}
+        >
+          <div className="mt-6 divide-y divide-cyan-600">
+            {isAuthenticated ? (
               <Link
-                to="/login"
+                to="/user/dashboard"
                 className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
               >
-                Anmelden
+                Meine Rezepte
               </Link>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                >
+                  Anmelden
+                </Link>
+                <Link
+                  to="/register"
+                  className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                >
+                  Registrieren
+                </Link>
+              </>
+            )}
+            {isAuthenticated && isAdmin && (
               <Link
-                to="/register"
+                to="/admin/dashboard"
                 className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
               >
-                Registrieren
+                Admin-Bereich
               </Link>
-            </>
-          )}
-          {isAuthenticated && isAdmin && (
-            <Link
-              to="/admin/dashboard"
-              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-            >
-              Admin-Bereich
-            </Link>
-          )}
-          {isAuthenticated && (
-            <Link
-              to="/logout"
-              className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-            >
-              Abmelden
-            </Link>
-          )}
+            )}
+            {isAuthenticated && (
+              <Link
+                to="/logout"
+                className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+              >
+                Abmelden
+              </Link>
+            )}
+          </div>
         </div>
-        
-        
-      </div>
       </div>
     </header>
   );

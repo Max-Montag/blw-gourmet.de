@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import BrowseRecipes from "./browse/BrowseRecipes";
 
 const Landing: React.FC = () => {
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
