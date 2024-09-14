@@ -15,6 +15,7 @@ interface Props {
 
 export default function ListRecipes({ params }: Props) {
   const { category } = params;
+  const decodedCategory = decodeURIComponent(category);
   const [recipes, setRecipes] = useState<RecipePreview[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,13 +55,13 @@ export default function ListRecipes({ params }: Props) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-4">
+    <main className="max-w-4xl mx-auto py-4">
       {recipes.length > 0 ? (
         <>
           <h1 className="text-1.5xl text-zinc-700 font-semibold text-start px-4 mb-2">
-            Kategorie: {category}
+            Kategorie: {decodedCategory}
           </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 scroll-smooth">
+          <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 scroll-smooth">
             {recipes.map((recipe) => {
               const combinedLabels = [...recipe.dining_times, ...recipe.labels];
               return (
@@ -97,11 +98,11 @@ export default function ListRecipes({ params }: Props) {
                 </Link>
               );
             })}
-          </div>
+          </section>
         </>
       ) : (
         <NoRecipesAvailable />
       )}
-    </div>
+    </main>
   );
 }
