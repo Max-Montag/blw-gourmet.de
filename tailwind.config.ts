@@ -22,7 +22,7 @@ const config: Config = {
         "md+": "1.125rem",
       },
       padding: {
-        header: 'var(--header-height)',
+        header: "var(--header-height)",
       },
       height: {
         header: "var(--header-height)",
