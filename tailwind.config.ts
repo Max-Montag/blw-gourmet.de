@@ -12,6 +12,21 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      screens: {
+        xxs: "370px",
+        xs: "450px",
+      },
+      fontSize: {
+        xs: "0.6rem",
+        "1.5xl": "1.375rem",
+        "md+": "1.125rem",
+      },
+      padding: {
+        header: 'var(--header-height)',
+      },
+      height: {
+        header: "var(--header-height)",
+      },
     },
   },
   plugins: [],

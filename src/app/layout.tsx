@@ -37,7 +37,10 @@ export default function RootLayout({
       </Head>
       <body className="flex flex-col min-h-screen">
         <Header />
-        <main className="flex-grow mt-16">{children}</main>
+        <main className="flex-grow flex items-center justify-center pt-header">
+  {children}
+</main>
+
         <Footer />
       </body>
     </html>

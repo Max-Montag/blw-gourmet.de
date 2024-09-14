@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { RecipePreview } from "../../../types/recipeTypes";
 
 type SearchBarProps = {
@@ -12,7 +12,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
   const [searchQuery, setsearchQuery] = useState<string>("");
   const [placeholder, setPlaceholder] = useState<string>("Rezepte durchsuchen");
   const [suggestions, setSuggestions] = useState<RecipePreview[]>([]);
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -59,7 +59,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
         <div className="absolute bg-cyan-50 shadow-lg rounded-md mt-2 max-h-[400px] overflow-y-auto w-full">
           {suggestions.map((suggestion) => (
             <Link
-              to={`/rezept/${suggestion.url}`}
+              href={`/rezept/${suggestion.url}`}
               onClick={() => handleLinkClick(suggestion.name)}
               key={suggestion.url}
               className="flex items-center p-2 hover:bg-cyan-100 transition-all"
