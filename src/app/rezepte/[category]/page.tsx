@@ -55,13 +55,13 @@ export default function ListRecipes({ params }: Props) {
   }
 
   return (
-    <main className="max-w-4xl mx-auto py-4">
+    <div className="max-w-4xl mx-auto py-4">
       {recipes.length > 0 ? (
         <>
           <h1 className="text-1.5xl text-zinc-700 font-semibold text-start px-4 mb-2">
-            Kategorie: {decodedCategory}
+            Kategorie: {decodedCategory.charAt(0).toUpperCase() + decodedCategory.slice(1)}
           </h1>
-          <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 scroll-smooth">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 scroll-smooth">
             {recipes.map((recipe) => {
               const combinedLabels = [...recipe.dining_times, ...recipe.labels];
               return (
@@ -98,11 +98,11 @@ export default function ListRecipes({ params }: Props) {
                 </Link>
               );
             })}
-          </section>
+          </div>
         </>
       ) : (
         <NoRecipesAvailable />
       )}
-    </main>
+    </div>
   );
 }

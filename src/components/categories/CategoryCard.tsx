@@ -8,7 +8,7 @@ interface CategoryCardProps {
 const CategoryCard: React.FC<CategoryCardProps> = ({ category, icon }) => {
   return (
     <Link
-      href={`/rezepte/${category}`}
+      href={`/rezepte/${category.toLowerCase()}`}
       className="border rounded-lg p-4 shadow-sm hover:shadow-md hover:shadow-xl transition duration-50 flex flex-col items-center justify-center"
     >
       <div className="text-4xl mb-2">{icon}</div>

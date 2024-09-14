@@ -10,7 +10,9 @@ const BrowseRecipes: React.FC = () => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center p-8">
-      <CategoryList />
+      <section className="my-12">
+        <CategoryList />
+      </section>
     </div>
   );
 };

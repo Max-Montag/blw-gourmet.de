@@ -5,6 +5,7 @@ import Fraction from "fraction.js";
 import IconText from "@/components/common/IconText";
 import { RecipeData } from "@/types/recipeTypes";
 import AccurateTimerIcon from "@/components/common/AccurateTimerIcon";
+import Link from "next/link";
 
 interface DecimalToFractionProps {
   decimal: number;
@@ -38,12 +39,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
           <div className="absolute w-full bottom-0 p-2 flex flex-wrap-reverse">
             {combinedLabels.map((label, index) =>
               label !== "" ? (
-                <div
+                <Link
                   key={index}
-                  className="bg-cyan-50 text-cyan-700 text-sm md:text-base font-semibold m-0.5 md:m-1 px-1.5 py-0.5 rounded-xl border border-cyan-700"
+                  href={`/rezepte/${label.toLowerCase()}`}
+                  className="bg-cyan-50 text-cyan-700 text-sm md:text-base font-semibold m-0.5 md:m-1 px-1.5 py-0.5 rounded-xl border border-cyan-700 hover:scale-105 cursor-pointer"
                 >
                   <IconText text={label} />
-                </div>
+                </Link>
               ) : null,
             )}
           </div>
