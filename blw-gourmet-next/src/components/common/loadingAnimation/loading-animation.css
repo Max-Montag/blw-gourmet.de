@@ -1,0 +1,22 @@
+@keyframes hatMovement {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(-100px) rotate(540deg);
+    animation-timing-function: cubic-bezier(0.55, 0.05, 0.68, 0.19);
+  }
+  60% {
+    transform: translateY(0) rotate(720deg);
+    animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  100% {
+    transform: translateY(0) rotate(720deg);
+  }
+}
+
+.chef-hat {
+  position: absolute;
+  top: -52px;
+  animation: hatMovement 3s infinite;
+}
