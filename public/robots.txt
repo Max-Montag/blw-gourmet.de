@@ -1,3 +1,7 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
+Disallow: /impressum/
 Disallow: /impressum
+Disallow: /datenschutz/
+Disallow: /datenschutz
+

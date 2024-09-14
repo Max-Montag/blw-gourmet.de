@@ -59,7 +59,8 @@ export default function ListRecipes({ params }: Props) {
       {recipes.length > 0 ? (
         <>
           <h1 className="text-1.5xl text-zinc-700 font-semibold text-start px-4 mb-2">
-            Kategorie: {decodedCategory.charAt(0).toUpperCase() + decodedCategory.slice(1)}
+            Kategorie:{" "}
+            {decodedCategory.charAt(0).toUpperCase() + decodedCategory.slice(1)}
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 scroll-smooth">
             {recipes.map((recipe) => {

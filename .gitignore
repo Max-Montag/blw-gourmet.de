@@ -39,4 +39,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-Impressum.tsx
+/src/app/was-ist-blw/page.tsx
+/src/app/impressum/page.tsx
+/src/app/datenschutz/page.tsx

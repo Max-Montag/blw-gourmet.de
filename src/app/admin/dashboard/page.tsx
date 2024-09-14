@@ -31,7 +31,7 @@ const AdminDashboard: React.FC = () => {
     const fetchRecipes = async () => {
       try {
         const response = await axios.get<AdminRecipePreview[]>(
-          `${apiUrl}/recipes/`,
+          `${apiUrl}/all-recipes/`,
         );
         setRecipes(response.data);
         setLoading(false);
