@@ -5,7 +5,7 @@ import { RecipeData } from "@/types/recipeTypes";
 
 async function getRecipeData(url: string): Promise<RecipeData> {
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/recipe/${url}/`,
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/recipe-detail/${url}/`,
   );
   return res.data;
 }

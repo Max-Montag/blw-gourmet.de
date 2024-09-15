@@ -8,7 +8,7 @@ interface ErrorMessageProps {
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {
   return (
-    <div className="w-full flex justify-center mt-44">
+    <div className="w-full flex justify-center">
       <div className="relative flex flex-col items-center">
         <div className="flex flex-col items-center">
           <PiChefHat size={75} className="text-cyan-200 -mb-4" />

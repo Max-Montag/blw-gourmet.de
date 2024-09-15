@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
 import { LuImagePlus, LuSave } from "react-icons/lu";
 import { FaSpinner } from "react-icons/fa6";
 import { RecipeData } from "@/types/recipeTypes";
@@ -12,10 +11,16 @@ import RecipeDisplay from "@/components/recipe/RecipeDisplay";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import ErrorMessage from "@/components/error/ErrorMessage";
 
-const EditRecipe: React.FC = () => {
+interface EditRecipeProps {
+  params: {
+    url: string;
+  };
+}
+
+const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const { url } = params;
   const router = useRouter();
-  const { url } = useParams<{ url: string }>();
   const [recipe, setRecipe] = useState<RecipeData | null>(null);
   const [imageUploading, setImageUploading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -96,7 +101,7 @@ const EditRecipe: React.FC = () => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get<RecipeData>(
-          `${apiUrl}/recipe/${url}/`,
+          `${apiUrl}/recipes/recipe/${url}/`,
         );
         setRecipe(ensureEmptyFields(response.data));
         setLoading(false);
@@ -145,7 +150,7 @@ const EditRecipe: React.FC = () => {
       };
 
       const response = await axios.put(
-        `${apiUrl}/recipe/update/${url}/`,
+        `${apiUrl}/recipes/recipe/update/${url}/`,
         JSON.stringify(filteredData),
       );
       if (response.status === 200) {
@@ -169,7 +174,7 @@ const EditRecipe: React.FC = () => {
 
       try {
         const response = await axios.post(
-          `${apiUrl}/recipe/upload-image/${recipe.url}/`,
+          `${apiUrl}/recipes/recipe/upload-image/${recipe.url}/`,
           formData,
           {
             headers: {

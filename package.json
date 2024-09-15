@@ -12,7 +12,9 @@
     "blw-gourmet.de": "file:",
     "next": "14.2.11",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "slate": "^0.103.0",
+    "slate-react": "^0.110.1"
   },
   "devDependencies": {
     "@types/node": "^20",

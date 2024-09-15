@@ -8,7 +8,7 @@ interface ArticlePageProps {
 }
 
 async function getArticleData(url: string): Promise<ArticleData | null> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/article/${url}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/article/${url}/`);
   if (!res.ok) {
     return null;
   }
@@ -16,7 +16,7 @@ async function getArticleData(url: string): Promise<ArticleData | null> {
 }
 
 export async function generateStaticParams() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/all-articles/`);
   if (!res.ok) {
     return [];
   }

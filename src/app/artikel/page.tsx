@@ -6,7 +6,7 @@ import { ArticlePreviewData } from "@/types/articleTypes";
 export const revalidate = 3600;
 
 async function getAllArticlesData(): Promise<ArticlePreviewData[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/all-articles/`, {
     next: { revalidate: 3600 },
   });
   if (!res.ok) {

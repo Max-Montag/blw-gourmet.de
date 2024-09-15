@@ -29,7 +29,7 @@ export default function ListRecipes({ params }: Props) {
     const fetchRecipes = async () => {
       try {
         const response = await axios.get<RecipePreview[]>(
-          `${apiUrl}/category/?category=${category}`,
+          `${apiUrl}/recipes/category/?category=${category}`,
         );
         setRecipes(response.data);
         setLoading(false);
@@ -54,6 +54,7 @@ export default function ListRecipes({ params }: Props) {
     return <ErrorMessage message={error} />;
   }
 
+  // Todo extract to Card component
   return (
     <div className="max-w-4xl mx-auto py-4">
       {recipes.length > 0 ? (

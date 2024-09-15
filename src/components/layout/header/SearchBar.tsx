@@ -18,7 +18,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
     const fetchSuggestions = async () => {
       if (searchQuery) {
         try {
-          const response = await axios.get(`${apiUrl}/recipe/search/`, {
+          const response = await axios.get(`${apiUrl}/recipes/recipe/search/`, {
             params: { query: searchQuery },
           });
           setSuggestions(response.data);
