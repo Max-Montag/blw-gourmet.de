@@ -32,8 +32,8 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
         case 'bulleted-list':
           return (
             <ul key={index} className="list-disc list-inside mb-4">
-              {node.children.map((liNode: any, idx: number) => (
-                <li key={idx}>
+              {node.children.map((liNode: any, idx: number) => ( // TODO: Fix key
+                <li key={Math.random()}>
                   {liNode.children.map((child: any, childIdx: number) => renderText(child, childIdx))}
                 </li>
               ))}
@@ -42,8 +42,8 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
         case 'numbered-list':
           return (
             <ol key={index} className="list-decimal list-inside mb-4">
-              {node.children.map((liNode: any, idx: number) => (
-                <li key={idx}>
+              {node.children.map((liNode: any, idx: number) => ( // TODO fix key
+                <li key={Math.random()}>
                   {liNode.children.map((child: any, childIdx: number) => renderText(child, childIdx))}
                 </li>
               ))}

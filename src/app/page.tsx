@@ -8,7 +8,7 @@ const Home = () => {
           Willkommen bei BLW-Gourmet.de!
         </h1>
         <p className="text-lg lg:text-2xl text-gray-600">
-          Entdecke leckere Rezepte für dein Baby-led Weaning Abenteuer!
+          Entdecke leckere Rezepte für euer Baby-led Weaning Abenteuer!
         </p>
       </section>
 

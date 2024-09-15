@@ -58,7 +58,7 @@ export default function ListRecipes({ params }: Props) {
     <div className="max-w-4xl mx-auto py-4">
       {recipes.length > 0 ? (
         <>
-          <h1 className="text-1.5xl text-zinc-700 font-semibold text-start px-4 mb-2">
+          <h1 className="text-1.5xl text-zinc-700 font-semibold text-start mb-4">
             Kategorie:{" "}
             {decodedCategory.charAt(0).toUpperCase() + decodedCategory.slice(1)}
           </h1>
@@ -71,20 +71,27 @@ export default function ListRecipes({ params }: Props) {
                   key={recipe.name}
                   className="flex flex-col justify-between bg-white shadow-sm hover:shadow-md rounded-md cursor-pointer"
                 >
-                  <div className="p-4">
+                  <div className="group">
+                    {recipe.thumbnail && (
+                      <div className="relative overflow-hidden">
                     <img
                       src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.thumbnail}`}
                       alt={recipe.name}
-                      className="w-full h-40 object-cover"
+                      className="w-full h-40 object-cover rounded-t-md group-hover:scale-105 transition-transform duration-200"
                     />
+                    <div className="absolute inset-0 bg-black rounded-t-md opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+                  </div>
+                    )}
+                    <div className="px-2 pb-4">
                     <h2 className="text-md+ font-bold my-2">{recipe.name}</h2>
                     <p className="text-gray-600 text-sm line-clamp-3">
                       {recipe.description || "Keine Beschreibung verfügbar"}
                     </p>
+                    </div>
                   </div>
                   <div>
                     {combinedLabels.length > 0 && (
-                      <div className="flex flex-wrap-reverse -m-1 pb-4 px-4">
+                      <div className="flex flex-wrap-reverse -m-1 pb-4 px-2">
                         {combinedLabels.map((label, index) => (
                           <div
                             key={index}

@@ -26,17 +26,14 @@ export default async function ArticlesPage() {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center marcellus-semibold">
-        Artikel Übersicht
-      </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {articles.map((article) => (
           <Link key={article.url} href={`/artikel/${article.url}`}>
             <div className="bg-white shadow-md rounded-md overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group">
               <div className="relative">
-                {article.optimized_image && (
+                {article.thumbnail && (
                   <img
-                    src={`${apiUrl}${article.optimized_image}`}
+                    src={`${apiUrl}${article.thumbnail}`}
                     alt={article.title}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
                   />

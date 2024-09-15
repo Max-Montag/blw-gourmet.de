@@ -1,7 +1,7 @@
 export interface ArticlePreviewData {
   url: string;
   title: string;
-  optimized_image?: string;
+  thumbnail?: string;
 }
 
 export interface ArticleData {

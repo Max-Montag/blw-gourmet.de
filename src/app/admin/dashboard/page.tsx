@@ -101,6 +101,17 @@ const AdminDashboard: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto py-6">
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <li
+          key={"add"}
+          className="bg-zinc-100 hover:bg-zinc-200 shadow-md rounded-md p-4 cursor-pointer"
+        >
+          <div
+            className="w-full h-full flex flex-col items-center justify-center"
+            onClick={handleAdd}
+          >
+            <FaPlus className="w-32 h-32 text-gray-400 my-8" />
+          </div>
+        </li>
         {recipes.map((recipe) => (
           <li
             key={recipe.url}
@@ -141,17 +152,6 @@ const AdminDashboard: React.FC = () => {
             />
           </li>
         ))}
-        <li
-          key={"add"}
-          className="bg-zinc-100 shadow-md rounded-md p-4 cursor-pointer"
-        >
-          <div
-            className="w-full h-full flex flex-col items-center justify-center"
-            onClick={handleAdd}
-          >
-            <FaPlus className="w-32 h-32 text-gray-400 my-8" />
-          </div>
-        </li>
       </ul>
       <DeleteModal
         show={showDeleteModal}
