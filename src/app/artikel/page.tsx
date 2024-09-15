@@ -1,14 +1,18 @@
-import axios from "axios";
 import React from "react";
 import Link from "next/link";
 import NoArticlesAvailable from "@/components/error/NoArticlesAvailable";
 import { ArticlePreviewData } from "@/types/articleTypes";
 
+export const revalidate = 3600;
+
 async function getAllArticlesData(): Promise<ArticlePreviewData[]> {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/articles/`,
-  );
-  return res.data;
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch articles");
+  }
+  return res.json();
 }
 
 export default async function ArticlesPage() {
