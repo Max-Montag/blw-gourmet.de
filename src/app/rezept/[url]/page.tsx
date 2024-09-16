@@ -1,20 +1,42 @@
-import axios from "axios";
+import React from "react";
+import { RecipeData } from "@/types/recipeTypes";
 import RecipeDisplay from "@/components/recipe/RecipeDisplay";
 import NoRecipesAvailable from "@/components/error/NoRecipesAvailable";
-import { RecipeData } from "@/types/recipeTypes";
 
-async function getRecipeData(url: string): Promise<RecipeData> {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/recipe-detail/${url}/`,
-  );
-  return res.data;
+interface RecipePageProps {
+  params: { url: string };
 }
 
-export default async function RecipePage({
-  params,
-}: {
-  params: { url: string };
-}) {
+async function getRecipeData(url: string): Promise<RecipeData | null> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/recipe-detail/${url}/`,
+    {
+      cache: 'force-cache',
+    },
+  );
+  if (!res.ok) {
+    return null;
+  }
+  return res.json();
+}
+
+export async function generateStaticParams() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/all-recipes/`,
+    {
+      cache: 'force-cache',
+    },
+  );
+  if (!res.ok) {
+    return [];
+  }
+  const recipes: RecipeData[] = await res.json();
+  return recipes.map((recipe) => ({
+    url: recipe.url,
+  }));
+}
+
+export default async function RecipePage({ params }: RecipePageProps) {
   const recipe = await getRecipeData(params.url);
 
   if (!recipe) {

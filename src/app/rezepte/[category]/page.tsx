@@ -1,55 +1,52 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Category from "@/components/recipe/categories/Category";
-import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
+import React from "react";
 import { RecipePreview } from "@/types/recipeTypes";
+import Category from "@/components/recipe/categories/Category";
 import ErrorMessage from "@/components/error/ErrorMessage";
 
-interface Props {
+interface ListRecipesProps {
   params: { category: string };
 }
 
-export default function ListRecipes({ params }: Props) {
+async function getRecipesByCategory(category: string): Promise<RecipePreview[] | null> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/category/?category=${category}`,
+    {
+      cache: 'force-cache',
+    },
+  );
+  if (!res.ok) {
+    return null;
+  }
+  return res.json();
+}
+
+export async function generateStaticParams() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/categories/`,
+    {
+      cache: 'force-cache',
+    },
+  );
+  if (!res.ok) {
+    return [];
+  }
+  const categories: string[] = await res.json();
+  return categories.map((category) => ({
+    category,
+  }));
+}
+
+export default async function ListRecipes({ params }: ListRecipesProps) {
   const { category } = params;
   const decodedCategory = decodeURIComponent(category);
-  const [recipes, setRecipes] = useState<RecipePreview[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const recipes = await getRecipesByCategory(category);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const response = await axios.get<RecipePreview[]>(
-          `${apiUrl}/recipes/category/?category=${category}`,
-        );
-        setRecipes(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError("Fehler beim Abrufen vom Server.");
-        setLoading(false);
-      }
-    };
-
-    fetchRecipes();
-  }, [category, apiUrl]);
-
-  if (loading) {
-    return (
-      <div className="text-center mt-10">
-        <LoadingAnimation />
-      </div>
-    );
+  if (!recipes) {
+    return <ErrorMessage message="Fehler beim Abrufen vom Server." />;
   }
 
-  if (error) {
-    return <ErrorMessage message={error} />;
+  if (recipes.length === 0) {
+    return <ErrorMessage message="Keine Rezepte in dieser Kategorie gefunden." />;
   }
 
   return <Category name={decodedCategory} recipes={recipes} />;

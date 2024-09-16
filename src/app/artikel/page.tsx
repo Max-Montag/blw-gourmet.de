@@ -3,13 +3,11 @@ import NoArticlesAvailable from "@/components/error/NoArticlesAvailable";
 import { ArticlePreviewData } from "@/types/articleTypes";
 import ArticlesList from "@/components/article/ArticleList";
 
-export const revalidate = 3600;
-
 async function getAllArticlesData(): Promise<ArticlePreviewData[]> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/articles/all-articles/`,
     {
-      next: { revalidate: 3600 },
+      cache: 'force-cache',
     },
   );
   if (!res.ok) {
