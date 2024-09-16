@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   createEditor,
   Descendant,
@@ -17,15 +15,13 @@ import {
   RenderElementProps,
   RenderLeafProps,
 } from "slate-react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import LoadingAnimation from "../common/loadingAnimation/LoadingAnimation";
 import { LuHeading1, LuHeading2 } from "react-icons/lu";
 import {
   MdFormatBold,
   MdFormatItalic,
   MdFormatUnderlined,
 } from "react-icons/md";
+import { ArticleData } from "@/types/articleTypes";
 
 type CustomEditor = BaseEditor & ReactEditor;
 
@@ -63,67 +59,28 @@ declare module "slate" {
 }
 
 interface EditArticleDisplayProps {
-  articleUrl: string;
+  articleData: ArticleData;
+  onArticleChange: (article: ArticleData) => void;
 }
 
-const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
-  articleUrl,
-}) => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const router = useRouter();
+const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({ articleData, onArticleChange }) => {
   const [editor] = useState(() => withReact(createEditor()));
-  const [value, setValue] = useState<Descendant[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
+  const [value, setValue] = useState<Descendant[]>(
+    articleData.content && articleData.content.length > 0
+      ? articleData.content
+      : [{ type: "paragraph", children: [{ text: "" }] }]
+  );
+  const [title, setTitle] = useState<string>(articleData.title);
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const response = await axios.get(
-          `${apiUrl}/articles/article/${articleUrl}/`,
-        );
-        setTitle(response.data.title);
-        setValue(
-          response.data.content && response.data.content.length > 0
-            ? response.data.content
-            : [
-                {
-                  type: "paragraph",
-                  children: [{ text: "" }],
-                },
-              ],
-        );
-        setLoading(false);
-      } catch (error) {
-        console.error("Fehler beim Laden des Artikels", error);
-        setLoading(false);
-      }
-    };
+  const onValueChange = (newValue: Descendant[]) => {
+    setValue(newValue);
+    onArticleChange({ ...articleData, content: newValue });
+  }
 
-    fetchArticle();
-  }, [apiUrl, articleUrl]);
-
-  const handleSave = async () => {
-    try {
-      const data = {
-        title: title,
-        content: value,
-      };
-      await axios.put(
-        `${apiUrl}/articles/article/update/${articleUrl}/`,
-        JSON.stringify(data),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      router.push("/admin/dashboard/");
-    } catch (error) {
-      console.error("Fehler beim Speichern des Artikels", error);
-      alert("Fehler beim Speichern des Artikels!");
-    }
-  };
+  const onTitleChange = (newTitle: string) => {
+    setTitle(newTitle);
+    onArticleChange({ ...articleData, title: newTitle });
+  }
 
   const isMarkActive = (editor: Editor, format: string) => {
     const marks = Editor.marks(editor) as { [key: string]: any } | null;
@@ -143,7 +100,7 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
     const [match] = Array.from(
       Editor.nodes(editor, {
         match: (n) => SlateElement.isElement(n) && n.type === format,
-      }),
+      })
     );
     return !!match;
   };
@@ -155,7 +112,7 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
       { type: isActive ? "paragraph" : format },
       {
         match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
-      },
+      }
     );
   };
 
@@ -189,23 +146,19 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
     return <span {...attributes}>{children}</span>;
   }, []);
 
-  if (loading) {
-    return <LoadingAnimation />;
-  }
-
   return (
-    <div className="w-4-xl max-w-4xl mx-auto py-6">
+    <div className="w-full py-6">
       <input
         type="text"
         className="w-full border p-2 mb-4"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Artikeltitel"
+        onChange={(e) => onTitleChange(e.target.value)}
+        placeholder="Titel des Artikels"
       />
       <Slate
         editor={editor}
         initialValue={value}
-        onChange={(newValue) => setValue(newValue)}
+        onChange={(newValue) => onValueChange(newValue)}
       >
         <div className="toolbar mb-2 flex space-x-2">
           <button
@@ -268,17 +221,9 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           placeholder="Artikelinhalt eingeben..."
-          className="border p-4 min-h-screen"
+          className="w-full border p-4 min-h-screen"
         />
       </Slate>
-      <div className="w-full flex justify-center mt-4">
-        <button
-          className="bg-cyan-500 text-white rounded-lg px-4 py-2 mt-4"
-          onClick={handleSave}
-        >
-          Artikel speichern
-        </button>
-      </div>
     </div>
   );
 };
