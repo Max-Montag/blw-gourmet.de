@@ -63,7 +63,7 @@ const AdminDashboard: React.FC = () => {
   const handleAddRecipe = async () => {
     try {
       const response = await axios.post(
-        `${apiUrl}/recipes/recipe/create/`,
+        `${apiUrl}/recipes/create/`,
         JSON.stringify({}),
       );
 
@@ -79,7 +79,7 @@ const AdminDashboard: React.FC = () => {
   const handleAddArticle = async () => {
     try {
       const response = await axios.post(
-        `${apiUrl}/articles/article/create/`,
+        `${apiUrl}/articles/create/`,
         JSON.stringify({}),
       );
 
@@ -177,17 +177,19 @@ const AdminDashboard: React.FC = () => {
             className="bg-white shadow-md hover:shadow-xl rounded-md relative"
           >
             <Link href={`/admin/edit-recipe/${recipe.url}`}>
-            {(recipe.thumbnail) ? (
-              <img
-                src={`${apiUrl}${recipe.thumbnail}`}
-                alt={recipe.name || "Recipe Image"}
-                className="w-full h-40 object-cover"
-              />
-            ) : (
-              <div className="flex justify-center items-center w-full h-40 bg-zinc-300">
-                <span className="text-xs text-zinc-600">Bild nicht gefunden</span>
-              </div>
-            )}
+              {recipe.thumbnail ? (
+                <img
+                  src={`${apiUrl}${recipe.thumbnail}`}
+                  alt={recipe.name || "Recipe Image"}
+                  className="w-full h-40 object-cover"
+                />
+              ) : (
+                <div className="flex justify-center items-center w-full h-40 bg-zinc-300">
+                  <span className="text-xs text-zinc-600">
+                    Bild nicht gefunden
+                  </span>
+                </div>
+              )}
               <div className="p-4">
                 <h2 className="text-lg font-bold mb-2">{recipe.name}</h2>
                 <p className="text-gray-600 mb-4 line-clamp-3">
@@ -238,17 +240,19 @@ const AdminDashboard: React.FC = () => {
             className="bg-white shadow-md hover:shadow-xl rounded-md relative"
           >
             <Link href={`/admin/edit-article/${article.url}`}>
-            {(article.thumbnail) ? (
-              <img
-                src={`${apiUrl}${article.thumbnail}`}
-                alt={article.title || "Article Image"}
-                className="w-full h-40 object-cover"
-              />
-            ) : (
-              <div className="flex justify-center items-center w-full h-40 bg-zinc-300">
-                <span className="text-xs text-zinc-600">Bild nicht gefunden</span>
-              </div>
-            )};
+              {article.thumbnail ? (
+                <img
+                  src={`${apiUrl}${article.thumbnail}`}
+                  alt={article.title || "Article Image"}
+                  className="w-full h-40 object-cover"
+                />
+              ) : (
+                <div className="flex justify-center items-center w-full h-40 bg-zinc-300">
+                  <span className="text-xs text-zinc-600">
+                    Bild nicht gefunden
+                  </span>
+                </div>
+              )}
               <div className="p-4">
                 <h2 className="text-lg font-bold mb-2">{article.title}</h2>
                 <div className="gap-2 mt-2">

@@ -10,11 +10,7 @@ interface PageProps {
 const EditArticlePage: React.FC<PageProps> = ({ params }) => {
   const { article_url } = params;
 
-  return (
-    <div>
-      <EditArticleDisplay articleUrl={article_url} />
-    </div>
-  );
+  return <EditArticleDisplay articleUrl={article_url} />;
 };
 
 export default EditArticlePage;

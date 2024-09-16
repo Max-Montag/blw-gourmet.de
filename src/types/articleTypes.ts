@@ -17,6 +17,6 @@ export interface AdminArticlePreview {
   creation_time: string;
   last_changed: string;
   owner: number;
-  thumbnail: string;
+  thumbnail?: string;
   published: boolean;
 }

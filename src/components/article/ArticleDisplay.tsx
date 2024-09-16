@@ -35,40 +35,6 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
               )}
             </h3>
           );
-        case "bulleted-list":
-          return (
-            <ul key={index} className="list-disc list-inside mb-4">
-              {node.children.map(
-                (
-                  liNode: any,
-                  idx: number, // TODO: Fix key
-                ) => (
-                  <li key={Math.random()}>
-                    {liNode.children.map((child: any, childIdx: number) =>
-                      renderText(child, childIdx),
-                    )}
-                  </li>
-                ),
-              )}
-            </ul>
-          );
-        case "numbered-list":
-          return (
-            <ol key={index} className="list-decimal list-inside mb-4">
-              {node.children.map(
-                (
-                  liNode: any,
-                  idx: number, // TODO fix key
-                ) => (
-                  <li key={Math.random()}>
-                    {liNode.children.map((child: any, childIdx: number) =>
-                      renderText(child, childIdx),
-                    )}
-                  </li>
-                ),
-              )}
-            </ol>
-          );
         case "image":
           return (
             <div key={index} className="my-4">
@@ -125,12 +91,16 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
-        {article.optimized_image && (
+        {article.optimized_image ? (
           <img
             src={`${apiUrl}${article.optimized_image}`}
             alt={article.title}
             className="w-full h-72 object-cover"
           />
+        ) : (
+          <div className="w-full h-72 bg-gray-200">
+            <span className="text-xs text-gray-600">Bild nicht gefunden</span>
+          </div>
         )}
       </div>
       <div className="p-6">
