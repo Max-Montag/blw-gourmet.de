@@ -1,5 +1,5 @@
-import React from 'react';
-import EditArticleDisplay from '@/components/article/EditArticleDisplay';
+import React from "react";
+import EditArticleDisplay from "@/components/article/EditArticleDisplay";
 
 interface PageProps {
   params: {

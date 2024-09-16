@@ -101,7 +101,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get<RecipeData>(
-          `${apiUrl}/recipes/recipe/${url}/`,
+          `${apiUrl}/recipes/recipe/recipe-detail/${url}/`,
         );
         setRecipe(ensureEmptyFields(response.data));
         setLoading(false);

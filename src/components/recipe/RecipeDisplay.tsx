@@ -27,13 +27,17 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
   return (
     <div className="max-w-4xl min-h-48 mx-auto bg-zinc-50 shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
-        {recipe.optimized_image && (
+        {recipe.optimized_image ? (
           <img
             key={recipe.optimized_image}
             src={`${apiUrl}${recipe.optimized_image}`}
             alt={(recipe.name || "Recipe") + " Image"}
             className="w-full h-72 object-cover"
           />
+        ) : (
+          <div className="flex justify-center items-center w-full h-72 bg-zinc-300">
+            <span className="text-xs text-zinc-600">Bild nicht gefunden</span>
+          </div>
         )}
         {combinedLabels.length > 0 && (
           <div className="absolute w-full bottom-0 p-2 flex flex-wrap-reverse">

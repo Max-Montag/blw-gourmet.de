@@ -13,7 +13,6 @@ import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimat
 import ErrorMessage from "@/components/error/ErrorMessage";
 import Link from "next/link";
 
-
 // TODO extract to serpatate component, so that the recipe list can be reused for ordinary (logged in, editing) users
 
 const AdminDashboard: React.FC = () => {
@@ -23,10 +22,16 @@ const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [showDeleteRecipeModal, setShowDeleteRecipeModal] = useState<boolean>(false);
-  const [showDeleteArticleModal, setShowDeleteArticleModal] = useState<boolean>(false);
-  const [selectedRecipeUrl, setSelectedRecipeUrl] = useState<string | null>(null);
-  const [selectedArticleUrl, setSelectedArticleUrl] = useState<string | null>(null);
+  const [showDeleteRecipeModal, setShowDeleteRecipeModal] =
+    useState<boolean>(false);
+  const [showDeleteArticleModal, setShowDeleteArticleModal] =
+    useState<boolean>(false);
+  const [selectedRecipeUrl, setSelectedRecipeUrl] = useState<string | null>(
+    null,
+  );
+  const [selectedArticleUrl, setSelectedArticleUrl] = useState<string | null>(
+    null,
+  );
 
   const router = useRouter();
 
@@ -39,7 +44,9 @@ const AdminDashboard: React.FC = () => {
       try {
         const [recipesResponse, articlesResponse] = await Promise.all([
           axios.get<AdminRecipePreview[]>(`${apiUrl}/recipes/all-recipes/`),
-          axios.get<AdminArticlePreview[]>(`${apiUrl}/articles/admin-all-articles/`),
+          axios.get<AdminArticlePreview[]>(
+            `${apiUrl}/articles/admin-all-articles/`,
+          ),
         ]);
         setRecipes(recipesResponse.data);
         setArticles(articlesResponse.data);
@@ -88,7 +95,9 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteRecipe = async () => {
     if (selectedRecipeUrl) {
       try {
-        await axios.delete(`${apiUrl}/recipes/recipe/delete/${selectedRecipeUrl}/`);
+        await axios.delete(
+          `${apiUrl}/recipes/recipe/delete/${selectedRecipeUrl}/`,
+        );
         setRecipes((prevRecipes) =>
           prevRecipes.filter((recipe) => recipe.url !== selectedRecipeUrl),
         );
@@ -105,7 +114,9 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteArticle = async () => {
     if (selectedArticleUrl) {
       try {
-        await axios.delete(`${apiUrl}/articles/article/delete/${selectedArticleUrl}/`);
+        await axios.delete(
+          `${apiUrl}/articles/article/delete/${selectedArticleUrl}/`,
+        );
         setArticles((prevArticles) =>
           prevArticles.filter((article) => article.url !== selectedArticleUrl),
         );
@@ -166,11 +177,17 @@ const AdminDashboard: React.FC = () => {
             className="bg-white shadow-md hover:shadow-xl rounded-md relative"
           >
             <Link href={`/admin/edit-recipe/${recipe.url}`}>
+            {(recipe.thumbnail) ? (
               <img
                 src={`${apiUrl}${recipe.thumbnail}`}
                 alt={recipe.name || "Recipe Image"}
                 className="w-full h-40 object-cover"
               />
+            ) : (
+              <div className="flex justify-center items-center w-full h-40 bg-zinc-300">
+                <span className="text-xs text-zinc-600">Bild nicht gefunden</span>
+              </div>
+            )}
               <div className="p-4">
                 <h2 className="text-lg font-bold mb-2">{recipe.name}</h2>
                 <p className="text-gray-600 mb-4 line-clamp-3">
@@ -221,11 +238,17 @@ const AdminDashboard: React.FC = () => {
             className="bg-white shadow-md hover:shadow-xl rounded-md relative"
           >
             <Link href={`/admin/edit-article/${article.url}`}>
+            {(article.thumbnail) ? (
               <img
                 src={`${apiUrl}${article.thumbnail}`}
                 alt={article.title || "Article Image"}
                 className="w-full h-40 object-cover"
               />
+            ) : (
+              <div className="flex justify-center items-center w-full h-40 bg-zinc-300">
+                <span className="text-xs text-zinc-600">Bild nicht gefunden</span>
+              </div>
+            )};
               <div className="p-4">
                 <h2 className="text-lg font-bold mb-2">{article.title}</h2>
                 <div className="gap-2 mt-2">

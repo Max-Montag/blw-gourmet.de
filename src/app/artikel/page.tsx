@@ -6,9 +6,12 @@ import { ArticlePreviewData } from "@/types/articleTypes";
 export const revalidate = 3600;
 
 async function getAllArticlesData(): Promise<ArticlePreviewData[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/all-articles/`, {
-    next: { revalidate: 3600 },
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/all-articles/`,
+    {
+      next: { revalidate: 3600 },
+    },
+  );
   if (!res.ok) {
     throw new Error("Failed to fetch articles");
   }
@@ -31,12 +34,14 @@ export default async function ArticlesPage() {
           <Link key={article.url} href={`/artikel/${article.url}`}>
             <div className="bg-white shadow-md rounded-md overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group">
               <div className="relative">
-                {article.thumbnail && (
+                {article.thumbnail ? (
                   <img
                     src={`${apiUrl}${article.thumbnail}`}
                     alt={article.title}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
                   />
+                ) : (
+                  <div className="flex justify-center items-center w-full h-48 bg-zinc-300"><span className="text-xs text-zinc-600">Bild nicht gefunden</span></div>
                 )}
                 <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
               </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { ArticleData } from "@/types/articleTypes";
 
 interface ArticleDisplayProps {
@@ -11,61 +11,83 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
   const renderSlateContent = (content: any) => {
     return content.map((node: any, index: number) => {
       switch (node.type) {
-        case 'paragraph':
+        case "paragraph":
           return (
             <p key={index} className="text-gray-700 text-lg mb-4">
-              {node.children.map((child: any, idx: number) => renderText(child, idx))}
+              {node.children.map((child: any, idx: number) =>
+                renderText(child, idx),
+              )}
             </p>
           );
-        case 'heading-one':
+        case "heading-one":
           return (
             <h2 key={index} className="text-2xl font-semibold mb-4">
-              {node.children.map((child: any, idx: number) => renderText(child, idx))}
+              {node.children.map((child: any, idx: number) =>
+                renderText(child, idx),
+              )}
             </h2>
           );
-        case 'heading-two':
+        case "heading-two":
           return (
             <h3 key={index} className="text-xl font-semibold mb-4">
-              {node.children.map((child: any, idx: number) => renderText(child, idx))}
+              {node.children.map((child: any, idx: number) =>
+                renderText(child, idx),
+              )}
             </h3>
           );
-        case 'bulleted-list':
+        case "bulleted-list":
           return (
             <ul key={index} className="list-disc list-inside mb-4">
-              {node.children.map((liNode: any, idx: number) => ( // TODO: Fix key
-                <li key={Math.random()}>
-                  {liNode.children.map((child: any, childIdx: number) => renderText(child, childIdx))}
-                </li>
-              ))}
+              {node.children.map(
+                (
+                  liNode: any,
+                  idx: number, // TODO: Fix key
+                ) => (
+                  <li key={Math.random()}>
+                    {liNode.children.map((child: any, childIdx: number) =>
+                      renderText(child, childIdx),
+                    )}
+                  </li>
+                ),
+              )}
             </ul>
           );
-        case 'numbered-list':
+        case "numbered-list":
           return (
             <ol key={index} className="list-decimal list-inside mb-4">
-              {node.children.map((liNode: any, idx: number) => ( // TODO fix key
-                <li key={Math.random()}>
-                  {liNode.children.map((child: any, childIdx: number) => renderText(child, childIdx))}
-                </li>
-              ))}
+              {node.children.map(
+                (
+                  liNode: any,
+                  idx: number, // TODO fix key
+                ) => (
+                  <li key={Math.random()}>
+                    {liNode.children.map((child: any, childIdx: number) =>
+                      renderText(child, childIdx),
+                    )}
+                  </li>
+                ),
+              )}
             </ol>
           );
-        case 'image':
+        case "image":
           return (
             <div key={index} className="my-4">
               <img
                 src={`${apiUrl}${node.url}`}
-                alt={node.alt || ''}
+                alt={node.alt || ""}
                 className="w-full h-auto"
               />
             </div>
           );
-        case 'quote':
+        case "quote":
           return (
             <blockquote
               key={index}
               className="border-l-4 border-cyan-700 pl-4 italic text-gray-600 mb-4"
             >
-              {node.children.map((child: any, idx: number) => renderText(child, idx))}
+              {node.children.map((child: any, idx: number) =>
+                renderText(child, idx),
+              )}
             </blockquote>
           );
         default:
