@@ -3,11 +3,13 @@
 import React, { useEffect, useState } from "react";
 import EditArticleDisplay from "@/components/article/EditArticleDisplay";
 import axios from "axios";
+import { FaSave } from "react-icons/fa";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import { ArticleData } from "@/types/articleTypes";
 import ErrorMessage from "@/components/error/ErrorMessage";
 import ArticleDisplay from "@/components/article/ArticleDisplay";
 import { useRouter } from "next/navigation";
+import ImageUpload from "@/components/common/ImageUpload";
 
 interface PageProps {
   params: {
@@ -38,6 +40,13 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
 
     fetchArticle();
   }, [apiUrl, article_url]);
+
+  const setImageUrl = (url: string) => {
+    if (!articleData) {
+      return;
+    }
+    setArticleData({ ...articleData, optimized_image: url });
+  }
 
   const handleSave = async () => {
     try {
@@ -74,14 +83,16 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
 
   return (
     <div className="w-full flex flex-col lg:flex-row space-x-0 lg:space-x-4 p-1">
-        <div className="w-full lg:w-1/2">
-      <EditArticleDisplay articleData={articleData} onArticleChange={setArticleData} />
-      <button
-        className="bg-cyan-700 text-white px-4 py-2 mt-4"
-        onClick={handleSave}
-      >
-        Speichern
-      </button>
+      <div className="w-full lg:w-1/2">
+        <EditArticleDisplay articleData={articleData} onArticleChange={setArticleData} />
+        <div className="flex justify-center space-x-4">
+          <button
+            onClick={handleSave}
+          >
+            <FaSave className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+          </button>
+          <ImageUpload setImageUrl={setImageUrl} uploadUrl={`/articles/article/upload-image/${articleData.url}/`} />
+        </div>
       </div>
       <div className="w-full lg:w-1/2">
         <ArticleDisplay article={articleData} />
