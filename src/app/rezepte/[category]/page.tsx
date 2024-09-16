@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Category from "@/components/categories/Category";
+import Category from "@/components/recipe/categories/Category";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import { RecipePreview } from "@/types/recipeTypes";
 import ErrorMessage from "@/components/error/ErrorMessage";
@@ -52,7 +52,5 @@ export default function ListRecipes({ params }: Props) {
     return <ErrorMessage message={error} />;
   }
 
-  return (
-    <Category name={decodedCategory} recipes={recipes} />
-  );
+  return <Category name={decodedCategory} recipes={recipes} />;
 }

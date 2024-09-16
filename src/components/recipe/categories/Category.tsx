@@ -1,7 +1,7 @@
+import Link from "next/link";
 import IconText from "@/components/common/IconText";
 import { RecipePreview } from "@/types/recipeTypes";
-import Link from "next/link";
-import NoRecipesAvailable from "../error/NoRecipesAvailable";
+import NoRecipesAvailable from "@/components/error/NoRecipesAvailable";
 
 interface CategoryProps {
   name: string;
@@ -14,8 +14,7 @@ const Category: React.FC<CategoryProps> = ({ name, recipes }) => {
       {recipes.length > 0 ? (
         <>
           <h1 className="text-1.5xl text-zinc-700 font-semibold text-start mb-4">
-            Kategorie:{" "}
-            {name.charAt(0).toUpperCase() + name.slice(1)}
+            Kategorie: {name.charAt(0).toUpperCase() + name.slice(1)}
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 scroll-smooth">
             {recipes.map((recipe) => {
@@ -74,6 +73,6 @@ const Category: React.FC<CategoryProps> = ({ name, recipes }) => {
       )}
     </div>
   );
-}
+};
 
 export default Category;

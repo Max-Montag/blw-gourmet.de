@@ -1,4 +1,4 @@
-import CategoryList from "@/components/categories/CategoryList";
+import CategoryList from "@/components/recipe/categories/CategoryList";
 
 const Home = () => {
   return (
