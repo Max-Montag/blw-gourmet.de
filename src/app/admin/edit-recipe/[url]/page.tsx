@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { LuImagePlus, LuSave } from "react-icons/lu";
-import { FaSpinner } from "react-icons/fa6";
+import { FaSave } from "react-icons/fa";
 import { RecipeData } from "@/types/recipeTypes";
 import EditRecipeDisplay from "@/components/recipe/EditRecipeDisplay";
 import RecipeDisplay from "@/components/recipe/RecipeDisplay";
+import { ensureEmptyFields } from "@/utils/recipeUtils";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import ErrorMessage from "@/components/error/ErrorMessage";
+import ImageUpload from "@/components/common/ImageUpload";
 
 interface EditRecipeProps {
   params: {
@@ -22,7 +23,6 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const { url } = params;
   const router = useRouter();
   const [recipe, setRecipe] = useState<RecipeData | null>(null);
-  const [imageUploading, setImageUploading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,71 +30,11 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const ensureEmptyFields = (data: RecipeData): RecipeData => {
-    return {
-      ...data,
-      labels:
-        data.labels && data.labels[data.labels.length - 1] !== ""
-          ? [...data.labels, ""]
-          : data.labels || [""],
-      ingredients: data.ingredients
-        ? data.ingredients.length > 0
-          ? data.ingredients[data.ingredients.length - 1]?.ingredient !== ""
-            ? [...data.ingredients, { ingredient: "", amount: 0, unit: "" }]
-            : data.ingredients || [{ ingredient: "", amount: 0, unit: "" }]
-          : [{ ingredient: "", amount: 0, unit: "" }]
-        : [{ ingredient: "", amount: 0, unit: "" }],
-      tools:
-        data.tools && data.tools[data.tools.length - 1] !== ""
-          ? [...data.tools, ""]
-          : data.tools || [""],
-      instructions: data.instructions
-        ? [
-            ...data.instructions.map((instruction) => ({
-              ...instruction,
-              ingredients:
-                instruction.ingredients && instruction.ingredients.length > 0
-                  ? instruction.ingredients[instruction.ingredients.length - 1]
-                      ?.ingredient !== ""
-                    ? [
-                        ...instruction.ingredients,
-                        { ingredient: "", amount: 0, unit: "" },
-                      ]
-                    : instruction.ingredients
-                  : [{ ingredient: "", amount: 0, unit: "" }],
-              tools:
-                instruction.tools && instruction.tools.length > 0
-                  ? instruction.tools[instruction.tools.length - 1] !== ""
-                    ? [...instruction.tools, ""]
-                    : instruction.tools
-                  : [""],
-            })),
-            ...(data.instructions.length === 0 ||
-            data.instructions[data.instructions.length - 1]?.instruction !== ""
-              ? [
-                  {
-                    name: "",
-                    ingredients: [{ ingredient: "", amount: 0, unit: "" }],
-                    tools: [""],
-                    instruction: "",
-                  },
-                ]
-              : []),
-          ]
-        : [
-            {
-              name: "",
-              ingredients: [{ ingredient: "", amount: 0, unit: "" }],
-              tools: [""],
-              instruction: "",
-            },
-          ],
-      dining_times:
-        data.dining_times &&
-        data.dining_times[data.dining_times.length - 1] !== ""
-          ? [...data.dining_times, ""]
-          : data.dining_times || [""],
-    };
+  const setImageUrl = (url: string) => {
+    if (!recipe) {
+      return;
+    }
+    setRecipe({ ...recipe, optimized_image: url });
   };
 
   useEffect(() => {
@@ -162,42 +102,6 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     }
   };
 
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    if (event.target.files && event.target.files[0] && recipe) {
-      const file = event.target.files[0];
-      const formData = new FormData();
-      formData.append("image", file);
-
-      setImageUploading(true);
-
-      try {
-        const response = await axios.post(
-          `${apiUrl}/recipes/recipe/upload-image/${recipe.url}/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          },
-        );
-
-        if (response.status === 200) {
-          const imageUrl = response.data.optimized_image_url;
-
-          setRecipe((prevRecipe) =>
-            prevRecipe ? { ...prevRecipe, optimized_image: imageUrl } : null,
-          );
-        }
-      } catch (error) {
-        console.error("Bildupload fehlgeschlagen:", error);
-      } finally {
-        setImageUploading(false);
-      }
-    }
-  };
-
   const handleJsonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     try {
       const updatedRecipe = ensureEmptyFields(JSON.parse(e.target.value));
@@ -231,32 +135,26 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     return <ErrorMessage message="Rezept nicht gefunden!" />;
   }
 
+  const navButtons = (
+    <div className="flex justify-center my-4 space-x-4">
+      <FaSave
+        className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer"
+        onClick={handleSubmit}
+      />
+      <ImageUpload
+        setImageUrl={setImageUrl}
+        uploadUrl={`/recipes/recipe/upload-image/${url}/`}
+      />
+    </div>
+  );
+
   return (
     <div className="relative w-full mx-auto lg:p-6 bg-white shadow-md rounded-md">
-      <div className="mt-4 lg:mt-0 flex justify-center space-x-4 z-10 lg:absolute lg:top-12 lg:right-12">
-        <LuSave
-          className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer"
-          onClick={handleSubmit}
-        />
-        <label htmlFor="image-upload">
-          {!imageUploading && (
-            <LuImagePlus className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
-          )}
-        </label>
-        <input
-          id="image-upload"
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="hidden"
-        />
-        {imageUploading && (
-          <FaSpinner className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer animate-spin" />
-        )}
-      </div>
       <div className="w-full flex flex-col lg:flex-row space-x-0 lg:space-x-4">
         <div className="w-full lg:w-1/2">
+          {navButtons}
           <EditRecipeDisplay recipe={recipe} onRecipeChange={setRecipe} />
+          {navButtons}
         </div>
         <div className="w-full lg:w-1/2 flex flex-col flex-grow">
           <div className="min-h-48">

@@ -28,7 +28,7 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
     const fetchArticle = async () => {
       try {
         const response = await axios.get<ArticleData>(
-          `${apiUrl}/articles/article/${article_url}/`
+          `${apiUrl}/articles/article/${article_url}/`,
         );
         setArticleData(response.data);
         setLoading(false);
@@ -46,7 +46,7 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
       return;
     }
     setArticleData({ ...articleData, optimized_image: url });
-  }
+  };
 
   const handleSave = async () => {
     try {
@@ -64,12 +64,12 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       router.push("/admin/dashboard/");
     } catch (error) {
       console.error("Fehler beim Speichern des Artikels", error);
-      alert( error);
+      alert(error);
     }
   };
 
@@ -78,20 +78,24 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
   }
 
   if (!articleData) {
-    return <ErrorMessage message="Artikel nicht gefunden" />
+    return <ErrorMessage message="Artikel nicht gefunden" />;
   }
 
   return (
     <div className="w-full flex flex-col lg:flex-row space-x-0 lg:space-x-4 p-1">
       <div className="w-full lg:w-1/2">
-        <EditArticleDisplay articleData={articleData} onArticleChange={setArticleData} />
-        <div className="flex justify-center space-x-4">
-          <button
-            onClick={handleSave}
-          >
+        <EditArticleDisplay
+          articleData={articleData}
+          onArticleChange={setArticleData}
+        />
+        <div className="flex justify-center space-x-4 my-4">
+          <button onClick={handleSave}>
             <FaSave className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
           </button>
-          <ImageUpload setImageUrl={setImageUrl} uploadUrl={`/articles/article/upload-image/${articleData.url}/`} />
+          <ImageUpload
+            setImageUrl={setImageUrl}
+            uploadUrl={`/articles/article/upload-image/${articleData.url}/`}
+          />
         </div>
       </div>
       <div className="w-full lg:w-1/2">

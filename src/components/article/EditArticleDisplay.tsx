@@ -63,24 +63,27 @@ interface EditArticleDisplayProps {
   onArticleChange: (article: ArticleData) => void;
 }
 
-const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({ articleData, onArticleChange }) => {
+const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
+  articleData,
+  onArticleChange,
+}) => {
   const [editor] = useState(() => withReact(createEditor()));
   const [value, setValue] = useState<Descendant[]>(
     articleData.content && articleData.content.length > 0
       ? articleData.content
-      : [{ type: "paragraph", children: [{ text: "" }] }]
+      : [{ type: "paragraph", children: [{ text: "" }] }],
   );
   const [title, setTitle] = useState<string>(articleData.title);
 
   const onValueChange = (newValue: Descendant[]) => {
     setValue(newValue);
     onArticleChange({ ...articleData, content: newValue });
-  }
+  };
 
   const onTitleChange = (newTitle: string) => {
     setTitle(newTitle);
     onArticleChange({ ...articleData, title: newTitle });
-  }
+  };
 
   const isMarkActive = (editor: Editor, format: string) => {
     const marks = Editor.marks(editor) as { [key: string]: any } | null;
@@ -100,7 +103,7 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({ articleData, on
     const [match] = Array.from(
       Editor.nodes(editor, {
         match: (n) => SlateElement.isElement(n) && n.type === format,
-      })
+      }),
     );
     return !!match;
   };
@@ -112,7 +115,7 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({ articleData, on
       { type: isActive ? "paragraph" : format },
       {
         match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
-      }
+      },
     );
   };
 
@@ -147,7 +150,7 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({ articleData, on
   }, []);
 
   return (
-    <div className="w-full py-6">
+    <div className="w-full">
       <input
         type="text"
         className="w-full border p-2 mb-4"

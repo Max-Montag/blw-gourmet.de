@@ -7,7 +7,10 @@ interface ImageUploadProps {
   uploadUrl: string;
 }
 
-const imageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, uploadUrl }) => {
+const imageUpload: React.FC<ImageUploadProps> = ({
+  setImageUrl,
+  uploadUrl,
+}) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,8 +37,8 @@ const imageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, uploadUrl }) => 
 
       if (response.status === 200) {
         const imageUrl = response.data.optimized_image_url;
-      setImageUrl(imageUrl);
-      setUploading(false);
+        setImageUrl(imageUrl);
+        setUploading(false);
       }
     } catch (error) {
       console.error("Fehler beim Upload des Bildes", error);
@@ -63,6 +66,6 @@ const imageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, uploadUrl }) => 
       {error && <p>{error}</p>}
     </div>
   );
-}
+};
 
 export default imageUpload;
