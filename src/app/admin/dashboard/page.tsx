@@ -12,6 +12,7 @@ import DeleteModal from "@/components/common/DeleteModal";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import ErrorMessage from "@/components/error/ErrorMessage";
 import Link from "next/link";
+import Image from "next/image";
 
 // TODO extract to serpatate component, so that the recipe list can be reused for ordinary (logged in, editing) users
 
@@ -178,7 +179,7 @@ const AdminDashboard: React.FC = () => {
           >
             <Link href={`/admin/edit-recipe/${recipe.url}`}>
               {recipe.thumbnail ? (
-                <img
+                <Image
                   src={`${apiUrl}${recipe.thumbnail}`}
                   alt={recipe.name || "Recipe Image"}
                   className="w-full h-40 object-cover"
@@ -241,7 +242,7 @@ const AdminDashboard: React.FC = () => {
           >
             <Link href={`/admin/edit-article/${article.url}`}>
               {article.thumbnail ? (
-                <img
+                <Image
                   src={`${apiUrl}${article.thumbnail}`}
                   alt={article.title || "Article Image"}
                   className="w-full h-40 object-cover"

@@ -1,5 +1,6 @@
 import React from "react";
-import { ArticleData } from "@/types/articleTypes";
+import { ArticleData, SlateNode, SlateTextNode } from "@/types/articleTypes";
+import Image from "next/image";
 
 interface ArticleDisplayProps {
   article: ArticleData;
@@ -8,13 +9,13 @@ interface ArticleDisplayProps {
 const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const renderSlateContent = (content: any) => {
-    return content.map((node: any, index: number) => {
+  const renderSlateContent = (content: SlateNode[]) => {
+    return content.map((node: SlateNode, index: number) => {
       switch (node.type) {
         case "paragraph":
           return (
             <p key={index} className="text-gray-700 text-lg mb-4">
-              {node.children.map((child: any, idx: number) =>
+              {node.children.map((child: SlateTextNode, idx: number) =>
                 renderText(child, idx),
               )}
             </p>
@@ -22,7 +23,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
         case "heading-one":
           return (
             <h2 key={index} className="text-2xl font-semibold mb-4">
-              {node.children.map((child: any, idx: number) =>
+              {node.children.map((child: SlateTextNode, idx: number) =>
                 renderText(child, idx),
               )}
             </h2>
@@ -30,7 +31,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
         case "heading-two":
           return (
             <h3 key={index} className="text-xl font-semibold mb-4">
-              {node.children.map((child: any, idx: number) =>
+              {node.children.map((child: SlateTextNode, idx: number) =>
                 renderText(child, idx),
               )}
             </h3>
@@ -38,7 +39,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
         case "image":
           return (
             <div key={index} className="my-4">
-              <img
+              <Image
                 src={`${apiUrl}${node.url}`}
                 alt={node.alt || ""}
                 className="w-full h-auto"
@@ -51,7 +52,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
               key={index}
               className="border-l-4 border-cyan-700 pl-4 italic text-gray-600 mb-4"
             >
-              {node.children.map((child: any, idx: number) =>
+              {node.children.map((child: SlateTextNode, idx: number) =>
                 renderText(child, idx),
               )}
             </blockquote>
@@ -62,7 +63,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
     });
   };
 
-  const renderText = (node: any, index: number) => {
+  const renderText = (node: SlateTextNode, index: number) => {
     let text = <>{node.text}</>;
 
     if (node.bold) {
@@ -92,7 +93,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
         {article.optimized_image ? (
-          <img
+          <Image
             src={`${apiUrl}${article.optimized_image}`}
             alt={article.title}
             className="w-full h-72 object-cover"

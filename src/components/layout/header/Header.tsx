@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { CiMenuBurger } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
-import Link from "next/link";
 import SearchBar from "./SearchBar";
 
 const menuItems = [
@@ -14,40 +15,30 @@ const menuItems = [
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true); // TODO context!!!!
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // TODO context!!!!
+  const isAdmin = true; // TODO context!!!!
+  const isAuthenticated = true; // TODO context!!!!
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const headerRef = useRef<HTMLDivElement>(null);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
+  const handleClickOutside = useCallback((event: MouseEvent) => {
     if (
       headerRef.current &&
       !headerRef.current.contains(event.target as Node)
     ) {
       setIsMenuOpen(false);
     }
-  };
+  }, []);
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
-
     if (currentScrollY > lastScrollY && currentScrollY > 100 && !isMenuOpen) {
       setIsVisible(false);
     } else {
       setIsVisible(true);
     }
-
     setLastScrollY(currentScrollY);
-  };
+  }, [lastScrollY, isMenuOpen]);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -57,7 +48,15 @@ const Header: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [lastScrollY]);
+  }, [handleClickOutside, handleScroll]);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <header
@@ -72,7 +71,7 @@ const Header: React.FC = () => {
             href="/"
             className="text-2xl font-bold text-cyan-950 cursor-pointer"
           >
-            <img src="/logo512.png" alt="Logo" className="h-8 w-8" />
+            <Image src="/logo512.png" alt="Logo" className="h-8 w-8" />
           </Link>
           <nav className="ml-4 divide-x divide-cyan-600 hidden lg:block">
             {menuItems.map((item) => (

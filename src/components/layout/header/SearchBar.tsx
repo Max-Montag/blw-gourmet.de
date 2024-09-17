@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { CiSearch } from "react-icons/ci";
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
 import { RecipePreview } from "../../../types/recipeTypes";
 
 type SearchBarProps = {
@@ -14,28 +15,28 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
   const [suggestions, setSuggestions] = useState<RecipePreview[]>([]);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      if (searchQuery) {
-        try {
-          const response = await axios.get(`${apiUrl}/recipes/recipe/search/`, {
-            params: { query: searchQuery },
-          });
-          setSuggestions(response.data);
-        } catch (error) {
-          console.error("Error fetching suggestions:", error);
-        }
-      } else {
-        setSuggestions([]);
+  const fetchSuggestions = useCallback(async () => {
+    if (searchQuery) {
+      try {
+        const response = await axios.get(`${apiUrl}/recipes/recipe/search/`, {
+          params: { query: searchQuery },
+        });
+        setSuggestions(response.data);
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
       }
-    };
+    } else {
+      setSuggestions([]);
+    }
+  }, [apiUrl, searchQuery]);
 
+  useEffect(() => {
     const debounceSearch = setTimeout(() => {
       fetchSuggestions();
     }, 300);
 
     return () => clearTimeout(debounceSearch);
-  }, [searchQuery]);
+  }, [fetchSuggestions]);
 
   const handleLinkClick = (suggestionName: string) => {
     closeMenu();
@@ -65,7 +66,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
               className="flex items-center p-2 hover:bg-cyan-100 transition-all"
             >
               {suggestion.thumbnail ? (
-                <img
+                <Image
                   src={apiUrl + suggestion.thumbnail}
                   alt={suggestion.name}
                   className="w-12 h-12 rounded-md object-cover mr-3"

@@ -20,3 +20,18 @@ export interface AdminArticlePreview {
   thumbnail?: string;
   published: boolean;
 }
+
+export interface SlateTextNode {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  code?: boolean;
+}
+
+export interface SlateNode {
+  type: string;
+  children: SlateTextNode[];
+  url?: string;
+  alt?: string;
+}

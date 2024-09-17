@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import IconText from "@/components/common/IconText";
 import { RecipePreview } from "@/types/recipeTypes";
 import NoRecipesAvailable from "@/components/error/NoRecipesAvailable";
@@ -23,17 +24,17 @@ const Category: React.FC<CategoryProps> = ({ name, recipes }) => {
                 <Link
                   href={`/rezept/${recipe.url}`}
                   key={recipe.name}
-                  className="flex flex-col justify-between bg-white shadow-sm hover:shadow-md rounded-md cursor-pointer"
+                  className="flex flex-col justify-between bg-white shadow-sm hover:shadow-md sm:rounded-md cursor-pointer"
                 >
                   <div className="group">
                     {recipe.thumbnail ? (
                       <div className="relative overflow-hidden">
-                        <img
+                        <Image
                           src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.thumbnail}`}
                           alt={recipe.name}
-                          className="w-full h-40 object-cover rounded-t-md group-hover:scale-105 transition-transform duration-200"
+                          className="w-full h-40 object-cover sm:rounded-t-md group-hover:scale-105 transition-transform duration-200"
                         />
-                        <div className="absolute inset-0 bg-black rounded-t-md opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+                        <div className="absolute inset-0 bg-black sm:rounded-t-md opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
                       </div>
                     ) : (
                       <div className="flex justify-center items-center w-full h-40 bg-zinc-300">

@@ -7,11 +7,13 @@ interface ListRecipesProps {
   params: { category: string };
 }
 
-async function getRecipesByCategory(category: string): Promise<RecipePreview[] | null> {
+async function getRecipesByCategory(
+  category: string,
+): Promise<RecipePreview[] | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/category/?category=${category}`,
     {
-      cache: 'force-cache',
+      cache: "force-cache",
     },
   );
   if (!res.ok) {
@@ -24,7 +26,7 @@ export async function generateStaticParams() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/categories/`,
     {
-      cache: 'force-cache',
+      cache: "force-cache",
     },
   );
   if (!res.ok) {
@@ -46,7 +48,9 @@ export default async function ListRecipes({ params }: ListRecipesProps) {
   }
 
   if (recipes.length === 0) {
-    return <ErrorMessage message="Keine Rezepte in dieser Kategorie gefunden." />;
+    return (
+      <ErrorMessage message="Keine Rezepte in dieser Kategorie gefunden." />
+    );
   }
 
   return <Category name={decodedCategory} recipes={recipes} />;

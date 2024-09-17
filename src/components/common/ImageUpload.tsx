@@ -7,7 +7,7 @@ interface ImageUploadProps {
   uploadUrl: string;
 }
 
-const imageUpload: React.FC<ImageUploadProps> = ({
+const ImageUpload: React.FC<ImageUploadProps> = ({
   setImageUrl,
   uploadUrl,
 }) => {
@@ -68,4 +68,4 @@ const imageUpload: React.FC<ImageUploadProps> = ({
   );
 };
 
-export default imageUpload;
+export default ImageUpload;

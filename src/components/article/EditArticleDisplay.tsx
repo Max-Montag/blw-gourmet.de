@@ -47,7 +47,7 @@ type FormattedText = {
   bold?: boolean;
   italic?: boolean;
   underline?: boolean;
-  [key: string]: any;
+  [key: string]: boolean | string | undefined;
 };
 
 declare module "slate" {
@@ -85,8 +85,11 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
     onArticleChange({ ...articleData, title: newTitle });
   };
 
-  const isMarkActive = (editor: Editor, format: string) => {
-    const marks = Editor.marks(editor) as { [key: string]: any } | null;
+  const isMarkActive = (editor: Editor, format: string): boolean => {
+    const marks = Editor.marks(editor) as Record<
+      string,
+      boolean | undefined
+    > | null;
     return marks ? marks[format] === true : false;
   };
 
@@ -132,7 +135,9 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
   }, []);
 
   const renderLeaf = useCallback((props: RenderLeafProps) => {
-    let { attributes, children, leaf } = props;
+    const attributes = props.attributes;
+    const leaf = props.leaf;
+    let children = props.children;
 
     if (leaf.bold) {
       children = <strong>{children}</strong>;

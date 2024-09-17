@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArticlePreviewData } from "@/types/articleTypes";
+import Image from "next/image";
 
 interface ArticleListProps {
   articles: ArticlePreviewData[];
@@ -17,7 +18,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ articles }) => {
             <div className="h-full bg-white shadow-md rounded-md overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group">
               <div className="relative overflow-hidden">
                 {article.thumbnail ? (
-                  <img
+                  <Image
                     src={`${apiUrl}${article.thumbnail}`}
                     alt={article.title}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"

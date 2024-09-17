@@ -1,11 +1,12 @@
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { PiCookingPot } from "react-icons/pi";
 import { CiShoppingBasket } from "react-icons/ci";
 import Fraction from "fraction.js";
 import IconText from "@/components/common/IconText";
 import { RecipeData } from "@/types/recipeTypes";
 import AccurateTimerIcon from "@/components/common/AccurateTimerIcon";
-import Link from "next/link";
 
 interface DecimalToFractionProps {
   decimal: number;
@@ -28,7 +29,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
     <div className="max-w-4xl min-h-48 mx-auto bg-zinc-50 shadow-md rounded-md scroll-smooth teachers-regular">
       <div className="relative">
         {recipe.optimized_image ? (
-          <img
+          <Image
             key={recipe.optimized_image}
             src={`${apiUrl}${recipe.optimized_image}`}
             alt={(recipe.name || "Recipe") + " Image"}

@@ -11,7 +11,7 @@ async function getRecipeData(url: string): Promise<RecipeData | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/recipe-detail/${url}/`,
     {
-      cache: 'force-cache',
+      cache: "force-cache",
     },
   );
   if (!res.ok) {
@@ -24,7 +24,7 @@ export async function generateStaticParams() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/all-recipes/`,
     {
-      cache: 'force-cache',
+      cache: "force-cache",
     },
   );
   if (!res.ok) {
