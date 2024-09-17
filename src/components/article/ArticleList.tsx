@@ -21,6 +21,8 @@ const ArticleList: React.FC<ArticleListProps> = ({ articles }) => {
                   <Image
                     src={`${apiUrl}${article.thumbnail}`}
                     alt={article.title}
+                    width={288}
+                    height={192}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
                   />
                 ) : (

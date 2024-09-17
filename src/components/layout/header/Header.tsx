@@ -71,7 +71,7 @@ const Header: React.FC = () => {
             href="/"
             className="text-2xl font-bold text-cyan-950 cursor-pointer"
           >
-            <Image src="/logo512.png" alt="Logo" className="h-8 w-8" />
+            <Image width={32} height={32} src="/logo512.png" alt="Logo" />
           </Link>
           <nav className="ml-4 divide-x divide-cyan-600 hidden lg:block">
             {menuItems.map((item) => (

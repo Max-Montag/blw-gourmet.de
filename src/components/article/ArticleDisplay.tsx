@@ -96,6 +96,8 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
           <Image
             src={`${apiUrl}${article.optimized_image}`}
             alt={article.title}
+            height={288}
+            width={512}
             className="w-full h-72 object-cover"
           />
         ) : (

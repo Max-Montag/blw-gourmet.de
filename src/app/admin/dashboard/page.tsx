@@ -182,6 +182,8 @@ const AdminDashboard: React.FC = () => {
                 <Image
                   src={`${apiUrl}${recipe.thumbnail}`}
                   alt={recipe.name || "Recipe Image"}
+                  width={288}
+                  height={192}
                   className="w-full h-40 object-cover"
                 />
               ) : (
@@ -245,6 +247,8 @@ const AdminDashboard: React.FC = () => {
                 <Image
                   src={`${apiUrl}${article.thumbnail}`}
                   alt={article.title || "Article Image"}
+                  width={288}
+                  height={192}
                   className="w-full h-40 object-cover"
                 />
               ) : (

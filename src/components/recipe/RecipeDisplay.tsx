@@ -33,6 +33,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
             key={recipe.optimized_image}
             src={`${apiUrl}${recipe.optimized_image}`}
             alt={(recipe.name || "Recipe") + " Image"}
+            width={512}
+            height={288}
             className="w-full h-72 object-cover"
           />
         ) : (

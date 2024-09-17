@@ -32,6 +32,8 @@ const Category: React.FC<CategoryProps> = ({ name, recipes }) => {
                         <Image
                           src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.thumbnail}`}
                           alt={recipe.name}
+                          width={240}
+                          height={160}
                           className="w-full h-40 object-cover sm:rounded-t-md group-hover:scale-105 transition-transform duration-200"
                         />
                         <div className="absolute inset-0 bg-black sm:rounded-t-md opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
