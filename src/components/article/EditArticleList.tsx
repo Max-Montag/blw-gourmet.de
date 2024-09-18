@@ -2,46 +2,46 @@ import { FaPlus } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import Link from "next/link";
 import Image from "next/image";
-import { AdminRecipePreview } from "@/types/recipeTypes";
+import { AdminArticlePreview } from "@/types/articleTypes";
 
-interface EditRecipeListProps {
-  recipes: AdminRecipePreview[];
+interface EditArticleListProps {
+  articles: AdminArticlePreview[];
   apiUrl?: string;
-  handleAddRecipe: () => void;
-  openDeleteRecipeModal: (recipeUrl: string) => void;
+  handleAddArticle: () => void;
+  openDeleteArticleModal: (articleUrl: string) => void;
   formatDate: (dateString: string) => string;
 }
 
-const EditRecipeList: React.FC<EditRecipeListProps> = ({
-  recipes,
+const EditArticleList: React.FC<EditArticleListProps> = ({
+  articles,
   apiUrl,
-  handleAddRecipe,
-  openDeleteRecipeModal,
+  handleAddArticle,
+  openDeleteArticleModal,
   formatDate,
 }) => {
   return (
     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       <li
-        key={"add_recipe"}
+        key={"add_article"}
         className="bg-zinc-100 hover:bg-zinc-200 shadow-md rounded-md p-4 cursor-pointer"
       >
         <div
           className="w-full h-full flex flex-col items-center justify-center"
-          onClick={handleAddRecipe}
+          onClick={handleAddArticle}
         >
           <FaPlus className="w-32 h-32 text-gray-400 my-8" />
         </div>
       </li>
-      {recipes.map((recipe) => (
+      {articles.map((article) => (
         <li
-          key={recipe.url}
+          key={article.url}
           className="bg-white shadow-md hover:shadow-xl rounded-md relative"
         >
-          <Link href={`/admin/edit-recipe/${recipe.url}`}>
-            {recipe.thumbnail ? (
+          <Link href={`/admin/edit-article/${article.url}`}>
+            {article.thumbnail ? (
               <Image
-                src={`${apiUrl}${recipe.thumbnail}`}
-                alt={recipe.name || "Rezeptbild"}
+                src={`${apiUrl}${article.thumbnail}`}
+                alt={article.title || "Article Image"}
                 width={288}
                 height={192}
                 className="w-full h-40 object-cover"
@@ -52,23 +52,23 @@ const EditRecipeList: React.FC<EditRecipeListProps> = ({
               </div>
             )}
             <div className="p-4">
-              <h2 className="text-lg font-bold mb-2">{recipe.name}</h2>
-              <p className="text-gray-600 mb-4 line-clamp-3">
-                {recipe.description || "Keine Beschreibung verfügbar"}
-              </p>
+              <h2 className="text-lg font-bold mb-2">{article.title}</h2>
               <div className="gap-2 mt-2">
-                {recipe.creation_time && (
+                {article.creation_time && (
                   <p className="text-sm text-gray-500">
-                    Erstellt: {formatDate(recipe.creation_time)}
+                    Erstellt: {formatDate(article.creation_time)}
                   </p>
                 )}
-                {recipe.last_changed && (
+                {article.last_changed && (
                   <p className="text-sm text-gray-500">
-                    Bearbeitet: {formatDate(recipe.last_changed)}
+                    Bearbeitet: {formatDate(article.last_changed)}
                   </p>
                 )}
                 <p className="text-sm text-gray-500">
-                  Ersteller: {recipe.owner === 1 ? "Admin" : "User"}
+                  Ersteller: {article.owner === 1 ? "Admin" : "User"}
+                </p>
+                <p className="text-sm text-gray-500">
+                  Veröffentlicht: {article.published ? "Ja" : "Nein"}
                 </p>
               </div>
             </div>
@@ -76,7 +76,7 @@ const EditRecipeList: React.FC<EditRecipeListProps> = ({
           <MdDeleteOutline
             className="absolute top-2 right-2 text-red-500 cursor-pointer"
             size={24}
-            onClick={() => openDeleteRecipeModal(recipe.url)}
+            onClick={() => openDeleteArticleModal(article.url)}
           />
         </li>
       ))}
@@ -84,4 +84,4 @@ const EditRecipeList: React.FC<EditRecipeListProps> = ({
   );
 };
 
-export default EditRecipeList;
+export default EditArticleList;
