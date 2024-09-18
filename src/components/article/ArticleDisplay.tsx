@@ -1,6 +1,7 @@
 import React from "react";
-import { ArticleData, SlateNode, SlateTextNode } from "@/types/articleTypes";
+import { Descendant, Element as SlateElement, Text as SlateText } from "slate";
 import Image from "next/image";
+import { ArticleData } from "@/types/articleTypes";
 
 interface ArticleDisplayProps {
   article: ArticleData;
@@ -9,61 +10,42 @@ interface ArticleDisplayProps {
 const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const renderSlateContent = (content: SlateNode[]) => {
-    return content.map((node: SlateNode, index: number) => {
-      switch (node.type) {
-        case "paragraph":
-          return (
-            <p key={index} className="text-gray-700 text-lg mb-4">
-              {node.children.map((child: SlateTextNode, idx: number) =>
-                renderText(child, idx),
-              )}
-            </p>
-          );
-        case "heading-one":
-          return (
-            <h2 key={index} className="text-2xl font-semibold mb-4">
-              {node.children.map((child: SlateTextNode, idx: number) =>
-                renderText(child, idx),
-              )}
-            </h2>
-          );
-        case "heading-two":
-          return (
-            <h3 key={index} className="text-xl font-semibold mb-4">
-              {node.children.map((child: SlateTextNode, idx: number) =>
-                renderText(child, idx),
-              )}
-            </h3>
-          );
-        case "image":
-          return (
-            <div key={index} className="my-4">
-              <Image
-                src={`${apiUrl}${node.url}`}
-                alt={node.alt || ""}
-                className="w-full h-auto"
-              />
-            </div>
-          );
-        case "quote":
-          return (
-            <blockquote
-              key={index}
-              className="border-l-4 border-cyan-700 pl-4 italic text-gray-600 mb-4"
-            >
-              {node.children.map((child: SlateTextNode, idx: number) =>
-                renderText(child, idx),
-              )}
-            </blockquote>
-          );
-        default:
-          return null;
+  const renderSlateContent = (content: Descendant[]) => {
+    return content.map((node: Descendant, index: number) => {
+      if (SlateElement.isElement(node)) {
+        switch (node.type) {
+          case "paragraph":
+            return (
+              <p key={index} className="text-gray-700 text-lg mb-4">
+                {node.children.map((child, idx) => renderText(child, idx))}
+              </p>
+            );
+          case "heading-one":
+            return (
+              <h2 key={index} className="text-2xl font-semibold mb-4">
+                {node.children.map((child, idx) => renderText(child, idx))}
+              </h2>
+            );
+          case "heading-two":
+            return (
+              <h3 key={index} className="text-xl font-semibold mb-4">
+                {node.children.map((child, idx) => renderText(child, idx))}
+              </h3>
+            );
+          default:
+            return null;
+        }
+      } else {
+        return <span key={index}>{node.text}</span>;
       }
     });
   };
 
-  const renderText = (node: SlateTextNode, index: number) => {
+  const renderText = (node: Descendant, index: number) => {
+    if (!SlateText.isText(node)) {
+      return null;
+    }
+
     let text = <>{node.text}</>;
 
     if (node.bold) {

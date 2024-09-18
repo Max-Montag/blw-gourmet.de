@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = 'force-dynamic';
+
 import React, { useEffect, useState } from "react";
 import EditArticleDisplay from "@/components/article/EditArticleDisplay";
 import axios from "axios";
@@ -16,6 +18,7 @@ interface PageProps {
     article_url: string;
   };
 }
+
 
 const EditArticlePage: React.FC<PageProps> = ({ params }) => {
   const { article_url } = params;

@@ -209,7 +209,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
     <div className="mx-auto p-6 bg-white shadow-md rounded-md">
       <div className="space-y-4">
         <div>
-          <label className="block text-md font-medium text-gray-700 mb-1">
+          <label className="block text-base font-medium text-gray-700 mb-1">
             Name:
           </label>
           <input
@@ -221,7 +221,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           />
         </div>
         <div>
-          <label className="block text-md font-medium text-gray-700 mb-1">
+          <label className="block text-base font-medium text-gray-700 mb-1">
             Beschreibung:
           </label>
           <textarea
@@ -232,7 +232,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           />
         </div>
         <div>
-          <label className="block text-md font-medium text-gray-700 mb-1">
+          <label className="block text-base font-medium text-gray-700 mb-1">
             Labels:
           </label>
           {recipe.labels.map((label, index) => (
@@ -253,7 +253,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           ))}
         </div>
         <div>
-          <label className="block text-md font-medium text-gray-700 mb-1">
+          <label className="block text-base font-medium text-gray-700 mb-1">
             Geeignet für:
           </label>
           {recipe.dining_times.map((time, index) => (
@@ -280,7 +280,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           ))}
         </div>
         <div>
-          <label className="block text-md font-medium text-gray-700 mb-1">
+          <label className="block text-base font-medium text-gray-700 mb-1">
             Zubereitungszeit:
           </label>
           <input
@@ -292,7 +292,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           />
         </div>
         <div>
-          <label className="block text-md font-medium text-gray-700 mb-1">
+          <label className="block text-base font-medium text-gray-700 mb-1">
             Warte- bzw. Backzeit:
           </label>
           <input
@@ -304,7 +304,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           />
         </div>
         <div>
-          <label className="block text-md font-medium text-gray-700 mb-1">
+          <label className="block text-base font-medium text-gray-700 mb-1">
             Zutaten:
           </label>
           {recipe.ingredients.map((ingredient, index) => (
@@ -350,7 +350,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           ))}
         </div>
         <div>
-          <label className="block text-md font-medium text-gray-700 mb-1">
+          <label className="block text-base font-medium text-gray-700 mb-1">
             Utensilien:
           </label>
           {recipe.tools.map((tool, index) => (
@@ -371,7 +371,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           ))}
         </div>
         <div>
-          <label className="block text-md font-medium text-gray-700 mb-1">
+          <label className="block text-base font-medium text-gray-700 mb-1">
             Arbeitsschritte:
           </label>
           {recipe.instructions.map((instruction, index) => (
@@ -395,7 +395,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 />
               </div>
               <div>
-                <label className="block text-md font-medium text-gray-700 mb-1">
+                <label className="block text-base font-medium text-gray-700 mb-1">
                   Zutaten für diesen Arbeitsschritt:
                 </label>
                 {instruction.ingredients.map((ingredient, ingIndex) => (
@@ -454,7 +454,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 ))}
               </div>
               <div>
-                <label className="block text-md font-medium text-gray-700 mb-1">
+                <label className="block text-base font-medium text-gray-700 mb-1">
                   Utensilien für diesen Arbeitsschritt:
                 </label>
                 {instruction.tools.map((tool, toolIndex) => (
@@ -482,7 +482,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   </div>
                 ))}
               </div>
-              <label className="block text-md font-medium text-gray-700">
+              <label className="block text-base font-medium text-gray-700">
                 Anleitung:
               </label>
               <textarea
