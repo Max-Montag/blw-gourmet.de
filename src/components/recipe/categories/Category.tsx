@@ -14,7 +14,7 @@ const Category: React.FC<CategoryProps> = ({ name, recipes }) => {
     <div className="max-w-4xl mx-auto py-4">
       {recipes.length > 0 ? (
         <>
-          <h1 className="text-1.5xl text-zinc-700 font-semibold text-start mb-4">
+          <h1 className="text-1.5xl text-zinc-700 font-semibold text-start mb-4 pl-2 md:pl-0">
             Kategorie: {name.charAt(0).toUpperCase() + name.slice(1)}
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 scroll-smooth">

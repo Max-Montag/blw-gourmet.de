@@ -157,7 +157,7 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto py-6">
-      <h2 className="text-2xl font-bold mb-4">Rezepte</h2>
+      <h2 className="text-2xl font-bold mb-4 pl-2 md:pl-0">Rezepte</h2>
       <EditRecipeList
         recipes={recipes}
         apiUrl={apiUrl}
@@ -166,7 +166,7 @@ const AdminDashboard: React.FC = () => {
         formatDate={formatDate}
       />
       <hr className="my-8" />
-      <h2 className="text-2xl font-bold mb-4">Artikel</h2>
+      <h2 className="text-2xl font-bold mb-4 pl-2 md:pl-0">Artikel</h2>
       <EditArticleList
         articles={articles}
         apiUrl={apiUrl}

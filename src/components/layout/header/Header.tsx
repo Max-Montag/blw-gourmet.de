@@ -127,7 +127,7 @@ const Header: React.FC = () => {
           <div className="mt-6 divide-y divide-cyan-600">
             {isAuthenticated ? (
               <Link
-                href="/user/dashboard"
+                href="/user/meine-rezepte"
                 className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
               >
                 Meine Rezepte
