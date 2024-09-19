@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { FaSave } from "react-icons/fa";
+import { FaSave, FaSpinner } from "react-icons/fa";
 import { RecipeData } from "@/types/recipeTypes";
 import EditRecipeDisplay from "@/components/recipe/EditRecipeDisplay";
 import RecipeDisplay from "@/components/recipe/RecipeDisplay";
@@ -25,7 +25,9 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const { url } = params;
   const router = useRouter();
   const [recipe, setRecipe] = useState<RecipeData | null>(null);
+  const [validData, setValidData] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [saving, setSaving] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -57,7 +59,11 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   }, [url, apiUrl]);
 
   const handleSubmit = async () => {
-    if (!recipe) return;
+    if (!recipe || saving || !validData) {
+      return;
+    }
+
+    setSaving(true);
 
     try {
       const validDiningTimes = [
@@ -95,12 +101,15 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         `${apiUrl}/recipes/recipe/update/${url}/`,
         JSON.stringify(filteredData),
       );
+
       if (response.status === 200) {
         router.push(`/admin/dashboard/`);
       }
     } catch (error) {
       console.error("Es ist ein Fehler aufgetreten:", error);
       alert("Fehler beim Speichern!");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -139,14 +148,21 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
 
   const navButtons = (
     <div className="flex justify-center my-4 space-x-4">
-      <FaSave
-        className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer"
-        onClick={handleSubmit}
-      />
-      <ImageUpload
-        setImageUrl={setImageUrl}
-        uploadUrl={`/recipes/recipe/upload-image/${url}/`}
-      />
+      <button onClick={handleSubmit} disabled={saving || !validData}>
+        {saving ? (
+          <FaSpinner className="w-14 h-14 text-zinc-800 animate-spin" />
+        ) : validData ? (
+          <FaSave className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+        ) : (
+          <FaSave className="w-14 h-14 text-zinc-300 cursor-not-allowed" />
+        )}
+      </button>
+      <button>
+        <ImageUpload
+          setImageUrl={setImageUrl}
+          uploadUrl={`/recipes/recipe/upload-image/${url}/`}
+        />
+      </button>
     </div>
   );
 
@@ -155,7 +171,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       <div className="w-full flex flex-col lg:flex-row space-x-0 lg:space-x-4">
         <div className="w-full lg:w-1/2">
           {navButtons}
-          <EditRecipeDisplay recipe={recipe} onRecipeChange={setRecipe} />
+          <EditRecipeDisplay recipe={recipe} onRecipeChange={setRecipe} onDataValidityChange={setValidData} />
           {navButtons}
         </div>
         <div className="w-full lg:w-1/2 flex flex-col flex-grow">

@@ -12,7 +12,7 @@ export const validationSchema = Yup.object({
     .required("Beschreibung ist erforderlich")
     .max(2000, "Beschreibung darf nicht länger als 2000 Zeichen sein"),
   labels: Yup.array()
-    .of(Yup.string().max(20, "Label darf maximal 20 Zeichen lang sein."))
+    .of(Yup.string().max(30, "Label darf nicht länger 30 Zeichen lang sein"))
     .max(7, "Maximal 7 Labels erlaubt"),
   dining_times: Yup.array().of(Yup.string()),
   preparation_time: Yup.number()

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import set from "lodash/set";
 import * as Yup from "yup";
 import { MdDeleteOutline } from "react-icons/md";
@@ -9,19 +9,26 @@ import WarningNotification from "../common/WarningNotification";
 interface EditRecipeProps {
   recipe: RecipeData;
   onRecipeChange: (recipe: RecipeData) => void;
+  onDataValidityChange: (valid: boolean) => void;
 }
 
 const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   recipe,
   onRecipeChange,
+  onDataValidityChange,
 }) => {
   const [errors, setErrors] = React.useState<any>({});
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    handleValidate();
+  }, []);
+
+  const handleValidate = async (newRecipe?: RecipeData) => {
+    const recipeToValidate = newRecipe ?? recipe;
     try {
-      await validationSchema.validate(recipe, { abortEarly: false });
+      await validationSchema.validate(recipeToValidate, { abortEarly: false });
       setErrors({});
-      onRecipeChange(recipe);
+      onDataValidityChange(true);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages: any = {};
@@ -31,6 +38,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           }
         });
         setErrors(errorMessages);
+        onDataValidityChange(false);
       }
     }
   };
@@ -58,10 +66,12 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
 
   const handleRemoveLabel = (index: number) => {
     const newLabels = recipe.labels.filter((_, i) => i !== index);
-    onRecipeChange({
+    const newRecipe = {
       ...recipe,
       labels: newLabels.length > 0 ? newLabels : [""],
-    });
+    };
+    onRecipeChange(newRecipe);
+    handleValidate(newRecipe);
   };
 
   const handleDiningTimeChange = (index: number, value: string) => {
@@ -75,10 +85,12 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
 
   const handleRemoveDiningTime = (index: number) => {
     const newDiningTimes = recipe.dining_times.filter((_, i) => i !== index);
-    onRecipeChange({
+    const newRecipe = {
       ...recipe,
       dining_times: newDiningTimes.length > 0 ? newDiningTimes : [""],
-    });
+    };
+    onRecipeChange(newRecipe);
+    handleValidate(newRecipe);
   };
 
   const handleIngredientChange = (
@@ -96,13 +108,15 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
 
   const handleRemoveIngredient = (index: number) => {
     const newIngredients = recipe.ingredients.filter((_, i) => i !== index);
-    onRecipeChange({
+    const newRecipe = {
       ...recipe,
       ingredients:
         newIngredients.length > 0
           ? newIngredients
           : [{ ingredient: "", amount: 0, unit: "" }],
-    });
+    };
+    onRecipeChange(newRecipe);
+    handleValidate(newRecipe);
   };
 
   const handleToolChange = (index: number, value: string) => {
@@ -116,7 +130,12 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
 
   const handleRemoveTool = (index: number) => {
     const newTools = recipe.tools.filter((_, i) => i !== index);
-    onRecipeChange({ ...recipe, tools: newTools.length > 0 ? newTools : [""] });
+    const newRecipe = {
+      ...recipe,
+      tools: newTools.length > 0 ? newTools : [""],
+    };
+    onRecipeChange(newRecipe);
+    handleValidate(newRecipe);
   };
 
   const handleInstructionChange = (
@@ -139,7 +158,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
 
   const handleRemoveInstruction = (index: number) => {
     const newInstructions = recipe.instructions.filter((_, i) => i !== index);
-    onRecipeChange({
+    const newRecipe = {
       ...recipe,
       instructions:
         newInstructions.length > 0
@@ -152,7 +171,9 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 instruction: "",
               },
             ],
-    });
+    };
+    onRecipeChange(newRecipe);
+    handleValidate(newRecipe);
   };
 
   const handleInstructionIngredientChange = (
@@ -192,7 +213,9 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           ? newIngredients
           : [{ ingredient: "", amount: 0, unit: "" }],
     };
-    onRecipeChange({ ...recipe, instructions: newInstructions });
+    const newRecipe = { ...recipe, instructions: newInstructions };
+    onRecipeChange(newRecipe);
+    handleValidate(newRecipe);
   };
 
   const handleInstructionToolChange = (
@@ -225,7 +248,9 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
       ...newInstructions[instructionIndex],
       tools: newTools.length > 0 ? newTools : [""],
     };
-    onRecipeChange({ ...recipe, instructions: newInstructions });
+    const newRecipe = { ...recipe, instructions: newInstructions };
+    onRecipeChange(newRecipe);
+    handleValidate(newRecipe);
   };
 
   return (
@@ -240,6 +265,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             name="name"
             value={recipe.name ?? ""}
             onChange={handleInputChange}
+            onBlur={(_) => handleValidate()}
             className={`mt-1 block w-full border ${
               errors.name ? "border--500" : "border-gray-300"
             } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
@@ -254,6 +280,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             name="description"
             value={recipe.description ?? ""}
             onChange={handleInputChange}
+            onBlur={(_) => handleValidate()}
             className={`mt-1 h-48 block w-full border ${
               errors.description ? "border--500" : "border-gray-300"
             } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
@@ -273,6 +300,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   type="text"
                   value={label}
                   onChange={(e) => handleLabelChange(index, e.target.value)}
+                  onBlur={(_) => handleValidate()}
                   className={`block w-full border ${
                     errors.labels && errors.labels[index]
                       ? "border-amber-500 border-2"
@@ -305,6 +333,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   onChange={(e) =>
                     handleDiningTimeChange(index, e.target.value)
                   }
+                  onBlur={(_) => handleValidate()}
                   className={`mt-1 block w-full border ${
                     errors.dining_times && errors.dining_times[index]
                       ? "border-amber-500 border-2"
@@ -339,6 +368,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             name="preparation_time"
             value={recipe.preparation_time ?? 0}
             onChange={handleInputChange}
+            onBlur={(_) => handleValidate()}
             className={`mt-1 block w-full border ${
               errors.preparation_time
                 ? "border-amber-500 border-2"
@@ -358,6 +388,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             name="rest_time"
             value={recipe.rest_time ?? 0}
             onChange={handleInputChange}
+            onBlur={(_) => handleValidate()}
             className={`mt-1 block w-full border ${
               errors.rest_time ? "border-amber-500 border-2" : "border-gray-300"
             } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
@@ -380,6 +411,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   onChange={(e) =>
                     handleIngredientChange(index, "ingredient", e.target.value)
                   }
+                  onBlur={(_) => handleValidate()}
                   className={`block w-1/3 border ${
                     errors.ingredients &&
                     errors.ingredients[index] &&
@@ -399,6 +431,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                       parseFloat(e.target.value),
                     )
                   }
+                  onBlur={(_) => handleValidate()}
                   className={`block w-1/3 border ${
                     errors.ingredients &&
                     errors.ingredients[index] &&
@@ -414,6 +447,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   onChange={(e) =>
                     handleIngredientChange(index, "unit", e.target.value)
                   }
+                  onBlur={(_) => handleValidate()}
                   className={`block w-1/3 border ${
                     errors.ingredients &&
                     errors.ingredients[index] &&
@@ -464,6 +498,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   type="text"
                   value={tool}
                   onChange={(e) => handleToolChange(index, e.target.value)}
+                  onBlur={(_) => handleValidate()}
                   className={`block w-full border ${
                     errors.tools && errors.tools[index]
                       ? "border-amber-500 border-2"
@@ -504,6 +539,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                     onChange={(e) =>
                       handleInstructionChange(index, "name", e.target.value)
                     }
+                    onBlur={(_) => handleValidate()}
                     className={`block w-full border ${
                       errors.instructions &&
                       errors.instructions[index] &&
@@ -540,6 +576,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                             e.target.value,
                           )
                         }
+                        onBlur={(_) => handleValidate()}
                         className={`block w-1/3 border ${
                           errors.instructions &&
                           errors.instructions[index] &&
@@ -563,6 +600,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                             parseFloat(e.target.value),
                           )
                         }
+                        onBlur={(_) => handleValidate()}
                         className={`block w-1/3 border ${
                           errors.instructions &&
                           errors.instructions[index] &&
@@ -586,6 +624,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                             e.target.value,
                           )
                         }
+                        onBlur={(_) => handleValidate()}
                         className={`block w-1/3 border ${
                           errors.instructions &&
                           errors.instructions[index] &&
@@ -663,6 +702,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                             e.target.value,
                           )
                         }
+                        onBlur={(_) => handleValidate()}
                         className={`block w-full border ${
                           errors.instructions &&
                           errors.instructions[index] &&
@@ -705,6 +745,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 onChange={(e) =>
                   handleInstructionChange(index, "instruction", e.target.value)
                 }
+                onBlur={(_) => handleValidate()}
                 className={`block w-full min-h-36 border ${
                   errors.instructions &&
                   errors.instructions[index] &&
@@ -735,9 +776,6 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
           ))}
         </div>
       </div>
-      <button onClick={handleSubmit} className="mt-4">
-        Speichern
-      </button>
     </div>
   );
 };
