@@ -1,47 +1,24 @@
 import React, { useEffect } from "react";
-import set from "lodash/set";
-import * as Yup from "yup";
 import { MdDeleteOutline } from "react-icons/md";
-import { validationSchema } from "./validationSchema";
 import { Ingredient, Instruction, RecipeData } from "@/types/recipeTypes";
 import WarningNotification from "../common/WarningNotification";
 
 interface EditRecipeProps {
   recipe: RecipeData;
   onRecipeChange: (recipe: RecipeData) => void;
-  onDataValidityChange: (valid: boolean) => void;
+  handleValidate: (newRecipe?: RecipeData) => void;
+  errors: any;
 }
 
 const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   recipe,
   onRecipeChange,
-  onDataValidityChange,
+  handleValidate,
+  errors,
 }) => {
-  const [errors, setErrors] = React.useState<any>({});
-
   useEffect(() => {
     handleValidate();
   }, []);
-
-  const handleValidate = async (newRecipe?: RecipeData) => {
-    const recipeToValidate = newRecipe ?? recipe;
-    try {
-      await validationSchema.validate(recipeToValidate, { abortEarly: false });
-      setErrors({});
-      onDataValidityChange(true);
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errorMessages: any = {};
-        err.inner.forEach((error: Yup.ValidationError) => {
-          if (error.path) {
-            set(errorMessages, error.path, error.message);
-          }
-        });
-        setErrors(errorMessages);
-        onDataValidityChange(false);
-      }
-    }
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -49,10 +26,14 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
     >,
   ) => {
     const { name, value } = e.target;
-    onRecipeChange({
+    const newRecipe = {
       ...recipe,
       [name]: value === "" ? null : value,
-    });
+    };
+    onRecipeChange(newRecipe);
+    if (errors[name]) {
+      handleValidate(newRecipe);
+    }
   };
 
   const handleLabelChange = (index: number, value: string) => {
@@ -80,7 +61,9 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
     if (index === recipe.dining_times.length - 1 && value !== "") {
       newDiningTimes.push("");
     }
-    onRecipeChange({ ...recipe, dining_times: newDiningTimes });
+    const newRecipe = { ...recipe, dining_times: newDiningTimes };
+    onRecipeChange(newRecipe);
+    handleValidate(newRecipe);
   };
 
   const handleRemoveDiningTime = (index: number) => {
@@ -254,7 +237,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   };
 
   return (
-    <div className="mx-auto p-6 bg-white shadow-md rounded-md">
+    <div className="mx-auto p-6 bg-white shadow-md rounded-md" role="form">
       <div className="space-y-4">
         <div>
           <label className="block text-base font-medium text-gray-700 mb-1">
@@ -353,11 +336,11 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   <MdDeleteOutline className="w-5 h-5" />
                 </button>
               </div>
-              {errors.dining_times && errors.dining_times[index] && (
-                <WarningNotification message={errors.dining_times[index]} />
-              )}
             </>
           ))}
+          {errors.dining_times && typeof errors.dining_times === "string" && (
+            <WarningNotification message={errors.dining_times} />
+          )}
         </div>
         <div>
           <label className="block text-base font-medium text-gray-700 mb-1">
@@ -768,12 +751,16 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 Arbeitsschritt entfernen
               </button>
               {errors.instructions &&
+                typeof errors.instructions !== "string" &&
                 errors.instructions[index] &&
                 typeof errors.instructions[index] === "string" && (
                   <WarningNotification message={errors.instructions[index]} />
                 )}
             </div>
           ))}
+          {errors.instructions && typeof errors.instructions === "string" && (
+            <WarningNotification message={errors.instructions} />
+          )}
         </div>
       </div>
     </div>

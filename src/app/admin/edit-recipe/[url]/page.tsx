@@ -5,6 +5,8 @@ export const dynamic = "force-dynamic";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import set from "lodash/set";
+import * as Yup from "yup";
 import { FaSave, FaSpinner } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
@@ -16,6 +18,7 @@ import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimat
 import ErrorMessage from "@/components/error/ErrorMessage";
 import ImageUpload from "@/components/common/ImageUpload";
 import ConfirmModal from "@/components/common/ConfirmModal";
+import { recipeValidationSchema } from "@/utils/validationSchemas/recipeValidationSchema";
 
 interface EditRecipeProps {
   params: {
@@ -32,18 +35,12 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [saving, setSaving] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [recipeErrors, setRecipeErrors] = useState<any>({});
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-
-  const setImageUrl = (url: string) => {
-    if (!recipe) {
-      return;
-    }
-    setRecipe({ ...recipe, optimized_image: url });
-  };
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -62,8 +59,36 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     fetchRecipe();
   }, [url, apiUrl]);
 
+  const handleValidate = async (newRecipe?: RecipeData) => {
+    const recipeToValidate = newRecipe ?? recipe;
+    try {
+      await recipeValidationSchema.validate(recipeToValidate, {
+        abortEarly: false,
+      });
+      setRecipeErrors({});
+      setValidData(true);
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages: any = {};
+        err.inner.forEach((error: Yup.ValidationError) => {
+          if (error.path) {
+            set(errorMessages, error.path, error.message);
+          }
+        });
+        setRecipeErrors(errorMessages);
+        setValidData(false);
+      }
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!recipe || saving || !validData) {
+    if (!recipe || saving) {
+      return;
+    }
+
+    await handleValidate();
+
+    if (!validData) {
       return;
     }
 
@@ -117,6 +142,13 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     }
   };
 
+  const setImageUrl = (url: string) => {
+    if (!recipe) {
+      return;
+    }
+    setRecipe({ ...recipe, optimized_image: url });
+  };
+
   const handleDeleteRecipe = async () => {
     if (!recipe) {
       return;
@@ -139,6 +171,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         updatedRecipe.optimized_image = imageUrl;
       }
       setRecipe(updatedRecipe);
+      handleValidate(updatedRecipe);
     } catch (error) {
       console.error("Ungültiges JSON-Format", error);
     }
@@ -198,7 +231,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
           <EditRecipeDisplay
             recipe={recipe}
             onRecipeChange={setRecipe}
-            onDataValidityChange={setValidData}
+            handleValidate={handleValidate}
+            errors={recipeErrors}
           />
           {navButtons}
         </div>
