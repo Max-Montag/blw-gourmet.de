@@ -58,7 +58,7 @@ const Category: React.FC<CategoryProps> = ({ name, recipes }) => {
                         {combinedLabels.map((label, index) => (
                           <div
                             key={index}
-                            className="bg-cyan-50 text-cyan-700 text-xs md:text-sm font-semibold m-0.5 px-1.5 py-0.5 rounded-xl border border-cyan-700"
+                            className="bg-cyan-50 text-cyan-700 text-xs font-semibold m-0.5 px-1.5 py-0.5 rounded-xl border border-cyan-700"
                           >
                             <IconText text={label} />
                           </div>

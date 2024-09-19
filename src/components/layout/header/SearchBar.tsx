@@ -69,6 +69,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
                 <Image
                   src={apiUrl + suggestion.thumbnail}
                   alt={suggestion.name}
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-md object-cover mr-3"
                 />
               ) : (

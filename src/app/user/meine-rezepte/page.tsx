@@ -1,6 +1,6 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -19,7 +19,9 @@ const MyRecipesPage: React.FC = () => {
   useEffect(() => {
     const fetchMyRecipes = async () => {
       try {
-        const response = await axios.get<AdminRecipePreview[]>(`${apiUrl}/recipes/my-recipes/`);
+        const response = await axios.get<AdminRecipePreview[]>(
+          `${apiUrl}/recipes/my-recipes/`,
+        );
         setRecipes(response.data);
         setLoading(false);
       } catch (err) {

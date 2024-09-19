@@ -1,17 +1,40 @@
 import React from "react";
+import set from "lodash/set";
+import * as Yup from "yup";
 import { MdDeleteOutline } from "react-icons/md";
+import { validationSchema } from "./validationSchema";
 import { Ingredient, Instruction, RecipeData } from "@/types/recipeTypes";
+import WarningNotification from "../common/WarningNotification";
 
 interface EditRecipeProps {
   recipe: RecipeData;
   onRecipeChange: (recipe: RecipeData) => void;
 }
 
-// TODO use formik!!
 const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   recipe,
   onRecipeChange,
 }) => {
+  const [errors, setErrors] = React.useState<any>({});
+
+  const handleSubmit = async () => {
+    try {
+      await validationSchema.validate(recipe, { abortEarly: false });
+      setErrors({});
+      onRecipeChange(recipe);
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages: any = {};
+        err.inner.forEach((error: Yup.ValidationError) => {
+          if (error.path) {
+            set(errorMessages, error.path, error.message);
+          }
+        });
+        setErrors(errorMessages);
+      }
+    }
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -217,8 +240,11 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             name="name"
             value={recipe.name ?? ""}
             onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className={`mt-1 block w-full border ${
+              errors.name ? "border--500" : "border-gray-300"
+            } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
           />
+          {errors.name && <WarningNotification message={errors.name} />}
         </div>
         <div>
           <label className="block text-base font-medium text-gray-700 mb-1">
@@ -228,28 +254,42 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             name="description"
             value={recipe.description ?? ""}
             onChange={handleInputChange}
-            className="mt-1 h-48 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className={`mt-1 h-48 block w-full border ${
+              errors.description ? "border--500" : "border-gray-300"
+            } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
           />
+          {errors.description && (
+            <WarningNotification message={errors.description} />
+          )}
         </div>
         <div>
           <label className="block text-base font-medium text-gray-700 mb-1">
             Labels:
           </label>
           {recipe.labels.map((label, index) => (
-            <div key={index} className="flex space-x-2 mb-2">
-              <input
-                type="text"
-                value={label}
-                onChange={(e) => handleLabelChange(index, e.target.value)}
-                className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <button
-                onClick={() => handleRemoveLabel(index)}
-                className="text-red-500"
-              >
-                <MdDeleteOutline className="w-5 h-5" />
-              </button>
-            </div>
+            <>
+              <div key={index} className="flex space-x-2 mb-2">
+                <input
+                  type="text"
+                  value={label}
+                  onChange={(e) => handleLabelChange(index, e.target.value)}
+                  className={`block w-full border ${
+                    errors.labels && errors.labels[index]
+                      ? "border-amber-500 border-2"
+                      : "border-gray-300"
+                  } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                />
+                <button
+                  onClick={() => handleRemoveLabel(index)}
+                  className="text-red-500"
+                >
+                  <MdDeleteOutline className="w-5 h-5" />
+                </button>
+              </div>
+              {errors.labels && errors.labels[index] && (
+                <WarningNotification message={errors.labels[index]} />
+              )}
+            </>
           ))}
         </div>
         <div>
@@ -257,26 +297,37 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             Geeignet für:
           </label>
           {recipe.dining_times.map((time, index) => (
-            <div key={index} className="flex space-x-2 mb-2">
-              <select
-                name={`dining_time_${index}`}
-                value={time ?? ""}
-                onChange={(e) => handleDiningTimeChange(index, e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="">Bitte auswählen</option>
-                <option value="Snack">Snack</option>
-                <option value="Frühstück">Frühstück</option>
-                <option value="Mittagessen">Mittagessen</option>
-                <option value="Abendessen">Abendessen</option>
-              </select>
-              <button
-                onClick={() => handleRemoveDiningTime(index)}
-                className="text-red-500"
-              >
-                <MdDeleteOutline className="w-5 h-5" />
-              </button>
-            </div>
+            <>
+              <div key={index} className="flex space-x-2 mb-2">
+                <select
+                  name={`dining_time_${index}`}
+                  value={time ?? ""}
+                  onChange={(e) =>
+                    handleDiningTimeChange(index, e.target.value)
+                  }
+                  className={`mt-1 block w-full border ${
+                    errors.dining_times && errors.dining_times[index]
+                      ? "border-amber-500 border-2"
+                      : "border-gray-300"
+                  } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                >
+                  <option value="">Bitte auswählen</option>
+                  <option value="Snack">Snack</option>
+                  <option value="Frühstück">Frühstück</option>
+                  <option value="Mittagessen">Mittagessen</option>
+                  <option value="Abendessen">Abendessen</option>
+                </select>
+                <button
+                  onClick={() => handleRemoveDiningTime(index)}
+                  className="text-red-500"
+                >
+                  <MdDeleteOutline className="w-5 h-5" />
+                </button>
+              </div>
+              {errors.dining_times && errors.dining_times[index] && (
+                <WarningNotification message={errors.dining_times[index]} />
+              )}
+            </>
           ))}
         </div>
         <div>
@@ -288,8 +339,15 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             name="preparation_time"
             value={recipe.preparation_time ?? 0}
             onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className={`mt-1 block w-full border ${
+              errors.preparation_time
+                ? "border-amber-500 border-2"
+                : "border-gray-300"
+            } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
           />
+          {errors.preparation_time && (
+            <WarningNotification message={errors.preparation_time} />
+          )}
         </div>
         <div>
           <label className="block text-base font-medium text-gray-700 mb-1">
@@ -300,52 +358,98 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             name="rest_time"
             value={recipe.rest_time ?? 0}
             onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className={`mt-1 block w-full border ${
+              errors.rest_time ? "border-amber-500 border-2" : "border-gray-300"
+            } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
           />
+          {errors.rest_time && (
+            <WarningNotification message={errors.rest_time} />
+          )}
         </div>
         <div>
           <label className="block text-base font-medium text-gray-700 mb-1">
             Zutaten:
           </label>
           {recipe.ingredients.map((ingredient, index) => (
-            <div key={index} className="flex space-x-2 mb-2">
-              <input
-                type="text"
-                placeholder="Ingredient"
-                value={ingredient.ingredient}
-                onChange={(e) =>
-                  handleIngredientChange(index, "ingredient", e.target.value)
-                }
-                className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <input
-                type="number"
-                placeholder="Amount"
-                value={ingredient.amount}
-                onChange={(e) =>
-                  handleIngredientChange(
-                    index,
-                    "amount",
-                    parseFloat(e.target.value),
-                  )
-                }
-                className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <input
-                type="text"
-                placeholder="Unit"
-                value={ingredient.unit}
-                onChange={(e) =>
-                  handleIngredientChange(index, "unit", e.target.value)
-                }
-                className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <button
-                onClick={() => handleRemoveIngredient(index)}
-                className="text-red-500"
-              >
-                <MdDeleteOutline className="w-5 h-5" />
-              </button>
+            <div>
+              <div key={index} className="flex space-x-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="Ingredient"
+                  value={ingredient.ingredient}
+                  onChange={(e) =>
+                    handleIngredientChange(index, "ingredient", e.target.value)
+                  }
+                  className={`block w-1/3 border ${
+                    errors.ingredients &&
+                    errors.ingredients[index] &&
+                    errors.ingredients[index].ingredient
+                      ? "border-amber-500 border-2"
+                      : "border-gray-300"
+                  } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                />
+                <input
+                  type="number"
+                  placeholder="Amount"
+                  value={ingredient.amount}
+                  onChange={(e) =>
+                    handleIngredientChange(
+                      index,
+                      "amount",
+                      parseFloat(e.target.value),
+                    )
+                  }
+                  className={`block w-1/3 border ${
+                    errors.ingredients &&
+                    errors.ingredients[index] &&
+                    errors.ingredients[index].amount
+                      ? "border-amber-500 border-2"
+                      : "border-gray-300"
+                  } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                />
+                <input
+                  type="text"
+                  placeholder="Unit"
+                  value={ingredient.unit}
+                  onChange={(e) =>
+                    handleIngredientChange(index, "unit", e.target.value)
+                  }
+                  className={`block w-1/3 border ${
+                    errors.ingredients &&
+                    errors.ingredients[index] &&
+                    errors.ingredients[index].unit
+                      ? "border-amber-500 border-2"
+                      : "border-gray-300"
+                  } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                />
+                <button
+                  onClick={() => handleRemoveIngredient(index)}
+                  className="text-red-500"
+                >
+                  <MdDeleteOutline className="w-5 h-5" />
+                </button>
+              </div>
+              {errors.ingredients &&
+                errors.ingredients[index] &&
+                errors.ingredients[index].ingredient && (
+                  <WarningNotification
+                    message={errors.ingredients[index].ingredient}
+                  />
+                )}
+              {errors.ingredients &&
+                errors.ingredients[index] &&
+                errors.ingredients[index].amount && (
+                  <WarningNotification
+                    message={errors.ingredients[index].amount}
+                  />
+                )}
+              {errors.ingredients &&
+                errors.ingredients[index] &&
+                errors.ingredients[index].unit && (
+                  <WarningNotification
+                    message={errors.ingredients[index].unit}
+                  />
+                )}
             </div>
           ))}
         </div>
@@ -354,20 +458,29 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
             Utensilien:
           </label>
           {recipe.tools.map((tool, index) => (
-            <div key={index} className="flex space-x-2 mb-2">
-              <input
-                type="text"
-                value={tool}
-                onChange={(e) => handleToolChange(index, e.target.value)}
-                className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <button
-                onClick={() => handleRemoveTool(index)}
-                className="text-red-500"
-              >
-                <MdDeleteOutline className="w-5 h-5" />
-              </button>
-            </div>
+            <>
+              <div key={index} className="flex space-x-2 mb-2">
+                <input
+                  type="text"
+                  value={tool}
+                  onChange={(e) => handleToolChange(index, e.target.value)}
+                  className={`block w-full border ${
+                    errors.tools && errors.tools[index]
+                      ? "border-amber-500 border-2"
+                      : "border-gray-300"
+                  } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                />
+                <button
+                  onClick={() => handleRemoveTool(index)}
+                  className="text-red-500"
+                >
+                  <MdDeleteOutline className="w-5 h-5" />
+                </button>
+              </div>
+              {errors.tools && errors.tools[index] && (
+                <WarningNotification message={errors.tools[index]} />
+              )}
+            </>
           ))}
         </div>
         <div>
@@ -379,78 +492,158 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
               key={index}
               className="space-y-2 mb-4 p-4 border border-gray-300 rounded-md shadow-sm"
             >
-              <div className="flex mb-6">
-                <h3 className="text-3xl font-semibold w-1/3 mr-2">
-                  {" "}
-                  Schritt {index + 1}
-                </h3>
-                <input
-                  type="text"
-                  placeholder="Instruction Name"
-                  value={instruction.name}
-                  onChange={(e) =>
-                    handleInstructionChange(index, "name", e.target.value)
-                  }
-                  className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
+              <>
+                <div className="flex mb-6">
+                  <h3 className="text-3xl font-semibold w-1/3 mr-2">
+                    Schritt {index + 1}
+                  </h3>
+                  <input
+                    type="text"
+                    placeholder="Instruction Name"
+                    value={instruction.name}
+                    onChange={(e) =>
+                      handleInstructionChange(index, "name", e.target.value)
+                    }
+                    className={`block w-full border ${
+                      errors.instructions &&
+                      errors.instructions[index] &&
+                      errors.instructions[index].name
+                        ? "border-amber-500 border-2"
+                        : "border-gray-300"
+                    } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                  />
+                </div>
+                {errors.instructions &&
+                  errors.instructions[index] &&
+                  errors.instructions[index].name && (
+                    <WarningNotification
+                      message={errors.instructions[index].name}
+                    />
+                  )}
+              </>
               <div>
                 <label className="block text-base font-medium text-gray-700 mb-1">
                   Zutaten für diesen Arbeitsschritt:
                 </label>
                 {instruction.ingredients.map((ingredient, ingIndex) => (
-                  <div key={ingIndex} className="flex space-x-2 mb-2">
-                    <input
-                      type="text"
-                      placeholder="Ingredient"
-                      value={ingredient.ingredient}
-                      onChange={(e) =>
-                        handleInstructionIngredientChange(
-                          index,
-                          ingIndex,
-                          "ingredient",
-                          e.target.value,
-                        )
-                      }
-                      className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Amount"
-                      value={ingredient.amount}
-                      onChange={(e) =>
-                        handleInstructionIngredientChange(
-                          index,
-                          ingIndex,
-                          "amount",
-                          parseFloat(e.target.value),
-                        )
-                      }
-                      className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Unit"
-                      value={ingredient.unit}
-                      onChange={(e) =>
-                        handleInstructionIngredientChange(
-                          index,
-                          ingIndex,
-                          "unit",
-                          e.target.value,
-                        )
-                      }
-                      className="block w-1/3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <button
-                      onClick={() =>
-                        handleRemoveInstructionIngredient(index, ingIndex)
-                      }
-                      className="text-red-500"
-                    >
-                      <MdDeleteOutline className="w-5 h-5" />
-                    </button>
-                  </div>
+                  <>
+                    <div key={ingIndex} className="flex space-x-2 mb-2">
+                      <input
+                        type="text"
+                        placeholder="Ingredient"
+                        value={ingredient.ingredient}
+                        onChange={(e) =>
+                          handleInstructionIngredientChange(
+                            index,
+                            ingIndex,
+                            "ingredient",
+                            e.target.value,
+                          )
+                        }
+                        className={`block w-1/3 border ${
+                          errors.instructions &&
+                          errors.instructions[index] &&
+                          errors.instructions[index].ingredients &&
+                          errors.instructions[index].ingredients[ingIndex] &&
+                          errors.instructions[index].ingredients[ingIndex]
+                            .ingredient
+                            ? "border-amber-500 border-2"
+                            : "border-gray-300"
+                        } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                      />
+                      <input
+                        type="number"
+                        placeholder="Amount"
+                        value={ingredient.amount}
+                        onChange={(e) =>
+                          handleInstructionIngredientChange(
+                            index,
+                            ingIndex,
+                            "amount",
+                            parseFloat(e.target.value),
+                          )
+                        }
+                        className={`block w-1/3 border ${
+                          errors.instructions &&
+                          errors.instructions[index] &&
+                          errors.instructions[index].ingredients &&
+                          errors.instructions[index].ingredients[ingIndex] &&
+                          errors.instructions[index].ingredients[ingIndex]
+                            .amount
+                            ? "border-amber-500 border-2"
+                            : "border-gray-300"
+                        } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Unit"
+                        value={ingredient.unit}
+                        onChange={(e) =>
+                          handleInstructionIngredientChange(
+                            index,
+                            ingIndex,
+                            "unit",
+                            e.target.value,
+                          )
+                        }
+                        className={`block w-1/3 border ${
+                          errors.instructions &&
+                          errors.instructions[index] &&
+                          errors.instructions[index].ingredients &&
+                          errors.instructions[index].ingredients[ingIndex] &&
+                          errors.instructions[index].ingredients[ingIndex].unit
+                            ? "border-amber-500 border-2"
+                            : "border-gray-300"
+                        } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                      />
+                      <button
+                        onClick={() =>
+                          handleRemoveInstructionIngredient(index, ingIndex)
+                        }
+                        className="text-red-500"
+                      >
+                        <MdDeleteOutline className="w-5 h-5" />
+                      </button>
+                    </div>
+                    {errors.instructions &&
+                      errors.instructions[index] &&
+                      errors.instructions[index].ingredients &&
+                      errors.instructions[index].ingredients[ingIndex] &&
+                      errors.instructions[index].ingredients[ingIndex]
+                        .ingredient && (
+                        <WarningNotification
+                          message={
+                            errors.instructions[index].ingredients[ingIndex]
+                              .ingredient
+                          }
+                        />
+                      )}
+                    {errors.instructions &&
+                      errors.instructions[index] &&
+                      errors.instructions[index].ingredients &&
+                      errors.instructions[index].ingredients[ingIndex] &&
+                      errors.instructions[index].ingredients[ingIndex]
+                        .amount && (
+                        <WarningNotification
+                          message={
+                            errors.instructions[index].ingredients[ingIndex]
+                              .amount
+                          }
+                        />
+                      )}
+                    {errors.instructions &&
+                      errors.instructions[index] &&
+                      errors.instructions[index].ingredients &&
+                      errors.instructions[index].ingredients[ingIndex] &&
+                      errors.instructions[index].ingredients[ingIndex].unit && (
+                        <WarningNotification
+                          message={
+                            errors.instructions[index].ingredients[ingIndex]
+                              .unit
+                          }
+                        />
+                      )}
+                  </>
                 ))}
               </div>
               <div>
@@ -458,28 +651,49 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   Utensilien für diesen Arbeitsschritt:
                 </label>
                 {instruction.tools.map((tool, toolIndex) => (
-                  <div key={toolIndex} className="flex space-x-2 mb-2">
-                    <input
-                      type="text"
-                      value={tool}
-                      onChange={(e) =>
-                        handleInstructionToolChange(
-                          index,
-                          toolIndex,
-                          e.target.value,
-                        )
-                      }
-                      className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <button
-                      onClick={() =>
-                        handleRemoveInstructionTool(index, toolIndex)
-                      }
-                      className="text-red-500"
-                    >
-                      <MdDeleteOutline className="w-5 h-5" />
-                    </button>
-                  </div>
+                  <>
+                    <div key={toolIndex} className="flex space-x-2 mb-2">
+                      <input
+                        type="text"
+                        value={tool}
+                        onChange={(e) =>
+                          handleInstructionToolChange(
+                            index,
+                            toolIndex,
+                            e.target.value,
+                          )
+                        }
+                        className={`block w-full border ${
+                          errors.instructions &&
+                          errors.instructions[index] &&
+                          errors.instructions[index].tools &&
+                          errors.instructions[index].tools[toolIndex]
+                            ? "border-amber-500 border-2"
+                            : "border-gray-300"
+                        } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                      />
+                      <button
+                        onClick={() =>
+                          handleRemoveInstructionTool(index, toolIndex)
+                        }
+                        className="text-red-500"
+                      >
+                        <MdDeleteOutline className="w-5 h-5" />
+                      </button>
+                    </div>
+                    <>
+                      {errors.instructions &&
+                        errors.instructions[index] &&
+                        errors.instructions[index].tools &&
+                        errors.instructions[index].tools[toolIndex] && (
+                          <WarningNotification
+                            message={
+                              errors.instructions[index].tools[toolIndex]
+                            }
+                          />
+                        )}
+                    </>
+                  </>
                 ))}
               </div>
               <label className="block text-base font-medium text-gray-700">
@@ -491,18 +705,39 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 onChange={(e) =>
                   handleInstructionChange(index, "instruction", e.target.value)
                 }
-                className="block w-full min-h-36 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className={`block w-full min-h-36 border ${
+                  errors.instructions &&
+                  errors.instructions[index] &&
+                  errors.instructions[index].instruction
+                    ? "border-amber-500 border-2"
+                    : "border-gray-300"
+                } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
               />
+              {errors.instructions &&
+                errors.instructions[index] &&
+                errors.instructions[index].instruction && (
+                  <WarningNotification
+                    message={errors.instructions[index].instruction}
+                  />
+                )}
               <button
                 onClick={() => handleRemoveInstruction(index)}
                 className="text-red-500"
               >
                 Arbeitsschritt entfernen
               </button>
+              {errors.instructions &&
+                errors.instructions[index] &&
+                typeof errors.instructions[index] === "string" && (
+                  <WarningNotification message={errors.instructions[index]} />
+                )}
             </div>
           ))}
         </div>
       </div>
+      <button onClick={handleSubmit} className="mt-4">
+        Speichern
+      </button>
     </div>
   );
 };

@@ -48,7 +48,9 @@ const EditRecipeList: React.FC<EditRecipeListProps> = ({
               />
             ) : (
               <div className="flex justify-center items-center w-full h-40 bg-zinc-300">
-                <span className="text-xs text-zinc-600">Bild nicht gefunden</span>
+                <span className="text-xs text-zinc-600">
+                  Bild nicht gefunden
+                </span>
               </div>
             )}
             <div className="p-4">
