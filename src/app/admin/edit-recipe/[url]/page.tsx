@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaSave, FaSpinner } from "react-icons/fa";
+import { IoArrowBack } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
 import { RecipeData } from "@/types/recipeTypes";
 import EditRecipeDisplay from "@/components/recipe/EditRecipeDisplay";
 import RecipeDisplay from "@/components/recipe/RecipeDisplay";
@@ -13,6 +15,7 @@ import { ensureEmptyFields } from "@/utils/recipeUtils";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import ErrorMessage from "@/components/error/ErrorMessage";
 import ImageUpload from "@/components/common/ImageUpload";
+import ConfirmModal from "@/components/common/ConfirmModal";
 
 interface EditRecipeProps {
   params: {
@@ -29,6 +32,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [saving, setSaving] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -113,6 +117,20 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     }
   };
 
+  const handleDeleteRecipe = async () => {
+    if (!recipe) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${apiUrl}/recipes/recipe/delete/${url}/`);
+      router.push("/admin/dashboard/");
+    } catch (error) {
+      console.error("Fehler beim Löschen:", error);
+      alert("Fehler beim Löschen!");
+    }
+  };
+
   const handleJsonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     try {
       const updatedRecipe = ensureEmptyFields(JSON.parse(e.target.value));
@@ -147,7 +165,13 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   }
 
   const navButtons = (
-    <div className="flex justify-center my-4 space-x-4">
+    <div className="flex justify-evenly my-8 space-x-4">
+      <button onClick={() => router.push("/admin/dashboard/")}>
+        <IoArrowBack className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+      </button>
+      <button onClick={() => setShowDeleteModal(true)}>
+        <MdDelete className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+      </button>
       <button onClick={handleSubmit} disabled={saving || !validData}>
         {saving ? (
           <FaSpinner className="w-14 h-14 text-zinc-800 animate-spin" />
@@ -171,7 +195,11 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       <div className="w-full flex flex-col lg:flex-row space-x-0 lg:space-x-4">
         <div className="w-full lg:w-1/2">
           {navButtons}
-          <EditRecipeDisplay recipe={recipe} onRecipeChange={setRecipe} onDataValidityChange={setValidData} />
+          <EditRecipeDisplay
+            recipe={recipe}
+            onRecipeChange={setRecipe}
+            onDataValidityChange={setValidData}
+          />
           {navButtons}
         </div>
         <div className="w-full lg:w-1/2 flex flex-col flex-grow">
@@ -188,6 +216,12 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
           </div>
         </div>
       </div>
+      <ConfirmModal
+        show={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteRecipe}
+        text="Bist du sicher, dass du dieses Rezept löschen möchtest?"
+      />
     </div>
   );
 };

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { AdminRecipePreview } from "@/types/recipeTypes";
 import { AdminArticlePreview } from "@/types/articleTypes";
-import DeleteModal from "@/components/common/DeleteModal";
+import Confirmodal from "@/components/common/ConfirmModal";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import ErrorMessage from "@/components/error/ErrorMessage";
 import EditRecipeList from "@/components/recipe/EditRecipeList";
@@ -174,15 +174,17 @@ const AdminDashboard: React.FC = () => {
         openDeleteArticleModal={openDeleteArticleModal}
         formatDate={formatDate}
       />
-      <DeleteModal
+      <Confirmodal
         show={showDeleteRecipeModal}
         onClose={() => setShowDeleteRecipeModal(false)}
         onConfirm={handleDeleteRecipe}
+        text="Bist du sicher, dass du dieses Rezept löschen möchtest?"
       />
-      <DeleteModal
+      <Confirmodal
         show={showDeleteArticleModal}
         onClose={() => setShowDeleteArticleModal(false)}
         onConfirm={handleDeleteArticle}
+        text="Bist du sicher, dass du diesen Artikel löschen möchtest?"
       />
     </div>
   );
