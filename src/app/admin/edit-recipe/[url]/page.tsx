@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import set from "lodash/set";
@@ -11,6 +11,7 @@ import { FaSave, FaSpinner } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import { RecipeData } from "@/types/recipeTypes";
+import { RecipeError } from "@/types/errorTypes";
 import EditRecipeDisplay from "@/components/recipe/EditRecipeDisplay";
 import RecipeDisplay from "@/components/recipe/RecipeDisplay";
 import { ensureEmptyFields } from "@/utils/recipeUtils";
@@ -35,41 +36,19 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [saving, setSaving] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [recipeErrors, setRecipeErrors] = useState<any>({});
+  const [recipeErrors, setRecipeErrors] = useState<RecipeError>({});
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      try {
-        const response = await axios.get<RecipeData>(
-          `${apiUrl}/recipes/recipe/recipe-detail/${url}/`,
-        );
-        setRecipe(ensureEmptyFields(response.data));
-        setLoading(false);
-      } catch (err) {
-        setError("Fehler beim Abrufen vom Server.");
-        setLoading(false);
-      }
-    };
-
-    fetchRecipe();
-  }, [url, apiUrl]);
-
-  const handleValidate = async (newRecipe?: RecipeData) => {
-    const recipeToValidate = newRecipe ?? recipe;
+  const handleValidate = useCallback(async (newRecipe: RecipeData) => {
     try {
-      await recipeValidationSchema.validate(recipeToValidate, {
+      await recipeValidationSchema.validate(newRecipe, {
         abortEarly: false,
       });
       setRecipeErrors({});
       setValidData(true);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
-        const errorMessages: any = {};
+        const errorMessages: RecipeError = {};
         err.inner.forEach((error: Yup.ValidationError) => {
           if (error.path) {
             set(errorMessages, error.path, error.message);
@@ -79,14 +58,33 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         setValidData(false);
       }
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        const response = await axios.get<RecipeData>(
+          `${apiUrl}/recipes/recipe/recipe-detail/${url}/`,
+        );
+        const loadedRecipe = ensureEmptyFields(response.data);
+        setRecipe(loadedRecipe);
+        handleValidate(loadedRecipe);
+        setLoading(false);
+      } catch (err) {
+        setError("Fehler beim Abrufen vom Server.");
+        setLoading(false);
+      }
+    };
+
+    fetchRecipe();
+  }, [url, apiUrl, handleValidate]);
 
   const handleSubmit = async () => {
     if (!recipe || saving) {
       return;
     }
 
-    await handleValidate();
+    await handleValidate(recipe);
 
     if (!validData) {
       return;
@@ -231,7 +229,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
           <EditRecipeDisplay
             recipe={recipe}
             onRecipeChange={setRecipe}
-            handleValidate={handleValidate}
+            validateData={() => handleValidate(recipe)}
             errors={recipeErrors}
           />
           {navButtons}

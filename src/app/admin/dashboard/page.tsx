@@ -35,10 +35,6 @@ const AdminDashboard: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
-  useEffect(() => {
     const fetchData = async () => {
       try {
         const [recipesResponse, articlesResponse] = await Promise.all([
