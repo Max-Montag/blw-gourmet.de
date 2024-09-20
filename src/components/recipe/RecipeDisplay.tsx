@@ -1,4 +1,5 @@
 import React from "react";
+import { Marcellus } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
 import { PiCookingPot } from "react-icons/pi";
@@ -7,6 +8,11 @@ import Fraction from "fraction.js";
 import IconText from "@/components/common/IconText";
 import { RecipeData } from "@/types/recipeTypes";
 import AccurateTimerIcon from "@/components/common/AccurateTimerIcon";
+
+const marcellus = Marcellus({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 interface DecimalToFractionProps {
   decimal: number;
@@ -26,7 +32,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
   const combinedLabels = [...recipe.dining_times, ...recipe.labels];
 
   return (
-    <div className="max-w-4xl min-h-48 mx-auto bg-zinc-50 shadow-md rounded-md scroll-smooth teachers-regular">
+    <div className="max-w-4xl min-h-48 mx-auto bg-zinc-50 shadow-md rounded-md scroll-smooth">
       <div className="relative">
         {recipe.optimized_image ? (
           <Image
@@ -60,7 +66,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
       </div>
       <div className="p-6">
         {recipe.name && (
-          <h1 className="text-2xl lg:text-4xl font-bold mb-4 text-center text-gray-800 marcellus-semibold">
+          <h1
+            className={`text-2xl lg:text-4xl font-bold mb-4 text-center text-gray-800 ${marcellus.className}`}
+          >
             {recipe.name}
           </h1>
         )}
@@ -179,7 +187,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                     <span className="rounded-full border-4 border-cyan-800 flex items-center justify-center mr-2 w-10 h-10">
                       {index + 1}
                     </span>
-                    <h3 className="flex-1 text-center self-center">
+                    <h3 className="flex-1 font-bold text-center self-center">
                       {instruction.name}
                     </h3>
                   </div>
@@ -226,7 +234,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                       </span>
                     </div>
                   )}
-                  <p className="text-gray-900 text-lg xs:text-xl mt-4 teachers-semibold">
+                  <p className="text-gray-900 text-lg xs:text-xl mt-4">
                     {instruction.instruction}
                   </p>
                 </div>

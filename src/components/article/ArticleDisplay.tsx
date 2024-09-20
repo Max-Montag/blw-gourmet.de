@@ -1,7 +1,13 @@
 import React from "react";
+import { Marcellus } from "next/font/google";
 import { Descendant, Element as SlateElement, Text as SlateText } from "slate";
 import Image from "next/image";
 import { ArticleData } from "@/types/articleTypes";
+
+const marcellus = Marcellus({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 interface ArticleDisplayProps {
   article: ArticleData;
@@ -72,7 +78,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth teachers-regular">
+    <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth">
       <div className="relative">
         {article.optimized_image ? (
           <Image
@@ -89,7 +95,9 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
         )}
       </div>
       <div className="p-6">
-        <h1 className="text-2xl lg:text-4xl font-bold mb-4 text-center text-gray-800 marcellus-semibold">
+        <h1
+          className={`text-2xl lg:text-4xl font-bold mb-4 text-center text-gray-800 ${marcellus.className}`}
+        >
           {article.title}
         </h1>
         {article.content && article.content.length > 0 && (

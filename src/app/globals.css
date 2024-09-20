@@ -26,29 +26,3 @@ body {
     text-wrap: balance;
   }
 }
-
-.marcellus-regular {
-  font-family: "Marcellus", serif;
-  font-weight: 500;
-  font-style: normal;
-}
-
-.marcellus-semibold {
-  font-family: "Marcellus", serif;
-  font-weight: 600;
-  font-style: bold;
-}
-
-.teachers-regular {
-  font-family: "Teachers", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.teachers-semibold {
-  font-family: "Teachers", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
-}

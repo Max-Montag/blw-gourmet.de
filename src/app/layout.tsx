@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import Head from "next/head";
+import { Noto_Sans } from "next/font/google";
 import Header from "@/components/layout/header/Header";
 import Footer from "@/components/layout/footer/Footer";
 import "./globals.css";
+
+const noto = Noto_Sans({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 export const metadata: Metadata = {
   title: "BLW-gourmet.de",
@@ -17,14 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de">
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Marcellus&family=Teachers:ital,wght@0,400..800;1,400..800&display=swap"
-          rel="stylesheet"
-        />
-        <title>BLW-Gourmet.de</title>
-      </Head>
-      <body className="flex flex-col min-h-screen">
+      <body className={`flex flex-col min-h-screen ${noto.className}`}>
         <Header />
         <main className="flex flex-grow items-center justify-center pt-header">
           {children}
