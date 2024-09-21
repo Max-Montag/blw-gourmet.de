@@ -1,7 +1,7 @@
 import React from "react";
 import { RecipeData } from "@/types/recipeTypes";
 import RecipeDisplay from "@/components/recipe/RecipeDisplay";
-import NoRecipesAvailable from "@/components/error/NoRecipesAvailable";
+import ErrorMessage from "@/components/error/ErrorMessage";
 
 interface RecipePageProps {
   params: { url: string };
@@ -11,8 +11,13 @@ async function getRecipeData(url: string): Promise<RecipeData | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/recipe-detail/${url}/`,
     {
-      cache: "force-cache",
+      cache: "no-cache",
     },
+    // TODO uncomment
+    // {
+    //   cache: "force-cache",
+    //   next: { revalidate: 3600 },
+    // },
   );
   if (!res.ok) {
     return null;
@@ -25,6 +30,7 @@ export async function generateStaticParams() {
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/all-recipes/`,
     {
       cache: "force-cache",
+      next: { revalidate: 3600 },
     },
   );
   if (!res.ok) {
@@ -40,7 +46,9 @@ export default async function RecipePage({ params }: RecipePageProps) {
   const recipe = await getRecipeData(params.url);
 
   if (!recipe) {
-    return <NoRecipesAvailable />;
+    return (
+      <ErrorMessage message="Dieses Rezept konnte nicht gefunden werden." />
+    );
   }
 
   return <RecipeDisplay recipe={recipe} />;

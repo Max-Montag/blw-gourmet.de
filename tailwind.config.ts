@@ -19,7 +19,7 @@ const config: Config = {
       fontSize: {
         xs: "0.6rem",
         "1.5xl": "1.375rem",
-        "md+": "1.125rem",
+        "base+": "1.125rem",
       },
       padding: {
         header: "var(--header-height)",

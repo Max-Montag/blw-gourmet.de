@@ -7,8 +7,9 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import set from "lodash/set";
 import * as Yup from "yup";
-import { FaSave, FaSpinner } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
+import { TbWorldUp, TbWorldOff } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import { RecipeData } from "@/types/recipeTypes";
 import { RecipeError } from "@/types/errorTypes";
@@ -34,7 +35,11 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const [recipe, setRecipe] = useState<RecipeData | null>(null);
   const [validData, setValidData] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [saving, setSaving] = useState<boolean>(false);
+  const [savingPrivate, setSavingPrivate] = useState<boolean>(false);
+  const [savingPublic, setSavingPublic] = useState<boolean>(false);
+  const saving = () => {
+    return savingPrivate || savingPublic;
+  };
   const [error, setError] = useState<string | null>(null);
   const [recipeErrors, setRecipeErrors] = useState<RecipeError>({});
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -79,18 +84,23 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     fetchRecipe();
   }, [url, apiUrl, handleValidate]);
 
-  const handleSubmit = async () => {
-    if (!recipe || saving) {
+  const handleUpload = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const publish = e.currentTarget.getAttribute("data-action") === "publish";
+
+    if (!recipe || saving() === true) {
       return;
     }
 
-    await handleValidate(recipe);
+    if (publish) {
+      await handleValidate(recipe);
 
-    if (!validData) {
-      return;
+      if (!validData) {
+        return;
+      }
+      setSavingPublic(true);
+    } else {
+      setSavingPrivate(true);
     }
-
-    setSaving(true);
 
     try {
       const validDiningTimes = [
@@ -104,6 +114,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         dining_times: recipe.dining_times.filter((time) =>
           validDiningTimes.includes(time),
         ),
+        published: publish,
         labels: recipe.labels.filter((label) => label !== ""),
         ingredients: recipe.ingredients.filter(
           (ingredient) =>
@@ -136,7 +147,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       console.error("Es ist ein Fehler aufgetreten:", error);
       alert("Fehler beim Speichern!");
     } finally {
-      setSaving(false);
+      setSavingPublic(false);
+      setSavingPrivate(false);
     }
   };
 
@@ -200,16 +212,24 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       <button onClick={() => router.push("/admin/dashboard/")}>
         <IoArrowBack className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
       </button>
-      <button onClick={() => setShowDeleteModal(true)}>
-        <MdDelete className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+      <button data-action="unpublish" onClick={handleUpload}>
+        {savingPrivate ? (
+          <FaSpinner className="w-14 h-14 text-zinc-800 animate-spin" />
+        ) : (
+          <TbWorldOff className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+        )}
       </button>
-      <button onClick={handleSubmit} disabled={saving || !validData}>
-        {saving ? (
+      <button
+        data-action="publish"
+        onClick={handleUpload}
+        disabled={saving() === true || !validData}
+      >
+        {savingPublic ? (
           <FaSpinner className="w-14 h-14 text-zinc-800 animate-spin" />
         ) : validData ? (
-          <FaSave className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+          <TbWorldUp className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
         ) : (
-          <FaSave className="w-14 h-14 text-zinc-300 cursor-not-allowed" />
+          <TbWorldUp className="w-14 h-14 text-zinc-300 cursor-not-allowed" />
         )}
       </button>
       <button>
@@ -217,6 +237,9 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
           setImageUrl={setImageUrl}
           uploadUrl={`/recipes/recipe/upload-image/${url}/`}
         />
+      </button>
+      <button onClick={() => setShowDeleteModal(true)}>
+        <MdDelete className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
       </button>
     </div>
   );

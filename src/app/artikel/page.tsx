@@ -7,7 +7,7 @@ async function getAllArticlesData(): Promise<ArticlePreviewData[]> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/articles/all-articles/`,
     {
-      cache: "force-cache",
+      next: { revalidate: 3600 },
     },
   );
   if (!res.ok) {

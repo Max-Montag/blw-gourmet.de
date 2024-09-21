@@ -15,6 +15,7 @@ export interface RecipeData {
   name: string | null;
   url: string;
   description: string | null;
+  published: boolean;
   labels: string[];
   ingredients: Ingredient[];
   tools: string[];

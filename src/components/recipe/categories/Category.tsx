@@ -46,7 +46,9 @@ const Category: React.FC<CategoryProps> = ({ name, recipes }) => {
                       </div>
                     )}
                     <div className="px-2 pb-4">
-                      <h2 className="text-md+ font-bold my-2">{recipe.name}</h2>
+                      <h2 className="text-base+ font-bold my-2">
+                        {recipe.name}
+                      </h2>
                       <p className="text-gray-600 text-sm line-clamp-3">
                         {recipe.description || "Keine Beschreibung verfügbar"}
                       </p>

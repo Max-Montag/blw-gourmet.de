@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { validUnits } from "@/utils/validUnits";
 
 const unitInvalidText = (unit: string) =>
-  `Achtung: "${unit}" ist keine gültige Einheit. Bitte notieren Sie die Mengenangabe in der Zutatenbezeichnung (z. B. „Öl zum Anbraten“ oder „Gewürze nach Wahl“). Lassen Sie die Einheit „Stück“ vollständig aus (z.B. „1 Orange“, „3 Äpfel“). Falls es sich um Stücke (also Bruchteile einer Zutat) handelt, geben Sie bitte z. B. „3 Apfelstücke“ oder „250g Apfelstücke“. an`;
+  `Achtung: "${unit}" ist keine gültige Einheit. Bitte notiere die Mengenangabe in der Zutatenbezeichnung (z. B. „Öl zum Anbraten“ oder „Gewürze nach Wahl“). Lasse die Einheit „Stück“ vollständig aus (z.B. „1 Orange“, „3 Äpfel“). Falls es sich um Stücke (also Bruchteile einer Zutat) handelt, gebe bitte z. B. „3 Apfelstücke“ oder „250g Apfelstücke“. an. Gültige Einheiten sind: ${validUnits.join(", ")}`;
 
 export const recipeValidationSchema = Yup.object({
   name: Yup.string()
@@ -18,7 +18,7 @@ export const recipeValidationSchema = Yup.object({
     .of(Yup.string())
     .test(
       "dining-times",
-      "Bitte wählen Sie mindestens eine Mahlzeit aus, für die das Rezept geeignet ist",
+      "Bitte wähle mindestens eine Mahlzeit aus, für die das Rezept geeignet ist",
       function (value) {
         if (value && value.length > 0 && value.some((time) => time !== "")) {
           return true;
@@ -27,10 +27,7 @@ export const recipeValidationSchema = Yup.object({
       },
     ),
   preparation_time: Yup.number()
-    .min(
-      1,
-      "Bitte geben Sie eine Zubereitungszeit von mindestens einer Minute an",
-    )
+    .min(1, "Bitte gebe eine Zubereitungszeit von mindestens einer Minute an")
     .max(2880, "Die Zubereitungszeit darf nicht mehr als 48 Stunden betragen")
     .nullable(),
   rest_time: Yup.number()

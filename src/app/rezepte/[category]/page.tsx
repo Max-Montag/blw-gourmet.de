@@ -2,6 +2,7 @@ import React from "react";
 import { RecipePreview } from "@/types/recipeTypes";
 import Category from "@/components/recipe/categories/Category";
 import ErrorMessage from "@/components/error/ErrorMessage";
+import NoRecipesAvailable from "@/components/error/NoRecipesAvailable";
 
 interface ListRecipesProps {
   params: { category: string };
@@ -13,8 +14,13 @@ async function getRecipesByCategory(
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/category/?category=${category}`,
     {
-      cache: "force-cache",
+      cache: "no-cache",
     },
+    // TODO uncomment
+    // {
+    //   cache: "force-cache",
+    //   next: { revalidate: 3600 },
+    // },
   );
   if (!res.ok) {
     return null;
@@ -26,7 +32,7 @@ export async function generateStaticParams() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/categories/`,
     {
-      cache: "force-cache",
+      next: { revalidate: 86400 },
     },
   );
   if (!res.ok) {
@@ -48,9 +54,7 @@ export default async function ListRecipes({ params }: ListRecipesProps) {
   }
 
   if (recipes.length === 0) {
-    return (
-      <ErrorMessage message="Keine Rezepte in dieser Kategorie gefunden." />
-    );
+    return <NoRecipesAvailable />;
   }
 
   return <Category name={decodedCategory} recipes={recipes} />;
