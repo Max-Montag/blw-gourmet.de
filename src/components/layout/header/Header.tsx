@@ -97,7 +97,6 @@ const Header: React.FC = () => {
           <FaRegUserCircle className="hidden lg:block w-7 h-7" />
         </div>
       </div>
-
       <div className="lg:flex lg:items-end lg:justify-end" onClick={closeMenu}>
         <div className="bg-cyan-100 lg:w-fit lg:text-center">
           <div
@@ -121,7 +120,6 @@ const Header: React.FC = () => {
               ))}
             </div>
           </div>
-
           <div
             className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
               isMenuOpen ? "max-h-screen" : "max-h-0"

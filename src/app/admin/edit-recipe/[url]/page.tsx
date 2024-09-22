@@ -257,7 +257,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
           <EditRecipeDisplay
             recipe={recipe}
             onRecipeChange={setRecipe}
-            validateData={() => handleValidate(recipe)}
+            validateData={(newRecipe) => handleValidate(newRecipe ?? recipe)}
             errors={recipeErrors}
           />
           {navButtons}
