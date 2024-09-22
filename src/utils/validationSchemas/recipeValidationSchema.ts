@@ -80,7 +80,19 @@ export const recipeValidationSchema = Yup.object({
           }),
       }),
     )
-    .min(1, "Bitte füge mindestens eine Zutat hinzu"),
+    .test(
+      "ingredients",
+      "Bitte füge mindestens eine Zutat hinzu",
+      function (value) {
+        if (value && value.length > 0) {
+          console.log(value[0].ingredient ?? "no ingredient");
+        }
+        if (value && value.length > 0 && value.some((ingredient) => ingredient.ingredient?.trim() || (ingredient.amount && ingredient.amount > 0) || ingredient.unit?.trim())) {
+          return true;
+        }
+        return false;
+      },
+    ),
   tools: Yup.array().of(
     Yup.string().max(100, "Utensil darf nicht länger als 100 Zeichen sein"),
   ),

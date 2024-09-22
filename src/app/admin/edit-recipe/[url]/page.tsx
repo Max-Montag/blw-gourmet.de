@@ -138,6 +138,11 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       const response = await axios.put(
         `${apiUrl}/recipes/recipe/update/${url}/`,
         JSON.stringify(filteredData),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
       );
 
       if (response.status === 200) {

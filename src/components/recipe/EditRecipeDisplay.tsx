@@ -476,6 +476,9 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 )}
             </div>
           ))}
+          {errors.ingredients && typeof errors.ingredients === "string" && (
+            <WarningNotification message={errors.ingredients} />
+          )}
         </div>
         <div>
           <label className="block text-base font-medium text-gray-700 mb-1">
