@@ -87,7 +87,16 @@ export const recipeValidationSchema = Yup.object({
         if (value && value.length > 0) {
           console.log(value[0].ingredient ?? "no ingredient");
         }
-        if (value && value.length > 0 && value.some((ingredient) => ingredient.ingredient?.trim() || (ingredient.amount && ingredient.amount > 0) || ingredient.unit?.trim())) {
+        if (
+          value &&
+          value.length > 0 &&
+          value.some(
+            (ingredient) =>
+              ingredient.ingredient?.trim() ||
+              (ingredient.amount && ingredient.amount > 0) ||
+              ingredient.unit?.trim(),
+          )
+        ) {
           return true;
         }
         return false;

@@ -4,8 +4,9 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CiMenuBurger } from "react-icons/ci";
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaRegUserCircle, FaSpinner } from "react-icons/fa";
 import SearchBar from "./SearchBar";
+import { useAuth } from "@/context/AuthContext";
 
 const menuItems = [
   { label: "Rezepte durchstöbern", path: "/rezepte/" },
@@ -15,8 +16,10 @@ const menuItems = [
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isAdmin = true; // TODO context!!!!
-  const isAuthenticated = true; // TODO context!!!!
+  const { isAuthenticated, isAdmin, login, logout, loading } = useAuth();
+  const [logInError, setLogInError] = useState<string>("");
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -95,75 +98,129 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-cyan-100">
-        <div
-          className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
-            isMenuOpen ? "max-h-56" : "max-h-0"
-          }`}
-        >
-          <div className="mt-6 lg:hidden divide-y divide-cyan-600">
-            <div className="xxs:hidden pb-4">
-              <SearchBar closeMenu={closeMenu} />
+      <div className="lg:flex lg:items-end lg:justify-end" onClick={closeMenu}>
+        <div className="bg-cyan-100 lg:w-fit lg:text-center">
+          <div
+            className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
+              isMenuOpen ? "max-h-56" : "max-h-0"
+            }`}
+          >
+            <div className="mt-6 lg:hidden divide-y divide-cyan-600">
+              <div className="xxs:hidden pb-4">
+                <SearchBar closeMenu={closeMenu} />
+              </div>
+              {menuItems.map((item) => (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  onClick={closeMenu}
+                  className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
-            {menuItems.map((item) => (
-              <Link
-                key={item.path}
-                href={item.path}
-                onClick={closeMenu}
-                className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-              >
-                {item.label}
-              </Link>
-            ))}
           </div>
-        </div>
 
-        <div
-          className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
-            isMenuOpen ? "max-h-48" : "max-h-0"
-          }`}
-          onClick={closeMenu}
-        >
-          <div className="mt-6 divide-y divide-cyan-600">
-            {isAuthenticated ? (
-              <Link
-                href="/user/meine-rezepte"
-                className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-              >
-                Meine Rezepte
-              </Link>
-            ) : (
-              <>
+          <div
+            className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
+              isMenuOpen ? "max-h-screen" : "max-h-0"
+            }`}
+            onClick={closeMenu}
+          >
+            <div className="mt-4 divide-y divide-cyan-600">
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    href="/user/meine-rezepte"
+                    className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                  >
+                    Meine Rezepte
+                  </Link>
+                  <button
+                    onClick={async () => {
+                      logout();
+                    }}
+                    className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                  >
+                    Abmelden
+                  </button>
+                </>
+              ) : (
+                <>
+                  <form
+                    className="w-fit text-cyan-950 px-2 py-3 space-y-2"
+                    onClick={(e) => e.stopPropagation()}
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      try {
+                        if (!emailRef.current || !passwordRef.current) {
+                          throw new Error("Fehler beim Anmelden");
+                        }
+                        await login(
+                          emailRef.current.value,
+                          passwordRef.current.value,
+                        );
+                        setLogInError("");
+                      } catch (error) {
+                        setLogInError("Fehler beim Anmelden");
+                      }
+                    }}
+                  >
+                    <input
+                      key="email"
+                      type="email"
+                      ref={emailRef}
+                      placeholder="E-Mail"
+                      className="block bg-cyan-50 p-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
+                    />
+                    <input
+                      ref={passwordRef}
+                      key="password"
+                      type="password"
+                      placeholder="Passwort"
+                      className="block bg-cyan-50 p-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
+                    />
+                    <button
+                      className="w-full flex justify-center block p-1 bg-cyan-50 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all"
+                      type="submit"
+                    >
+                      {logInError ? (
+                        logInError
+                      ) : loading ? (
+                        <FaSpinner className="animate-spin" />
+                      ) : (
+                        "Anmelden"
+                      )}
+                    </button>
+                    {/* Eingabefelder und Button */}
+                  </form>
+                  <Link
+                    href="/register"
+                    className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                  >
+                    Registrieren
+                  </Link>
+                </>
+              )}
+              {/* {isAuthenticated && isAdmin && ( */}
+              {
                 <Link
-                  href="/login"
+                  href="/admin/dashboard"
                   className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
                 >
-                  Anmelden
+                  Admin-Bereich
                 </Link>
+              }
+              {isAuthenticated && (
                 <Link
-                  href="/register"
+                  href="/logout"
                   className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
                 >
-                  Registrieren
+                  Abmelden
                 </Link>
-              </>
-            )}
-            {isAuthenticated && isAdmin && (
-              <Link
-                href="/admin/dashboard"
-                className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-              >
-                Admin-Bereich
-              </Link>
-            )}
-            {isAuthenticated && (
-              <Link
-                href="/logout"
-                className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-              >
-                Abmelden
-              </Link>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
