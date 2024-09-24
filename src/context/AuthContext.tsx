@@ -32,7 +32,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
   const [loggingIn, setLoggingIn] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
-  const [csrfToken, setCsrfToken] = useState("");
 
   axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
   axios.defaults.withCredentials = true;
@@ -56,12 +55,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     checkAuth();
   }, []);
 
-  useEffect(() => {
-    const token = getCookie("csrftoken");
-    if (token) {
-      setCsrfToken(token);
-    }
-  }, [getCookie]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -75,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       await axios.post("/auth/login/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "X-CSRFToken": csrfToken,
+          "X-CSRFToken": getCookie("csrftoken") ?? "",
         },
       });
 
@@ -93,7 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoading(true);
       await axios.post("/auth/logout/", null, {
         headers: {
-          "X-CSRFToken": csrfToken,
+          "X-CSRFToken": getCookie("csrftoken") ?? "",
         },
       });
       setIsAuthenticated(false);

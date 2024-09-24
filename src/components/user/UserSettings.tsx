@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, use } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   MdOutlineLockReset,
   MdOutlineMarkEmailRead,
@@ -8,6 +8,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaDoorOpen, FaCheck } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { useAuth } from "@/context/AuthContext";
+import { getCookie } from "@/utils/Utils";
 
 const CHECK_TEXT = "Ich möchte, dass mein Account gelöscht wird!";
 
@@ -41,10 +42,11 @@ const UserSettings: React.FC = () => {
   const apiAction = async (keyword: string, data: any) => {
     setIsSaving(true);
     try {
-      const response = await fetch(`/api/${keyword}`, {
+      const response = await fetch(`/api/${keyword}/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken") ?? "",
         },
         body: JSON.stringify(data),
       });
@@ -185,9 +187,9 @@ const UserSettings: React.FC = () => {
         return (
           <form onSubmit={(e) => handleSubmit(e, handleDeleteAccount)}>
             <p>
-              Um deinen Account und damit all Deine Rezepte dauerhaft zu
+              Um deinen Account und damit all deine Rezepte dauerhaft zu
               löschen, gib bitte den Text „{CHECK_TEXT}” ein und bestätige mit
-              Deinem Passwort.
+              deinem Passwort.
             </p>
             <input
               type="text"
@@ -245,9 +247,9 @@ const UserSettings: React.FC = () => {
   );
 
   return (
-    <div className="w-full bg-white shadow-md rounded px-8 pt-6 pb-8 max-w-md mx-auto my-10 relative">
+    <div className="w-full bg-white shadow-md rounded px-8 pt-6 pb-8 max-w-md mx-auto relative">
       <div className="space-y-4">
-        <h1 className="text-2xl">Kontoeinstellungen</h1>
+        <h1 className="xs:text-lg md:text-2xl mb-2">Kontoeinstellungen</h1>
         <ActionButton
           text="Passwort ändern"
           keyword="change_password"

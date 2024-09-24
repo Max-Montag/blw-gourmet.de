@@ -201,6 +201,7 @@ const Header: React.FC = () => {
                       placeholder="E-Mail"
                       className="block bg-cyan-50 p-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
                     />
+                    <div className="flex flex-col">
                     <input
                       ref={passwordRef}
                       key="password"
@@ -208,6 +209,10 @@ const Header: React.FC = () => {
                       placeholder="Passwort"
                       className="block bg-cyan-50 p-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
                     />
+                    <Link href="/passwort-vergessen" onClick={closeMenu} className="text-gray-400 text-start text-xs font-light px-1 mt-1.5 mb-2">
+                      Passwort vergessen? Hier klicken!
+                    </Link>
+                    </div>
                     <button
                       className="w-full flex justify-center items-center block p-1 bg-cyan-50 h-10 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all cursor-pointer"
                       type="submit"
@@ -226,7 +231,7 @@ const Header: React.FC = () => {
                     )}
                   </form>
                   <Link
-                    href="/register"
+                    href="/registrieren"
                     className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                   >
                     Registrieren
