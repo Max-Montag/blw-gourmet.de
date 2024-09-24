@@ -112,7 +112,7 @@ const Header: React.FC = () => {
           <div className="hidden lg:flex items-center">
             {username && (
               <Link
-                href="/kontoeinstellungen"
+                href="/mein-bereich/kontoeinstellungen"
                 className="hidden xl:flex text-cyan-950 hover:text-cyan-700 px-3 py-3 font-semibold"
               >
                 {username}
@@ -168,7 +168,7 @@ const Header: React.FC = () => {
                     </div>
                   )}
                   <Link
-                    href="/user/meine-rezepte"
+                    href="/mein-bereich/meine-rezepte"
                     className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                   >
                     Meine Rezepte
@@ -244,7 +244,7 @@ const Header: React.FC = () => {
               {isAuthenticated && (
                 <>
                   <Link
-                    href="/kontoeinstellungen"
+                    href="/mein-bereich/kontoeinstellungen"
                     className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                   >
                     Kontoeinstellungen
