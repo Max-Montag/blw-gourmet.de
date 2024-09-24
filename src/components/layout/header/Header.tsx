@@ -16,11 +16,13 @@ const menuItems = [
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isAuthenticated, isAdmin, login, logout, loading } = useAuth();
+  const { isAuthenticated, isAdmin, login, logout, loading, loggingIn } =
+    useAuth();
   const [logInError, setLogInError] = useState<string>("");
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [upScolls, setUpScrolls] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -37,8 +39,11 @@ const Header: React.FC = () => {
     const currentScrollY = window.scrollY;
     if (currentScrollY > lastScrollY && currentScrollY > 100 && !isMenuOpen) {
       setIsVisible(false);
-    } else {
+      setUpScrolls(0);
+    } else if (upScolls >= 30 || currentScrollY < 100 || isMenuOpen) {
       setIsVisible(true);
+    } else {
+      setUpScrolls((prev) => prev + 1);
     }
     setLastScrollY(currentScrollY);
   }, [lastScrollY, isMenuOpen]);
@@ -98,7 +103,7 @@ const Header: React.FC = () => {
         </div>
       </div>
       <div className="lg:flex lg:items-end lg:justify-end" onClick={closeMenu}>
-        <div className="bg-cyan-100 lg:w-fit lg:text-center">
+        <div className="bg-cyan-100 lg:w-fit lg:text-center shadow-xl">
           <div
             className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
               isMenuOpen ? "max-h-56" : "max-h-0"
@@ -113,7 +118,7 @@ const Header: React.FC = () => {
                   key={item.path}
                   href={item.path}
                   onClick={closeMenu}
-                  className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                  className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                 >
                   {item.label}
                 </Link>
@@ -131,18 +136,10 @@ const Header: React.FC = () => {
                 <>
                   <Link
                     href="/user/meine-rezepte"
-                    className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                    className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                   >
                     Meine Rezepte
                   </Link>
-                  <button
-                    onClick={async () => {
-                      logout();
-                    }}
-                    className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
-                  >
-                    Abmelden
-                  </button>
                 </>
               ) : (
                 <>
@@ -159,7 +156,6 @@ const Header: React.FC = () => {
                           emailRef.current.value,
                           passwordRef.current.value,
                         );
-                        setLogInError("");
                       } catch (error) {
                         setLogInError("Fehler beim Anmelden");
                       }
@@ -180,22 +176,25 @@ const Header: React.FC = () => {
                       className="block bg-cyan-50 p-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
                     />
                     <button
-                      className="w-full flex justify-center block p-1 bg-cyan-50 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all"
+                      className="w-full flex justify-center items-center block p-1 bg-cyan-50 h-10 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all cursor-pointer"
                       type="submit"
+                      disabled={loading}
                     >
-                      {logInError ? (
-                        logInError
-                      ) : loading ? (
+                      {loggingIn ? (
                         <FaSpinner className="animate-spin" />
                       ) : (
                         "Anmelden"
                       )}
                     </button>
-                    {/* Eingabefelder und Button */}
+                    {logInError && (
+                      <p className="text-red-500 text-sm text-start">
+                        {logInError}
+                      </p>
+                    )}
                   </form>
                   <Link
                     href="/register"
-                    className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                    className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                   >
                     Registrieren
                   </Link>
@@ -205,18 +204,28 @@ const Header: React.FC = () => {
               {
                 <Link
                   href="/admin/dashboard"
-                  className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                  className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                 >
                   Admin-Bereich
                 </Link>
               }
               {isAuthenticated && (
+                <>
                 <Link
-                  href="/logout"
-                  className="block text-cyan-950 hover:text-cyan-700 pl-2 py-3"
+                  href="/kontoeinstellungen"
+                  className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
+                >
+                  Kontoeinstellungen
+                </Link>
+                <button
+                  onClick={async () => {
+                    logout();
+                  }}
+                  className="w-full text-start lg:text-center block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                 >
                   Abmelden
-                </Link>
+                </button>
+                </>
               )}
             </div>
           </div>
