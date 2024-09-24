@@ -16,8 +16,15 @@ const menuItems = [
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isAuthenticated, isAdmin, login, logout, loading, loggingIn } =
-    useAuth();
+  const {
+    isAuthenticated,
+    isAdmin,
+    login,
+    logout,
+    loading,
+    loggingIn,
+    username,
+  } = useAuth();
   const [logInError, setLogInError] = useState<string>("");
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -97,16 +104,29 @@ const Header: React.FC = () => {
         <div className="hidden xxs:block">
           <SearchBar closeMenu={closeMenu} />
         </div>
-        <div onClick={toggleMenu} className="text-cyan-950 cursor-pointer">
-          <CiMenuBurger className="block lg:hidden w-6 h-6" />
-          <FaRegUserCircle className="hidden lg:block w-7 h-7" />
+        <div className="text-cyan-950 cursor-pointer">
+          <CiMenuBurger
+            className="block lg:hidden w-6 h-6"
+            onClick={toggleMenu}
+          />
+          <div className="hidden lg:flex items-center">
+            {username && (
+              <Link
+                href="/kontoeinstellungen"
+                className="hidden xl:flex text-cyan-950 hover:text-cyan-700 px-3 py-3 font-semibold"
+              >
+                {username}
+              </Link>
+            )}
+            <FaRegUserCircle className="w-7 h-7" onClick={toggleMenu} />
+          </div>
         </div>
       </div>
       <div className="lg:flex lg:items-end lg:justify-end" onClick={closeMenu}>
         <div className="bg-cyan-100 lg:w-fit lg:text-center shadow-xl">
           <div
             className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
-              isMenuOpen ? "max-h-56" : "max-h-0"
+              isMenuOpen ? "max-h-screen" : "max-h-0"
             }`}
           >
             <div className="mt-6 lg:hidden divide-y divide-cyan-600">
@@ -118,7 +138,7 @@ const Header: React.FC = () => {
                   key={item.path}
                   href={item.path}
                   onClick={closeMenu}
-                  className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
+                  className="block text-cyan-950 hover:text-cyan-700 font-semibold px-4 py-3"
                 >
                   {item.label}
                 </Link>
@@ -134,6 +154,19 @@ const Header: React.FC = () => {
             <div className="mt-4 divide-y divide-cyan-600">
               {isAuthenticated ? (
                 <>
+                  {username && (
+                    <div className="py-1 space-y-1">
+                      <p className="block xl:hidden text-center px-2 font-semibold">
+                        Eingeloggt als
+                      </p>
+                      <Link
+                        href="/konoteinstellungen"
+                        className="block xl:hidden text-cyan-800 text-center hover:text-cyan-700 px-2 font-semibold"
+                      >
+                        {username}
+                      </Link>
+                    </div>
+                  )}
                   <Link
                     href="/user/meine-rezepte"
                     className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
@@ -200,31 +233,30 @@ const Header: React.FC = () => {
                   </Link>
                 </>
               )}
-              {/* {isAuthenticated && isAdmin && ( */}
-              {
+              {isAuthenticated && isAdmin && (
                 <Link
                   href="/admin/dashboard"
                   className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                 >
                   Admin-Bereich
                 </Link>
-              }
+              )}
               {isAuthenticated && (
                 <>
-                <Link
-                  href="/kontoeinstellungen"
-                  className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
-                >
-                  Kontoeinstellungen
-                </Link>
-                <button
-                  onClick={async () => {
-                    logout();
-                  }}
-                  className="w-full text-start lg:text-center block text-cyan-950 hover:text-cyan-700 px-4 py-3"
-                >
-                  Abmelden
-                </button>
+                  <Link
+                    href="/kontoeinstellungen"
+                    className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
+                  >
+                    Kontoeinstellungen
+                  </Link>
+                  <button
+                    onClick={async () => {
+                      logout();
+                    }}
+                    className="w-full text-start lg:text-center block text-cyan-950 hover:text-cyan-700 px-4 py-3"
+                  >
+                    Abmelden
+                  </button>
                 </>
               )}
             </div>

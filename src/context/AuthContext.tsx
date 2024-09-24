@@ -11,7 +11,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   loading: boolean;
   loggingIn: boolean;
-  user: any;
+  username: any;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
   loading: true,
   loggingIn: false,
-  user: null,
+  username: null,
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -31,9 +31,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loggingIn, setLoggingIn] = useState(false);
-  const [user, setUser] = useState(null);
-  
-  const csrfToken = getCookie("csrftoken");
+  const [username, setUsername] = useState<string | null>(null);
+  const [csrfToken, setCsrfToken] = useState("");
 
   axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
   axios.defaults.withCredentials = true;
@@ -42,15 +41,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const response = await axios.get("/auth/user/");
       setIsAuthenticated(true);
-      setUser(response.data);
+      setUsername(response.data.username);
       setIsAdmin(response.data.is_admin);
     } catch (error) {
       setIsAuthenticated(false);
-      setUser(null);
+      setUsername(null);
       setIsAdmin(false);
     } finally {
       setLoading(false);
-      setIsAuthenticated(false); // TODO: Remove this line
     }
   };
 
@@ -58,22 +56,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     checkAuth();
   }, []);
 
+  useEffect(() => {
+    const token = getCookie("csrftoken");
+    if (token) {
+      setCsrfToken(token);
+    }
+  }, [getCookie]);
+
   const login = async (email: string, password: string) => {
     try {
       setLoggingIn(true);
       setLoading(true);
-  
+
       const formData = new FormData();
-      formData.append('email', email);
-      formData.append('password', password);
-  
+      formData.append("email", email);
+      formData.append("password", password);
+
       await axios.post("/auth/login/", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'X-CSRFToken': csrfToken,
+          "Content-Type": "multipart/form-data",
+          "X-CSRFToken": csrfToken,
         },
       });
-  
+
       await checkAuth();
     } catch (error) {
       throw new Error("Fehler beim Anmelden");
@@ -88,11 +93,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoading(true);
       await axios.post("/auth/logout/", null, {
         headers: {
-          'X-CSRFToken': csrfToken,
+          "X-CSRFToken": csrfToken,
         },
       });
       setIsAuthenticated(false);
-      setUser(null);
+      setUsername(null);
       setIsAdmin(false);
     } catch (error) {
       throw new Error("Fehler beim Ausloggen");
@@ -110,7 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         logout,
         loading,
         loggingIn,
-        user,
+        username: username,
       }}
     >
       {children}

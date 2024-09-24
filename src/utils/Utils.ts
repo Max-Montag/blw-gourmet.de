@@ -1,4 +1,8 @@
-function setLocalStorageItem(cookieConsentGiven:boolean, key:string, value:string) {
+function setLocalStorageItem(
+  cookieConsentGiven: boolean,
+  key: string,
+  value: string,
+) {
   if (cookieConsentGiven) {
     localStorage.setItem(key, value);
     return true;
@@ -6,7 +10,7 @@ function setLocalStorageItem(cookieConsentGiven:boolean, key:string, value:strin
   return false;
 }
 
-function getCookie(name:string) {
+function getCookie(name: string) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== "") {
     const cookies = document.cookie.split(";");
