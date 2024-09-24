@@ -1,37 +1,40 @@
-import { useState, useEffect, KeyboardEvent } from 'react';
-import { TbReload } from 'react-icons/tb';
-import { getCookie } from '@/utils/Utils';
+import { useState, useEffect, KeyboardEvent } from "react";
+import { TbReload } from "react-icons/tb";
+import { getCookie } from "@/utils/Utils";
 
 interface CaptchaProps {
   onCaptchaChange: (captchaData: { key: string; value: string }) => void;
 }
 
 const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange }) => {
-  const [captchaKey, setCaptchaKey] = useState<string>('');
-  const [captchaImageUrl, setCaptchaImageUrl] = useState<string>('');
+  const [captchaKey, setCaptchaKey] = useState<string>("");
+  const [captchaImageUrl, setCaptchaImageUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const fetchCaptcha = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/captcha/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCookie('csrftoken') ?? '',
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/captcha/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken") ?? "",
+          },
         },
-      });
+      );
 
       if (!response.ok) {
-        throw new Error('Captcha konnte nicht geladen werden');
+        throw new Error("Captcha konnte nicht geladen werden");
       }
 
       const data = await response.json();
       setCaptchaKey(data.key);
-      const imgPath = 'http://192.168.1.151' + data.image_url; // TODO https://blw-gourmet.de oder nach env
+      const imgPath = process.env.NEXT_PUBLIC_BASE_URL + data.image_url;
       setCaptchaImageUrl(imgPath);
       setLoading(false);
     } catch (error) {
-      console.error('Fehler beim Abrufen des Captchas:', error);
+      console.error("Fehler beim Abrufen des Captchas:", error);
       setLoading(false);
     }
   };
@@ -41,7 +44,7 @@ const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange }) => {
   }, []);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
     }
   };
@@ -72,7 +75,9 @@ const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange }) => {
               id="captchaText"
               placeholder="Beweise, dass Du kein Roboter bist! 🤖"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => onCaptchaChange({ key: captchaKey, value: e.target.value })}
+              onChange={(e) =>
+                onCaptchaChange({ key: captchaKey, value: e.target.value })
+              }
               onKeyUp={handleKeyPress}
             />
           </div>

@@ -177,7 +177,7 @@ const Header: React.FC = () => {
               ) : (
                 <>
                   <form
-                    className="w-fit text-cyan-950 px-2 py-3 space-y-2"
+                    className="w-fit text-cyan-950 px-4 py-3 space-y-2"
                     onClick={(e) => e.stopPropagation()}
                     onSubmit={async (e) => {
                       e.preventDefault();
@@ -199,19 +199,23 @@ const Header: React.FC = () => {
                       type="email"
                       ref={emailRef}
                       placeholder="E-Mail"
-                      className="block bg-cyan-50 p-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
+                      className="block bg-cyan-50 px-2 py-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
                     />
                     <div className="flex flex-col">
-                    <input
-                      ref={passwordRef}
-                      key="password"
-                      type="password"
-                      placeholder="Passwort"
-                      className="block bg-cyan-50 p-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
-                    />
-                    <Link href="/passwort-vergessen" onClick={closeMenu} className="text-gray-400 text-start text-xs font-light px-1 mt-1.5 mb-2">
-                      Passwort vergessen? Hier klicken!
-                    </Link>
+                      <input
+                        ref={passwordRef}
+                        key="password"
+                        type="password"
+                        placeholder="Passwort"
+                        className="block bg-cyan-50 px-2 py-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
+                      />
+                      <Link
+                        href="/passwort-vergessen"
+                        onClick={closeMenu}
+                        className="text-cyan-950 text-start text-xs font-light px-1 mt-1.5 mb-2"
+                      >
+                        Passwort vergessen? Hier klicken!
+                      </Link>
                     </div>
                     <button
                       className="w-full flex justify-center items-center block p-1 bg-cyan-50 h-10 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all cursor-pointer"

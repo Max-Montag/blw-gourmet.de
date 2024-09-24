@@ -55,7 +55,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     checkAuth();
   }, []);
 
-
   const login = async (email: string, password: string) => {
     try {
       setLoggingIn(true);

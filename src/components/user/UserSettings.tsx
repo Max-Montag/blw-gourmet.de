@@ -42,14 +42,17 @@ const UserSettings: React.FC = () => {
   const apiAction = async (keyword: string, data: any) => {
     setIsSaving(true);
     try {
-      const response = await fetch(`/api/${keyword}/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCookie("csrftoken") ?? "",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/${keyword}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken") ?? "",
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      });
+      );
 
       if (response.ok) {
         setShowingConfirmation(true);

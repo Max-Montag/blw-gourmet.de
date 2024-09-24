@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, FormEvent } from 'react';
-import Link from 'next/link';
-import { RiMailSendLine } from 'react-icons/ri';
-import { getCookie } from '@/utils/Utils';
-import Captcha from '@/components/captcha/Captcha';
+import { useState, FormEvent } from "react";
+import Link from "next/link";
+import { RiMailSendLine } from "react-icons/ri";
+import { getCookie } from "@/utils/Utils";
+import Captcha from "@/components/captcha/Captcha";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
   const [sent, setSent] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [captchaKey, setCaptchaKey] = useState<string>('');
-  const [captchaValue, setCaptchaValue] = useState<string>('');
+  const [error, setError] = useState<string>("");
+  const [captchaKey, setCaptchaKey] = useState<string>("");
+  const [captchaValue, setCaptchaValue] = useState<string>("");
 
   const handleForgotPassword = async (e: FormEvent) => {
     e.preventDefault();
@@ -19,21 +19,24 @@ const ForgotPassword = () => {
     const captcha = { key: captchaKey, value: captchaValue };
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/forgot_password/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCookie('csrftoken') ?? "",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/forgot_password/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken") ?? "",
+          },
+          body: JSON.stringify({ email, captcha }),
         },
-        body: JSON.stringify({ email, captcha }),
-      });
+      );
 
       if (response.ok) {
         setSent(true);
       } else if (response.status === 406) {
-        throw new Error('Bist du vielleicht doch ein Roboter?');
+        throw new Error("Bist du vielleicht doch ein Roboter?");
       } else {
-        throw new Error('Fehler beim Senden der E-Mail.');
+        throw new Error("Fehler beim Senden der E-Mail.");
       }
     } catch (err: any) {
       setError(err.message);
@@ -51,7 +54,8 @@ const ForgotPassword = () => {
       <div className="flex flex-col items-center justify-center py-8 px-4 my-28">
         <RiMailSendLine className="w-32 h-32 text-cyan-600" />
         <p className="text-lg text-gray-700 mt-4 text-center px-4">
-          Prüfe deinen Posteingang! Wir haben dir eine E-Mail gesendet, mit der du dein Passwort zurücksetzen kannst.
+          Prüfe deinen Posteingang! Wir haben dir eine E-Mail gesendet, mit der
+          du dein Passwort zurücksetzen kannst.
         </p>
         <Link href="/">
           <a className="mt-8 inline-block bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 px-6 rounded-lg shadow">
@@ -67,7 +71,9 @@ const ForgotPassword = () => {
           className="w-full p-8 bg-white rounded-lg shadow-md"
           onSubmit={handleForgotPassword}
         >
-          <h2 className="text-xl font-semibold mb-8 text-cyan-600">Passwort zurücksetzen</h2>
+          <h2 className="text-xl font-semibold mb-8 text-cyan-600">
+            Passwort zurücksetzen
+          </h2>
           <div className="mb-4">
             <label htmlFor="email" className="block text-cyan-600 mb-2">
               E-Mail-Adresse
