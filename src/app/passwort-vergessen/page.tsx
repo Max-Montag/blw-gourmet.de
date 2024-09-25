@@ -7,7 +7,7 @@ import { getCookie } from "@/utils/Utils";
 import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 
-const ForgotPassword = () => {
+const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [sent, setSent] = useState<boolean>(false);

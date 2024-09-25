@@ -2,7 +2,7 @@
 
 import UserSettings from "@/components/user/UserSettings";
 
-const SettingsPage = () => {
+const SettingsPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4">
       <UserSettings />

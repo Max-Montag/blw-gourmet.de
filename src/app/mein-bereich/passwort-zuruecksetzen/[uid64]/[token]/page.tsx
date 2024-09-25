@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { getCookie } from "@/utils/Utils";
 
-const ResetPassword: React.FC = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const uidb64 = searchParams.get("uidb64");
-  const token = searchParams.get("token");
+interface ResetPasswordProps {
+  params: { uid64: string; token: string };
+}
 
+const ResetPassword: React.FC<ResetPasswordProps> = ({ params }) => {
+  const router = useRouter();
+  const { uid64, token } = params;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -25,7 +26,7 @@ const ResetPassword: React.FC = () => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/reset_password/${uidb64}/${token}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/reset_password/${uid64}/${token}/`,
         {
           method: "POST",
           headers: {

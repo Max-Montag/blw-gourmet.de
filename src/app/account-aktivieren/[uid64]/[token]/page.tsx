@@ -1,23 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { MdMarkEmailRead } from "react-icons/md";
 import { LuMailX } from "react-icons/lu";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import { getCookie } from "@/utils/Utils";
 
-const ActivateAccount: React.FC = () => {
+interface ActivateAccountProps {
+  params: { uid64: string; token: string };
+}
+
+const ActivateAccount: React.FC<ActivateAccountProps> = ({ params }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const uidb64 = searchParams.get("uidb64");
-  const token = searchParams.get("token");
+  const { uid64, token } = params;
   const [success, setSuccess] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (success === null && uidb64 && token) {
+    if (success === null && uid64 && token) {
       fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/activate_user/${uidb64}/${token}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/activate_user/${uid64}/${token}/`,
         {
           method: "GET",
           headers: {
@@ -40,7 +42,7 @@ const ActivateAccount: React.FC = () => {
           setSuccess(false);
         });
     }
-  }, [uidb64, token, router]);
+  }, [uid64, token, router]);
 
   if (success === true) {
     return (

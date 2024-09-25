@@ -125,25 +125,28 @@ const UserSettings: React.FC = () => {
       case "change_password":
         return (
           <form onSubmit={(e) => handleSubmit(e, handlePasswordChange)}>
-            <label>Altes Passwort</label>
+            <label>Aktuelles Passwort</label>
             <input
               type="password"
               name="oldPassword"
-              className="border rounded p-2 w-full"
+              placeholder="Aktuelles Passwort"
+              className="border rounded p-2 mt-1.5 mb-2.5 w-full"
               required
             />
             <label>Neues Passwort</label>
             <input
               type="password"
               name="newPassword"
-              className="border rounded p-2 w-full mt-4"
+              placeholder="Neues Passwort"
+              className="border rounded p-2 w-full mt-1.5 mb-2.5"
               required
             />
             <label>Passwort bestätigen</label>
             <input
               type="password"
               name="confirmPassword"
-              className="border rounded p-2 w-full mt-4"
+              placeholder="Neues Passwort"
+              className="border rounded p-2 w-full mt-1.5 mb-2.5"
               required
             />
             <button
@@ -161,21 +164,24 @@ const UserSettings: React.FC = () => {
             <input
               type="email"
               name="newEmail"
-              className="border rounded p-2 w-full"
+              placeholder="Neue E-Mail-Adresse"
+              className="border rounded p-2 mt-1.5 mb-2.5 w-full"
               required
             />
             <label>E-Mail-Adresse bestätigen</label>
             <input
               type="email"
               name="confirmNewEmail"
-              className="border rounded p-2 w-full mt-4"
+              placeholder="Neue E-Mail-Adresse"
+              className="border rounded p-2 w-full mt-1.5 mb-2.5"
               required
             />
             <label>Passwort</label>
             <input
               type="password"
               name="passwordForEmail"
-              className="border rounded p-2 w-full mt-4"
+              placeholder="Passwort"
+              className="border rounded p-2 w-full mt-1.5 mb-2.5"
               required
             />
             <button
@@ -189,7 +195,7 @@ const UserSettings: React.FC = () => {
       case "deactivate_account":
         return (
           <form onSubmit={(e) => handleSubmit(e, handleDeleteAccount)}>
-            <p>
+            <p className="mb-2 text-cyan-950">
               Um deinen Account und damit all deine Rezepte dauerhaft zu
               löschen, gib bitte den Text „{CHECK_TEXT}” ein und bestätige mit
               deinem Passwort.
@@ -198,14 +204,14 @@ const UserSettings: React.FC = () => {
               type="text"
               name="checkText"
               placeholder={CHECK_TEXT}
-              className="border rounded p-2 w-full mt-4"
+              className="border rounded p-2 w-full my-2"
               required
             />
             <input
               type="password"
               name="password"
               placeholder="Passwort"
-              className="border rounded p-2 w-full mt-4"
+              className="border rounded p-2 w-full my-2"
               required
             />
             <button
@@ -250,7 +256,7 @@ const UserSettings: React.FC = () => {
   );
 
   return (
-    <div className="w-full bg-white shadow-md rounded px-8 pt-6 pb-8 max-w-md mx-auto relative">
+    <div className="w-full bg-white text-lg shadow-md rounded px-8 pt-6 pb-8 max-w-md mx-auto relative">
       <div className="space-y-4">
         <h1 className="xs:text-lg md:text-2xl mb-2">Kontoeinstellungen</h1>
         <ActionButton
