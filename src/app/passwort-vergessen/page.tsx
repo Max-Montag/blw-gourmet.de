@@ -5,9 +5,11 @@ import Link from "next/link";
 import { RiMailSendLine } from "react-icons/ri";
 import { getCookie } from "@/utils/Utils";
 import Captcha from "@/components/captcha/Captcha";
+import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const [sent, setSent] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [captchaKey, setCaptchaKey] = useState<string>("");
@@ -66,6 +68,7 @@ const ForgotPassword = () => {
     );
   } else {
     return (
+      <>
       <div className="w-full md:w-2/3 lg:w-1/2 flex items-center justify-center px-2 xs:px-8">
         <form
           className="w-full p-8 bg-white rounded-lg shadow-md"
@@ -88,7 +91,7 @@ const ForgotPassword = () => {
             />
           </div>
           <div className="w-full my-6">
-            <Captcha onCaptchaChange={setCaptchaResponse} />
+            <Captcha onCaptchaChange={setCaptchaResponse} setLoadingParent={setLoading} />
           </div>
           <div className="min-h-10 h-10 max-h-10 flex justify-start items-center">
             {error && <p className="text-red-500">{error}</p>}
@@ -101,6 +104,8 @@ const ForgotPassword = () => {
           </button>
         </form>
       </div>
+      {loading && <div className="z-5 bg-white fixed w-full min-h-screen top-header flex items-center justify-center"> <LoadingAnimation /> </div>}
+      </>
     );
   }
 };
