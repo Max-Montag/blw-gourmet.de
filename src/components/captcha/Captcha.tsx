@@ -1,17 +1,18 @@
-import { useState, useEffect, KeyboardEvent } from "react";
+import { useState, useEffect, useRef, KeyboardEvent } from "react";
 import { TbReload } from "react-icons/tb";
 import { getCookie } from "@/utils/Utils";
 
 interface CaptchaProps {
   onCaptchaChange: (captchaData: { key: string; value: string }) => void;
+  setLoadingParent?: (loading: boolean) => void;
 }
 
-const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange }) => {
+const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange, setLoadingParent = undefined }) => {
   const [captchaKey, setCaptchaKey] = useState<string>("");
   const [captchaImageUrl, setCaptchaImageUrl] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
+  const inputRef = useRef<HTMLInputElement>(null);
+  
   const fetchCaptcha = async () => {
-    setLoading(true);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/captcha/`,
@@ -32,10 +33,13 @@ const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange }) => {
       setCaptchaKey(data.key);
       const imgPath = process.env.NEXT_PUBLIC_BASE_URL + data.image_url;
       setCaptchaImageUrl(imgPath);
-      setLoading(false);
+
+      if (setLoadingParent) {
+        setTimeout(() => setLoadingParent(false), 200);
+      }
+
     } catch (error) {
       console.error("Fehler beim Abrufen des Captchas:", error);
-      setLoading(false);
     }
   };
 
@@ -49,17 +53,21 @@ const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange }) => {
     }
   };
 
+  const handleReset = () => {
+    fetchCaptcha();
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }
+
   return (
     <div>
-      {loading ? (
-        <p>Lade Captcha...</p>
-      ) : (
         <div>
           {captchaImageUrl && (
             <div className="relative">
-              <div className="absolute rounded-full p-1 bg-gray-100 bottom-1 right-3 z-10 opacity-60 text-gray-800 font-semibold">
-                <button onClick={fetchCaptcha}>
-                  <TbReload className="w-6 h-6 -mb-1" />
+              <div className="absolute rounded-full flex items-center justify-center p-2 bg-gray-100 bottom-2 right-2 z-10 opacity-60 text-gray-800 font-semibold">
+                <button onClick={handleReset}>
+                  <TbReload className="w-10 h-10" />
                 </button>
               </div>
               <img
@@ -71,6 +79,7 @@ const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange }) => {
           )}
           <div className="flex items-center mt-4">
             <input
+              ref={inputRef}
               type="text"
               id="captchaText"
               placeholder="Beweise, dass Du kein Roboter bist! 🤖"
@@ -82,7 +91,6 @@ const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange }) => {
             />
           </div>
         </div>
-      )}
     </div>
   );
 };

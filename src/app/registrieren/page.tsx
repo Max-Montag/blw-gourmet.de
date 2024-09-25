@@ -6,12 +6,25 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { getCookie } from "@/utils/Utils";
 import { RiMailSendLine } from "react-icons/ri";
+import Captcha from "@/components/captcha/Captcha";
+import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
+import Link from "next/link";
 
 const Register: React.FC = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
   const [showingConfirmation, setShowingConfirmation] = useState(false);
+  const [captchaKey, setCaptchaKey] = useState<string>("");
+  const [captchaValue, setCaptchaValue] = useState<string>("");
+
+  const setCaptchaResponse = (captchaData: { key: string; value: string }) => {
+    setCaptchaValue(captchaData.value);
+    setCaptchaKey(captchaData.key);
+  };
+
+    // TODO check Auth context on startup -> if authenticated, redirect to home
 
   const formik = useFormik({
     initialValues: {
@@ -19,6 +32,7 @@ const Register: React.FC = () => {
       username: "",
       password: "",
       confirmPassword: "",
+      consentTermsOfService: false,
     },
     validationSchema: Yup.object({
       email: Yup.string()
@@ -34,39 +48,40 @@ const Register: React.FC = () => {
           "Passwort muss zwischen 8 und 128 Zeichen lang sein und mindestens eine Zahl, einen Buchstaben und ein Sonderzeichen enthalten.",
         ),
       confirmPassword: Yup.string()
-        .oneOf(
-          [Yup.ref("password"), undefined],
-          "Passwörter stimmen nicht überein.",
-        )
+        .oneOf([Yup.ref("password"), undefined], "Passwörter stimmen nicht überein.")
         .required("Passwort wiederholen ist erforderlich."),
+      consentTermsOfService: Yup.boolean().oneOf(
+          [true],
+          "Bitte bestätige die Nutzungsbedingungen.",
+        ),
     }),
     onSubmit: async (values) => {
       setIsSaving(true);
       setSaveError("");
 
       const csrftoken = getCookie("csrftoken") ?? "";
+      const captcha = { key: captchaKey, value: captchaValue };
 
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken": csrftoken,
-            },
-            body: JSON.stringify(values),
-            credentials: "include",
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
           },
-        );
+          body: JSON.stringify({ ...values, captcha }),
+          credentials: "include",
+        });
 
         if (response.ok) {
           setShowingConfirmation(true);
+        } else if (response.status === 406) {
+          setSaveError("Bist du vielleicht doch ein Roboter?");
         } else {
-          throw new Error("Fehler beim Registrieren!");
+          setSaveError("Fehler beim Registrieren!");
         }
-      } catch (error: any) {
-        setSaveError(error.message);
+      } catch (error) {
+        setSaveError("Fehler beim Registrieren.");
       } finally {
         setIsSaving(false);
       }
@@ -74,10 +89,11 @@ const Register: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center px-8">
+    <>
+    <div className="w-full md:w-1/2 lg:w-4/10 flex flex-col items-center justify-center my-4 px-8">
       {showingConfirmation === false ? (
         <form
-          className="w-full md:w-1/2 p-8 bg-white rounded-lg shadow-md"
+          className="w-full p-8 bg-white rounded-lg shadow-md"
           onSubmit={formik.handleSubmit}
         >
           <h2 className="text-xl font-bold mb-8 text-cyan-700">Registrieren</h2>
@@ -92,9 +108,7 @@ const Register: React.FC = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
             />
             {formik.touched.email && formik.errors.email ? (
-              <div className="text-red-500 text-xs mt-2">
-                {formik.errors.email}
-              </div>
+              <div className="text-red-500 text-xs mt-2">{formik.errors.email}</div>
             ) : null}
           </div>
           <div className="mb-4">
@@ -108,9 +122,7 @@ const Register: React.FC = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
             />
             {formik.touched.username && formik.errors.username ? (
-              <div className="text-red-500 text-xs mt-2">
-                {formik.errors.username}
-              </div>
+              <div className="text-red-500 text-xs mt-2">{formik.errors.username}</div>
             ) : null}
           </div>
           <div className="mb-4">
@@ -124,16 +136,11 @@ const Register: React.FC = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
             />
             {formik.touched.password && formik.errors.password ? (
-              <div className="text-red-500 text-xs mt-2">
-                {formik.errors.password}
-              </div>
+              <div className="text-red-500 text-xs mt-2">{formik.errors.password}</div>
             ) : null}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="confirmPassword"
-              className="block text-cyan-700 mb-2"
-            >
+            <label htmlFor="confirmPassword" className="block text-cyan-700 mb-2">
               Passwort wiederholen
             </label>
             <input
@@ -143,10 +150,34 @@ const Register: React.FC = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
             />
             {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <div className="text-red-500 text-xs mt-2">
-                {formik.errors.confirmPassword}
-              </div>
+              <div className="text-red-500 text-xs mt-2">{formik.errors.confirmPassword}</div>
             ) : null}
+          </div>
+          <div className="w-full mt-8 mb-2 cursor-pointer">
+          <label htmlFor="confirmTermsOfService" className="flex items-center text-cyan-950">
+            <input
+              type="checkbox"
+              {...formik.getFieldProps("consentTermsOfService")}
+              id="confirmTermsOfService"
+              className="mr-2"
+            />
+            <p>
+              Ich bestätige, dass ich die{" "}
+              <Link
+                href="/nutzungsbedingungen"
+                className="text-cyan-500 hover:text-cyan-700 underline"
+              >
+                Nutzungsbedingungen
+              </Link>{" "}
+              gelesen und verstanden habe. Durch unsere
+              Registrierung erkläre ich mich mit den Nutzungsbedingungen
+              einverstanden. Diese Zustimmung kann jederzeit per E-Mail an
+              info@blw-gourmet.de widerrufen werden.
+            </p>
+          </label>
+        </div>
+          <div className="w-full my-6">
+            <Captcha onCaptchaChange={setCaptchaResponse} setLoadingParent={setLoading}/>
           </div>
           <div className="w-full flex justify-center mt-8">
             <button
@@ -164,15 +195,13 @@ const Register: React.FC = () => {
           )}
         </form>
       ) : (
-        <div className="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-lg shadow-md w-full md:w-1/2">
+        <div className="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-lg shadow-md w-full">
           <RiMailSendLine className="w-32 h-32 text-cyan-700" />
           <h1 className="text-4xl font-bold text-cyan-700 text-center mt-6">
             E-Mail-Adresse bestätigen
           </h1>
           <p className="text-lg text-gray-700 mt-4 text-center px-4">
-            Deine Registrierung war erfolgreich! Wir haben dir eine E-Mail
-            gesendet. Bitte bestätige deine E-Mail-Adresse, um dein Konto zu
-            aktivieren.
+            Deine Registrierung war erfolgreich! Wir haben dir eine E-Mail gesendet. Bitte bestätige deine E-Mail-Adresse, um dein Konto zu aktivieren.
           </p>
           <button
             onClick={() => router.push("/")}
@@ -183,6 +212,8 @@ const Register: React.FC = () => {
         </div>
       )}
     </div>
+  {loading && <div className="z-5 bg-white fixed w-full min-h-screen top-header flex items-center justify-center"> <LoadingAnimation /> </div>}
+ </>
   );
 };
 
