@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { MdMarkEmailRead } from "react-icons/md";
 import { LuMailX } from "react-icons/lu";
@@ -16,9 +16,11 @@ const ActivateNewEmail: React.FC<ActivateAccountProps> = ({ params }) => {
   const { uid64, token } = params;
   const [success, setSuccess] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    if (success === null && uid64 && token) {
-      setSuccess(null);
+  // TODO request is still getting sent twice (probably caused by dev mode)
+
+  const handleActivate = useCallback(() => {
+    if (uid64 && token) {
+      alert("uid64: " + uid64 + " token: " + token);
       fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/activate_new_email/${uid64}/${token}/`,
         {
@@ -34,8 +36,8 @@ const ActivateNewEmail: React.FC<ActivateAccountProps> = ({ params }) => {
             setSuccess(true);
             setTimeout(() => router.push("/"), 5000);
           } else {
-            console.error("Aktivierung fehlgeschlagen");
             setSuccess(false);
+            console.error("Aktivierung fehlgeschlagen");
           }
         })
         .catch((error) => {
@@ -43,7 +45,11 @@ const ActivateNewEmail: React.FC<ActivateAccountProps> = ({ params }) => {
           setSuccess(false);
         });
     }
-  }, [uid64, token, router]);
+  }, []);
+
+  useEffect(() => {
+    handleActivate();
+  }, [handleActivate]);
 
   if (success === true) {
     return (

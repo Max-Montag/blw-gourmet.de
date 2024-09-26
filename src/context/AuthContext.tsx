@@ -88,12 +88,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           "X-CSRFToken": getCookie("csrftoken") ?? "",
         },
       });
+    } catch (error) {
+      console.error("Fehler beim Abmelden");
+    } finally {
       setIsAuthenticated(false);
       setUsername(null);
       setIsAdmin(false);
-    } catch (error) {
-      throw new Error("Fehler beim Ausloggen");
-    } finally {
       setLoading(false);
     }
   };

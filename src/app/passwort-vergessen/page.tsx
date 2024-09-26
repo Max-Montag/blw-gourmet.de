@@ -69,42 +69,50 @@ const ForgotPassword: React.FC = () => {
   } else {
     return (
       <>
-      <div className="w-full md:w-2/3 lg:w-1/2 flex items-center justify-center px-2 xs:px-8">
-        <form
-          className="w-full p-8 bg-white rounded-lg shadow-md"
-          onSubmit={handleForgotPassword}
-        >
-          <h2 className="text-xl font-semibold mb-8 text-cyan-600">
-            Passwort zurücksetzen
-          </h2>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-cyan-600 mb-2">
-              E-Mail-Adresse
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full mb-2 px-3 py-2 border rounded-lg"
-            />
-          </div>
-          <div className="w-full my-6">
-            <Captcha onCaptchaChange={setCaptchaResponse} setLoadingParent={setLoading} />
-          </div>
-          <div className="min-h-10 h-10 max-h-10 flex justify-start items-center">
-            {error && <p className="text-red-500">{error}</p>}
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg"
+        <div className="w-full md:w-2/3 lg:w-1/2 flex items-center justify-center px-2 xs:px-8">
+          <form
+            className="w-full p-8 bg-white rounded-lg shadow-md"
+            onSubmit={handleForgotPassword}
           >
-            E-Mail senden
-          </button>
-        </form>
-      </div>
-      {loading && <div className="z-20 bg-white top-0 fixed w-full min-h-screen flex items-center justify-center"> <LoadingAnimation /> </div>}
+            <h2 className="text-xl font-semibold mb-8 text-cyan-600">
+              Passwort zurücksetzen
+            </h2>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-cyan-600 mb-2">
+                E-Mail-Adresse
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full mb-2 px-3 py-2 border rounded-lg"
+              />
+            </div>
+            <div className="w-full my-6">
+              <Captcha
+                onCaptchaChange={setCaptchaResponse}
+                setLoadingParent={setLoading}
+              />
+            </div>
+            <div className="min-h-10 h-10 max-h-10 flex justify-start items-center">
+              {error && <p className="text-red-500">{error}</p>}
+            </div>
+            <button
+              type="submit"
+              className="w-full py-2 px-4 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg"
+            >
+              E-Mail senden
+            </button>
+          </form>
+        </div>
+        {loading && (
+          <div className="z-20 bg-white top-0 fixed w-full min-h-screen flex items-center justify-center">
+            {" "}
+            <LoadingAnimation />{" "}
+          </div>
+        )}
       </>
     );
   }

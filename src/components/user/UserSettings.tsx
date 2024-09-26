@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import {
   MdOutlineLockReset,
   MdOutlineMarkEmailRead,
@@ -13,6 +14,7 @@ import { getCookie } from "@/utils/Utils";
 const CHECK_TEXT = "Ich möchte, dass mein Account gelöscht wird!";
 
 const UserSettings: React.FC = () => {
+  const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +59,7 @@ const UserSettings: React.FC = () => {
 
       if (response.ok) {
         setShowingConfirmation(true);
-        setIsOpen(false);
+        handleClose();
       } else {
         setSaveError("Fehler beim Speichern. Bitte versuche es erneut.");
       }
@@ -70,7 +72,7 @@ const UserSettings: React.FC = () => {
 
   const handleClickOutside = (event: MouseEvent) => {
     if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
+      handleClose();
     }
   };
 
@@ -85,6 +87,7 @@ const UserSettings: React.FC = () => {
     } else {
       await apiAction("deactivate_account", { password });
       logout();
+      router.push("/");
     }
   };
 
@@ -96,7 +99,11 @@ const UserSettings: React.FC = () => {
     if (newPassword !== confirmPassword) {
       setSaveError("Die neuen Passwörter stimmen nicht überein.");
     } else {
-      await apiAction("change_password", { oldPassword, newPassword, confirmPassword });
+      await apiAction("change_password", {
+        oldPassword,
+        newPassword,
+        confirmPassword,
+      });
     }
   };
 
@@ -108,7 +115,7 @@ const UserSettings: React.FC = () => {
     if (newEmail !== confirmNewEmail) {
       setSaveError("Die E-Mail-Adressen stimmen nicht überein.");
     } else {
-      await apiAction("change_email", { newEmail, confirmNewEmail,  password });
+      await apiAction("change_email", { newEmail, confirmNewEmail, password });
     }
   };
 
@@ -119,6 +126,11 @@ const UserSettings: React.FC = () => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     action(formData);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setSaveError("");
   };
 
   const renderPopupContent = () => {
@@ -150,11 +162,17 @@ const UserSettings: React.FC = () => {
               className="border rounded p-2 w-full mt-1.5 mb-2.5"
               required
             />
+
             <button
               type="submit"
-              className="bg-cyan-600 hover:bg-cyan-700 text-white mt-4 py-2 px-4 rounded-lg w-full"
+              className="bg-cyan-600 hover:bg-cyan-700 h-12 text-white flex justify-center items-center mt-4 py-2 px-4 rounded-lg w-full"
             >
-              Passwort ändern
+              {" "}
+              {isSaving ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <p>Passwort ändern</p>
+              )}
             </button>
           </form>
         );
@@ -187,9 +205,14 @@ const UserSettings: React.FC = () => {
             />
             <button
               type="submit"
-              className="bg-cyan-600 hover:bg-cyan-700 text-white mt-4 py-2 px-4 rounded-lg w-full"
+              className="bg-cyan-600 hover:bg-cyan-700 h-12 text-white flex justify-center items-center mt-4 py-2 px-4 rounded-lg w-full"
             >
-              E-Mail-Adresse ändern
+              {" "}
+              {isSaving ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <p>E-mail-Adrese ändern</p>
+              )}
             </button>
           </form>
         );
@@ -215,11 +238,17 @@ const UserSettings: React.FC = () => {
               className="border rounded p-2 w-full my-2"
               required
             />
+
             <button
               type="submit"
-              className="bg-red-600 hover:bg-red-700 text-white mt-4 py-2 px-4 rounded-lg w-full"
+              className="bg-red-600 hover:bg-red-700 h-12 text-white flex justify-center items-center mt-4 py-2 px-4 rounded-lg w-full"
             >
-              Account und Rezepte löschen
+              {" "}
+              {isSaving ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <p>Account und Rezepte löschen</p>
+              )}
             </button>
           </form>
         );
@@ -245,7 +274,7 @@ const UserSettings: React.FC = () => {
       }}
       disabled={isSaving}
     >
-      {isSaving && currentAction === keyword ? (
+      {isSaving ? (
         <AiOutlineLoading3Quarters className="animate-spin" />
       ) : (
         <div className="flex items-center justify-center">
@@ -287,18 +316,18 @@ const UserSettings: React.FC = () => {
               onClick={() => setIsOpen(false)}
             />
             {renderPopupContent()}
+            {saveError && (
+              <div className="h-4 text-red-500 text-xs mx-1 mt-2">
+                <MdOutlineErrorOutline className="inline-block mr-2" />
+                {saveError}
+              </div>
+            )}
           </div>
         </div>
       )}
       {showingConfirmation && (
         <div className="absolute top-24 left-0 right-0 ml-auto mr-auto w-32 h-32 text-cyan-600 animate-ping">
           <FaCheck className="w-32 h-32" />
-        </div>
-      )}
-      {saveError && (
-        <div className="text-red-500 text-xs mx-1 mt-4">
-          <MdOutlineErrorOutline className="inline-block mr-2" />
-          {saveError}
         </div>
       )}
     </div>

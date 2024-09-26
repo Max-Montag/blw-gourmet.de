@@ -24,7 +24,7 @@ const Register: React.FC = () => {
     setCaptchaKey(captchaData.key);
   };
 
-    // TODO check Auth context on startup -> if authenticated, redirect to home
+  // TODO check Auth context on startup -> if authenticated, redirect to home
 
   const formik = useFormik({
     initialValues: {
@@ -48,12 +48,15 @@ const Register: React.FC = () => {
           "Passwort muss zwischen 8 und 128 Zeichen lang sein und mindestens eine Zahl, einen Buchstaben und ein Sonderzeichen enthalten.",
         ),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), undefined], "Passwörter stimmen nicht überein.")
+        .oneOf(
+          [Yup.ref("password"), undefined],
+          "Passwörter stimmen nicht überein.",
+        )
         .required("Passwort wiederholen ist erforderlich."),
       consentTermsOfService: Yup.boolean().oneOf(
-          [true],
-          "Bitte bestätige die Nutzungsbedingungen.",
-        ),
+        [true],
+        "Bitte bestätige die Nutzungsbedingungen.",
+      ),
     }),
     onSubmit: async (values) => {
       setIsSaving(true);
@@ -63,15 +66,18 @@ const Register: React.FC = () => {
       const captcha = { key: captchaKey, value: captchaValue };
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrftoken,
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/register/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrftoken,
+            },
+            body: JSON.stringify({ ...values, captcha }),
+            credentials: "include",
           },
-          body: JSON.stringify({ ...values, captcha }),
-          credentials: "include",
-        });
+        );
 
         if (response.ok) {
           setShowingConfirmation(true);
@@ -90,130 +96,157 @@ const Register: React.FC = () => {
 
   return (
     <>
-    <div className="w-full md:w-1/2 lg:w-4/10 flex flex-col items-center justify-center my-4 px-8">
-      {showingConfirmation === false ? (
-        <form
-          className="w-full p-8 bg-white rounded-lg shadow-md"
-          onSubmit={formik.handleSubmit}
-        >
-          <h2 className="text-xl font-bold mb-8 text-cyan-700">Registrieren</h2>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-cyan-700 mb-2">
-              E-Mail
-            </label>
-            <input
-              type="email"
-              id="email"
-              {...formik.getFieldProps("email")}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <div className="text-red-500 text-xs mt-2">{formik.errors.email}</div>
-            ) : null}
-          </div>
-          <div className="mb-4">
-            <label htmlFor="username" className="block text-cyan-700 mb-2">
-              Nutzername
-            </label>
-            <input
-              type="text"
-              id="username"
-              {...formik.getFieldProps("username")}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
-            />
-            {formik.touched.username && formik.errors.username ? (
-              <div className="text-red-500 text-xs mt-2">{formik.errors.username}</div>
-            ) : null}
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-cyan-700 mb-2">
-              Passwort
-            </label>
-            <input
-              type="password"
-              id="password"
-              {...formik.getFieldProps("password")}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
-            />
-            {formik.touched.password && formik.errors.password ? (
-              <div className="text-red-500 text-xs mt-2">{formik.errors.password}</div>
-            ) : null}
-          </div>
-          <div className="mb-4">
-            <label htmlFor="confirmPassword" className="block text-cyan-700 mb-2">
-              Passwort wiederholen
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              {...formik.getFieldProps("confirmPassword")}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
-            />
-            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <div className="text-red-500 text-xs mt-2">{formik.errors.confirmPassword}</div>
-            ) : null}
-          </div>
-          <div className="w-full mt-8 mb-2 cursor-pointer">
-          <label htmlFor="confirmTermsOfService" className="flex items-center text-cyan-950">
-            <input
-              type="checkbox"
-              {...formik.getFieldProps("consentTermsOfService")}
-              id="confirmTermsOfService"
-              className="mr-2"
-            />
-            <p>
-              Ich bestätige, dass ich die{" "}
-              <Link
-                href="/nutzungsbedingungen"
-                className="text-cyan-500 hover:text-cyan-700 underline"
+      <div className="w-full md:w-1/2 lg:w-4/10 flex flex-col items-center justify-center my-4 px-8">
+        {showingConfirmation === false ? (
+          <form
+            className="w-full p-8 bg-white rounded-lg shadow-md"
+            onSubmit={formik.handleSubmit}
+          >
+            <h2 className="text-xl font-bold mb-8 text-cyan-700">
+              Registrieren
+            </h2>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-cyan-700 mb-2">
+                E-Mail
+              </label>
+              <input
+                type="email"
+                id="email"
+                {...formik.getFieldProps("email")}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <div className="text-red-500 text-xs mt-2">
+                  {formik.errors.email}
+                </div>
+              ) : null}
+            </div>
+            <div className="mb-4">
+              <label htmlFor="username" className="block text-cyan-700 mb-2">
+                Nutzername
+              </label>
+              <input
+                type="text"
+                id="username"
+                {...formik.getFieldProps("username")}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
+              />
+              {formik.touched.username && formik.errors.username ? (
+                <div className="text-red-500 text-xs mt-2">
+                  {formik.errors.username}
+                </div>
+              ) : null}
+            </div>
+            <div className="mb-4">
+              <label htmlFor="password" className="block text-cyan-700 mb-2">
+                Passwort
+              </label>
+              <input
+                type="password"
+                id="password"
+                {...formik.getFieldProps("password")}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
+              />
+              {formik.touched.password && formik.errors.password ? (
+                <div className="text-red-500 text-xs mt-2">
+                  {formik.errors.password}
+                </div>
+              ) : null}
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-cyan-700 mb-2"
               >
-                Nutzungsbedingungen
-              </Link>{" "}
-              gelesen und verstanden habe. Durch unsere
-              Registrierung erkläre ich mich mit den Nutzungsbedingungen
-              einverstanden. Diese Zustimmung kann jederzeit per E-Mail an
-              info@blw-gourmet.de widerrufen werden.
+                Passwort wiederholen
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                {...formik.getFieldProps("confirmPassword")}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
+              />
+              {formik.touched.confirmPassword &&
+              formik.errors.confirmPassword ? (
+                <div className="text-red-500 text-xs mt-2">
+                  {formik.errors.confirmPassword}
+                </div>
+              ) : null}
+            </div>
+            <div className="w-full mt-8 mb-2 cursor-pointer">
+              <label
+                htmlFor="confirmTermsOfService"
+                className="flex items-center text-cyan-950"
+              >
+                <input
+                  type="checkbox"
+                  {...formik.getFieldProps("consentTermsOfService")}
+                  id="confirmTermsOfService"
+                  className="mr-2"
+                />
+                <p>
+                  Ich bestätige, dass ich die{" "}
+                  <Link
+                    href="/nutzungsbedingungen"
+                    className="text-cyan-500 hover:text-cyan-700 underline"
+                  >
+                    Nutzungsbedingungen
+                  </Link>{" "}
+                  gelesen und verstanden habe. Durch unsere Registrierung
+                  erkläre ich mich mit den Nutzungsbedingungen einverstanden.
+                  Diese Zustimmung kann jederzeit per E-Mail an
+                  info@blw-gourmet.de widerrufen werden.
+                </p>
+              </label>
+            </div>
+            <div className="w-full my-6">
+              <Captcha
+                onCaptchaChange={setCaptchaResponse}
+                setLoadingParent={setLoading}
+              />
+            </div>
+            <div className="w-full flex justify-center mt-8">
+              <button
+                type="submit"
+                className="bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-cyan-800 transition duration-200 ease-in-out"
+                disabled={isSaving}
+              >
+                {isSaving ? "Registrieren..." : "Registrieren"}
+              </button>
+            </div>
+            {saveError && (
+              <div className="text-red-500 text-xs mt-4 text-center">
+                {saveError}
+              </div>
+            )}
+          </form>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-lg shadow-md w-full">
+            <RiMailSendLine className="w-32 h-32 text-cyan-700" />
+            <h1 className="text-4xl font-bold text-cyan-700 text-center mt-6">
+              E-Mail-Adresse bestätigen
+            </h1>
+            <p className="text-lg text-gray-700 mt-4 text-center px-4">
+              Deine Registrierung war erfolgreich! Wir haben dir eine E-Mail
+              gesendet. Bitte bestätige deine E-Mail-Adresse, um dein Konto zu
+              aktivieren.
             </p>
-          </label>
-        </div>
-          <div className="w-full my-6">
-            <Captcha onCaptchaChange={setCaptchaResponse} setLoadingParent={setLoading}/>
-          </div>
-          <div className="w-full flex justify-center mt-8">
             <button
-              type="submit"
-              className="bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-cyan-800 transition duration-200 ease-in-out"
-              disabled={isSaving}
+              onClick={() => router.push("/")}
+              className="mt-8 inline-block bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-3 px-6 rounded-lg shadow"
             >
-              {isSaving ? "Registrieren..." : "Registrieren"}
+              Zurück zur Startseite
             </button>
           </div>
-          {saveError && (
-            <div className="text-red-500 text-xs mt-4 text-center">
-              {saveError}
-            </div>
-          )}
-        </form>
-      ) : (
-        <div className="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-lg shadow-md w-full">
-          <RiMailSendLine className="w-32 h-32 text-cyan-700" />
-          <h1 className="text-4xl font-bold text-cyan-700 text-center mt-6">
-            E-Mail-Adresse bestätigen
-          </h1>
-          <p className="text-lg text-gray-700 mt-4 text-center px-4">
-            Deine Registrierung war erfolgreich! Wir haben dir eine E-Mail gesendet. Bitte bestätige deine E-Mail-Adresse, um dein Konto zu aktivieren.
-          </p>
-          <button
-            onClick={() => router.push("/")}
-            className="mt-8 inline-block bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-3 px-6 rounded-lg shadow"
-          >
-            Zurück zur Startseite
-          </button>
+        )}
+      </div>
+      {loading && (
+        <div className="z-20 bg-white top-0 fixed w-full min-h-screen flex items-center justify-center">
+          {" "}
+          <LoadingAnimation />{" "}
         </div>
       )}
-    </div>
-  {loading && <div className="z-20 bg-white top-0 fixed w-full min-h-screen flex items-center justify-center"> <LoadingAnimation /> </div>}
- </>
+    </>
   );
 };
 
