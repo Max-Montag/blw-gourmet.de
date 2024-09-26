@@ -6,7 +6,7 @@ const LoadingAnimation: React.FC = () => {
   return (
     <div className="w-full flex justify-center">
       <div className="relative flex flex-col items-center">
-        <div className="chef-hat text-cyan-200">
+        <div className="chef-hat absolute text-cyan-200">
           <Image
             src="/logo/animation-hat.svg"
             alt="Chef Hat"

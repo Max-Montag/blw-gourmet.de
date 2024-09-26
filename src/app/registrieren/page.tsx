@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, KeyboardEvent } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import { RiMailSendLine } from "react-icons/ri";
 import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 const Register: React.FC = () => {
   const router = useRouter();
@@ -18,13 +19,18 @@ const Register: React.FC = () => {
   const [showingConfirmation, setShowingConfirmation] = useState(false);
   const [captchaKey, setCaptchaKey] = useState<string>("");
   const [captchaValue, setCaptchaValue] = useState<string>("");
+  const { isAuthenticated } = useAuth();
 
   const setCaptchaResponse = (captchaData: { key: string; value: string }) => {
     setCaptchaValue(captchaData.value);
     setCaptchaKey(captchaData.key);
   };
 
-  // TODO check Auth context on startup -> if authenticated, redirect to home
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated]);
 
   const formik = useFormik({
     initialValues: {
@@ -94,9 +100,18 @@ const Register: React.FC = () => {
     },
   });
 
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
-      <div className="w-full md:w-1/2 lg:w-4/10 flex flex-col items-center justify-center my-4 px-8">
+      <div
+        className="w-full md:w-1/2 lg:w-4/10 flex flex-col items-center justify-center my-4 px-8"
+        onKeyDown={handleKeyPress}
+      >
         {showingConfirmation === false ? (
           <form
             className="w-full p-8 bg-white rounded-lg shadow-md"
@@ -203,6 +218,7 @@ const Register: React.FC = () => {
               <Captcha
                 onCaptchaChange={setCaptchaResponse}
                 setLoadingParent={setLoading}
+                submitParentForm={formik.handleSubmit}
               />
             </div>
             <div className="w-full flex justify-center mt-8">

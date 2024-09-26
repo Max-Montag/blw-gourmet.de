@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef, KeyboardEvent, useCallback } from "react";
 import Image from "next/image";
 import { TbReload } from "react-icons/tb";
@@ -6,12 +8,13 @@ import { getCookie } from "@/utils/Utils";
 interface CaptchaProps {
   onCaptchaChange: (captchaData: { key: string; value: string }) => void;
   setLoadingParent?: (loading: boolean) => void;
-  // TODO submit parent form
+  submitParentForm?: () => void;
 }
 
 const Captcha: React.FC<CaptchaProps> = ({
   onCaptchaChange,
   setLoadingParent = undefined,
+  submitParentForm = undefined,
 }) => {
   const [captchaKey, setCaptchaKey] = useState<string>("");
   const [captchaImageUrl, setCaptchaImageUrl] = useState<string>("");
@@ -59,7 +62,9 @@ const Captcha: React.FC<CaptchaProps> = ({
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      // todo submit parent form
+      if (submitParentForm) {
+        submitParentForm();
+      }
     }
   };
 
@@ -68,8 +73,6 @@ const Captcha: React.FC<CaptchaProps> = ({
     if (inputRef.current) {
       inputRef.current.value = "";
     }
-    // TODO check if both are necessary
-    e.stopPropagation();
     e.preventDefault();
   };
 
@@ -102,7 +105,7 @@ const Captcha: React.FC<CaptchaProps> = ({
             onChange={(e) =>
               onCaptchaChange({ key: captchaKey, value: e.target.value })
             }
-            onKeyUp={handleKeyPress}
+            onKeyDown={handleKeyPress}
           />
         </div>
       </div>

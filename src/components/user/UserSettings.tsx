@@ -1,3 +1,5 @@
+"use effect";
+
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -24,13 +26,15 @@ const UserSettings: React.FC = () => {
   const popupRef = useRef<HTMLDivElement | null>(null);
   const { logout } = useAuth();
 
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
         handleClose();
       }
-    }
+    };
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);

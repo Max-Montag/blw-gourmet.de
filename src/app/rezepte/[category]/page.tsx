@@ -18,7 +18,6 @@ async function getRecipesByCategory(
     },
     // TODO uncomment
     // {
-    //   cache: "force-cache",
     //   next: { revalidate: 3600 },
     // },
   );
@@ -32,8 +31,12 @@ export async function generateStaticParams() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/categories/`,
     {
-      next: { revalidate: 86400 },
+      cache: "no-cache",
     },
+    // TODO uncomment
+    // {
+    //   next: { revalidate: 86400 },
+    // },
   );
   if (!res.ok) {
     return [];

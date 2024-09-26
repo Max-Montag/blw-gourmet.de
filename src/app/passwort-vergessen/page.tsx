@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, KeyboardEvent } from "react";
 import Link from "next/link";
+import { FaSpinner } from "react-icons/fa";
 import { RiMailSendLine } from "react-icons/ri";
 import { getCookie } from "@/utils/Utils";
 import Captcha from "@/components/captcha/Captcha";
@@ -10,17 +11,20 @@ import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimat
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [sending, setSending] = useState<boolean>(false);
   const [sent, setSent] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [captchaKey, setCaptchaKey] = useState<string>("");
   const [captchaValue, setCaptchaValue] = useState<string>("");
 
-  const handleForgotPassword = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleForgotPassword = async (e?: FormEvent) => {
+    if (e) e.preventDefault();
+    if (e) e.stopPropagation();
 
     const captcha = { key: captchaKey, value: captchaValue };
 
     try {
+      setSending(true);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/forgot_password/`,
         {
@@ -32,6 +36,8 @@ const ForgotPassword: React.FC = () => {
           body: JSON.stringify({ email, captcha }),
         },
       );
+
+      setSending(false);
 
       if (response.ok) {
         setSent(true);
@@ -51,6 +57,12 @@ const ForgotPassword: React.FC = () => {
     }
   };
 
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
   const setCaptchaResponse = (captchaData: { key: string; value: string }) => {
     setCaptchaValue(captchaData.value);
     setCaptchaKey(captchaData.key);
@@ -65,16 +77,19 @@ const ForgotPassword: React.FC = () => {
           du dein Passwort zurücksetzen kannst.
         </p>
         <Link href="/">
-          <a className="mt-8 inline-block bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 px-6 rounded-lg shadow">
+          <p className="mt-8 inline-block bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 px-6 rounded-lg shadow">
             Zurück zur Startseite
-          </a>
+          </p>
         </Link>
       </div>
     );
   } else {
     return (
       <>
-        <div className="w-full md:w-2/3 lg:w-1/2 flex items-center justify-center px-2 xs:px-8">
+        <div
+          className="w-full md:w-2/3 lg:w-1/2 flex items-center justify-center px-2 xs:px-8"
+          onKeyDown={handleKeyPress}
+        >
           <form
             className="w-full p-8 bg-white rounded-lg shadow-md"
             onSubmit={handleForgotPassword}
@@ -99,6 +114,7 @@ const ForgotPassword: React.FC = () => {
               <Captcha
                 onCaptchaChange={setCaptchaResponse}
                 setLoadingParent={setLoading}
+                submitParentForm={handleForgotPassword}
               />
             </div>
             <div className="min-h-10 h-10 max-h-10 flex justify-start items-center">
@@ -108,7 +124,11 @@ const ForgotPassword: React.FC = () => {
               type="submit"
               className="w-full py-2 px-4 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg"
             >
-              E-Mail senden
+              {sending ? (
+                <FaSpinner className="animate-spin w-6 h-6 mx-auto" />
+              ) : (
+                "Passwort zurücksetzen"
+              )}
             </button>
           </form>
         </div>

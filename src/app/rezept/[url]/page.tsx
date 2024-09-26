@@ -15,7 +15,6 @@ async function getRecipeData(url: string): Promise<RecipeData | null> {
     },
     // TODO uncomment
     // {
-    //   cache: "force-cache",
     //   next: { revalidate: 3600 },
     // },
   );
@@ -29,9 +28,12 @@ export async function generateStaticParams() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/all-recipes/`,
     {
-      cache: "force-cache",
-      next: { revalidate: 3600 },
+      cache: "no-cache",
     },
+    // TODO uncomment
+    // {
+    //   next: { revalidate: 3600 },
+    // },
   );
   if (!res.ok) {
     return [];

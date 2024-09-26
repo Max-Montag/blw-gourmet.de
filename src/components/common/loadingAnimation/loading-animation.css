@@ -16,7 +16,5 @@
 }
 
 .chef-hat {
-  position: absolute;
-  /* top: -52px; */
   animation: hatMovement 3s infinite;
 }

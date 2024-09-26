@@ -18,7 +18,6 @@ const ActivateNewEmail: React.FC<ActivateAccountProps> = ({ params }) => {
 
   useEffect(() => {
     if (success === null && uid64 && token) {
-      alert("success + " + success + "uid64: " + uid64 + " token: " + token);
       setSuccess(undefined);
       fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/activate_new_email/${uid64}/${token}/`,

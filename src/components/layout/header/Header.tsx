@@ -88,7 +88,22 @@ const Header: React.FC = () => {
             href="/"
             className="text-2xl font-bold text-cyan-950 cursor-pointer"
           >
-            <Image width={44} height={42} src="/logo/logo.svg" alt="Logo" />
+            <div className="relative flex flex-col items-center group">
+              <div className="absolute group-hover:-translate-y-[6px] transition-all duration-150 text-cyan-200">
+                <Image
+                  src="/logo/animation-hat.svg"
+                  alt="Chef Hat"
+                  width={44}
+                  height={44}
+                />
+              </div>
+              <Image
+                src="/logo/animation-baby.svg"
+                alt="Baby"
+                width={44}
+                height={44}
+              />
+            </div>
           </Link>
           <nav className="ml-4 divide-x divide-cyan-600 hidden lg:block">
             {menuItems.map((item) => (

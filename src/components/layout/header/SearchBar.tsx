@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useCallback } from "react";
 import { CiSearch } from "react-icons/ci";
 import axios from "axios";
