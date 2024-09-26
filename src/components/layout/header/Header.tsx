@@ -78,7 +78,7 @@ const Header: React.FC = () => {
   return (
     <header
       ref={headerRef}
-      className={`fixed h-header w-full top-0 left-0 bg-cyan-100 py-4 z-10 shadow-sm transition-transform duration-300 ${
+      className={`fixed h-header w-full top-0 left-0 bg-cyan-100 py-4 z-30 shadow-sm transition-transform duration-300 ${
         isVisible ? "transform translate-y-0" : "transform -translate-y-full"
       }`}
     >

@@ -104,7 +104,7 @@ const ForgotPassword: React.FC = () => {
           </button>
         </form>
       </div>
-      {loading && <div className="z-5 bg-white fixed w-full min-h-screen top-header flex items-center justify-center"> <LoadingAnimation /> </div>}
+      {loading && <div className="z-20 bg-white top-0 fixed w-full min-h-screen flex items-center justify-center"> <LoadingAnimation /> </div>}
       </>
     );
   }

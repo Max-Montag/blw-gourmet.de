@@ -1,12 +1,10 @@
 import React from "react";
-import { TbChefHatOff } from "react-icons/tb";
+import ErrorMessage from "@/components/error/ErrorMessage";
+
 
 const NoRecipesAvailable: React.FC = () => {
   return (
-    <div className="text-lg md:text-2xl lg:text-4xl text-cyan-800 flex flex-col items-center text-center p-8">
-      <TbChefHatOff className="w-24 md:w-44 h-24 md:h-44 mb-4" />
-      <p>Leider steht dieser Inhalt nicht zur Verfügung.</p>
-    </div>
+    <ErrorMessage message="404 - Diese Seite existiert nicht." />
   );
 };
 

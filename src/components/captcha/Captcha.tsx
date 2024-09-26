@@ -35,7 +35,7 @@ const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange, setLoadingParent = u
       setCaptchaImageUrl(imgPath);
 
       if (setLoadingParent) {
-        setTimeout(() => setLoadingParent(false), 200);
+        setTimeout(() => setLoadingParent(false), 1000);
       }
 
     } catch (error) {
@@ -65,7 +65,7 @@ const Captcha: React.FC<CaptchaProps> = ({ onCaptchaChange, setLoadingParent = u
         <div>
           {captchaImageUrl && (
             <div className="relative">
-              <div className="absolute rounded-full flex items-center justify-center p-2 bg-gray-100 bottom-2 right-2 z-10 opacity-60 text-gray-800 font-semibold">
+              <div className="absolute rounded-full flex items-center justify-center p-2 bg-gray-100 bottom-2 right-2 z-10 opacity-60 hover:opacity-80 text-gray-800 font-semibold">
                 <button onClick={handleReset}>
                   <TbReload className="w-10 h-10" />
                 </button>
