@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef, KeyboardEvent } from "react";
+import { useState, useEffect, useRef, KeyboardEvent, useCallback } from "react";
+import Image from "next/image";
 import { TbReload } from "react-icons/tb";
 import { getCookie } from "@/utils/Utils";
 
 interface CaptchaProps {
   onCaptchaChange: (captchaData: { key: string; value: string }) => void;
   setLoadingParent?: (loading: boolean) => void;
+  // TODO submit parent form
 }
 
 const Captcha: React.FC<CaptchaProps> = ({
@@ -13,9 +15,10 @@ const Captcha: React.FC<CaptchaProps> = ({
 }) => {
   const [captchaKey, setCaptchaKey] = useState<string>("");
   const [captchaImageUrl, setCaptchaImageUrl] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const fetchCaptcha = async () => {
+  const fetchCaptcha = useCallback(async () => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/captcha/`,
@@ -37,29 +40,37 @@ const Captcha: React.FC<CaptchaProps> = ({
       const imgPath = process.env.NEXT_PUBLIC_BASE_URL + data.image_url;
       setCaptchaImageUrl(imgPath);
 
-      if (setLoadingParent) {
-        setTimeout(() => setLoadingParent(false), 1000);
-      }
+      setLoading(false);
     } catch (error) {
       console.error("Fehler beim Abrufen des Captchas:", error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (setLoadingParent && !loading) {
+      setTimeout(() => setLoadingParent(false), 1000); // TODO !!!
+    }
+  }, [setLoadingParent, loading]);
 
   useEffect(() => {
     fetchCaptcha();
-  }, []);
+  }, [fetchCaptcha]);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
+      // todo submit parent form
     }
   };
 
-  const handleReset = () => {
+  const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
     fetchCaptcha();
     if (inputRef.current) {
       inputRef.current.value = "";
     }
+    // TODO check if both are necessary
+    e.stopPropagation();
+    e.preventDefault();
   };
 
   return (
@@ -72,8 +83,10 @@ const Captcha: React.FC<CaptchaProps> = ({
                 <TbReload className="w-10 h-10" />
               </button>
             </div>
-            <img
+            <Image
               src={captchaImageUrl}
+              width={300}
+              height={100}
               className="rounded-2xl w-full z-1"
               alt="Captcha"
             />

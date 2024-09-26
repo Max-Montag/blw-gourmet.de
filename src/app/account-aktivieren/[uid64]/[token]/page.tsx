@@ -14,10 +14,12 @@ interface ActivateAccountProps {
 const ActivateAccount: React.FC<ActivateAccountProps> = ({ params }) => {
   const router = useRouter();
   const { uid64, token } = params;
-  const [success, setSuccess] = useState<boolean | null>(null);
+  const [success, setSuccess] = useState<boolean | null | undefined>(null);
 
   useEffect(() => {
     if (success === null && uid64 && token) {
+      alert("success + " + success + "uid64: " + uid64 + " token: " + token);
+      setSuccess(undefined);
       fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/activate_user/${uid64}/${token}/`,
         {
@@ -42,7 +44,7 @@ const ActivateAccount: React.FC<ActivateAccountProps> = ({ params }) => {
           setSuccess(false);
         });
     }
-  }, [uid64, token, router]);
+  }, [uid64, token, router, success]);
 
   if (success === true) {
     return (

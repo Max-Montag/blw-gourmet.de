@@ -24,14 +24,14 @@ const UserSettings: React.FC = () => {
   const popupRef = useRef<HTMLDivElement | null>(null);
   const { logout } = useAuth();
 
-  useEffect(() => {
-    if (showingConfirmation) {
-      const timer = setTimeout(() => setShowingConfirmation(false), 800);
-      return () => clearTimeout(timer);
-    }
-  }, [showingConfirmation]);
 
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+        handleClose();
+      }
+    }
+
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -59,6 +59,9 @@ const UserSettings: React.FC = () => {
 
       if (response.ok) {
         setShowingConfirmation(true);
+        setTimeout(() => {
+          setShowingConfirmation(false);
+        }, 3000);
         handleClose();
       } else {
         setSaveError("Fehler beim Speichern. Bitte versuche es erneut.");
@@ -67,12 +70,6 @@ const UserSettings: React.FC = () => {
       setSaveError("Fehler beim Speichern. Bitte versuche es erneut.");
     } finally {
       setIsSaving(false);
-    }
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-      handleClose();
     }
   };
 
@@ -264,7 +261,7 @@ const UserSettings: React.FC = () => {
   }: {
     text: string;
     keyword: string;
-    Icon: React.ComponentType<any>;
+    Icon: React.ElementType;
   }) => (
     <button
       className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-lg transition duration-200"

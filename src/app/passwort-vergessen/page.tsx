@@ -22,7 +22,7 @@ const ForgotPassword: React.FC = () => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/forgot_password/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/forgot_password/`,
         {
           method: "POST",
           headers: {
@@ -40,9 +40,14 @@ const ForgotPassword: React.FC = () => {
       } else {
         throw new Error("Fehler beim Senden der E-Mail.");
       }
-    } catch (err: any) {
-      setError(err.message);
-      console.error(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message);
+        setError(err.message);
+      } else {
+        console.error("Unbekannter Fehler");
+        setError("Unbekannter Fehler");
+      }
     }
   };
 

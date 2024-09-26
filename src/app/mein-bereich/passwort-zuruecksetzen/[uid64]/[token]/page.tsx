@@ -40,20 +40,25 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ params }) => {
 
       if (response.ok) {
         setMessage("Dein Passwort wurde erfolgreich zurückgesetzt.");
-        setTimeout(() => router.push("/login"), 3000);
+        setTimeout(() => router.push("/"), 3000);
       } else {
         throw new Error("Fehler beim Zurücksetzen des Passworts.");
       }
-    } catch (err: any) {
-      console.error(err.message);
-      setMessage(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message);
+        setMessage(err.message);
+      } else {
+        console.error("Unbekannter Fehler");
+        setMessage("Unbekannter Fehler");
+      }
     }
   };
 
   return (
-    <div className="flex items-center justify-center my-28 px-8">
+    <div className="w-full md:w-1/2 flex items-center justify-center px-8">
       <form
-        className="w-full md:w-1/2 p-8 bg-white rounded-lg shadow-md"
+        className="w-full p-8 bg-white rounded-lg shadow-md"
         onSubmit={handleResetPassword}
       >
         <h2 className="text-xl font-bold mb-8 text-cyan-700">

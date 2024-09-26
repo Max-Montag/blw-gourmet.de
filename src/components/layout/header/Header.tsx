@@ -55,7 +55,7 @@ const Header: React.FC = () => {
       setUpScrolls((prev) => prev + 1);
     }
     setLastScrollY(currentScrollY);
-  }, [lastScrollY, isMenuOpen]);
+  }, [lastScrollY, isMenuOpen, upScolls]);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);

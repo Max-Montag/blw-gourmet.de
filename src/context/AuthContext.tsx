@@ -11,7 +11,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   loading: boolean;
   loggingIn: boolean;
-  username: any;
+  username: string | null;
 }
 
 const AuthContext = createContext<AuthContextType>({
