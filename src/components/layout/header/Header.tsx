@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { CiMenuBurger } from "react-icons/ci";
 import { FaRegUserCircle, FaSpinner } from "react-icons/fa";
@@ -15,6 +16,7 @@ const menuItems = [
 ];
 
 const Header: React.FC = () => {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {
     isAuthenticated,
@@ -86,7 +88,7 @@ const Header: React.FC = () => {
             href="/"
             className="text-2xl font-bold text-cyan-950 cursor-pointer"
           >
-            <Image width={32} height={32} src="/logo512.png" alt="Logo" />
+            <Image width={44} height={42} src="/logo/logo.svg" alt="Logo" />
           </Link>
           <nav className="ml-4 divide-x divide-cyan-600 hidden lg:block">
             {menuItems.map((item) => (
@@ -261,6 +263,7 @@ const Header: React.FC = () => {
                   <button
                     onClick={async () => {
                       logout();
+                      router.push("/");
                     }}
                     className="w-full text-start lg:text-center block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                   >

@@ -1,5 +1,5 @@
 import React from "react";
-import { PiBaby, PiChefHat } from "react-icons/pi";
+import Image from "next/image";
 import "./loading-animation.css";
 
 const LoadingAnimation: React.FC = () => {
@@ -7,9 +7,9 @@ const LoadingAnimation: React.FC = () => {
     <div className="w-full flex justify-center">
       <div className="relative flex flex-col items-center">
         <div className="chef-hat text-cyan-200">
-          <PiChefHat size={75} />
+          <Image src="/logo/animation-hat.svg" alt="Chef Hat" width={200} height={200} />
         </div>
-        <PiBaby size={100} className="text-cyan-500" />
+        <Image src="/logo/animation-baby.svg" alt="Baby" width={200} height={200} />
       </div>
     </div>
   );

@@ -47,7 +47,7 @@ const ActivateNewEmail: React.FC<ActivateAccountProps> = ({ params }) => {
 
   if (success === true) {
     return (
-      <div className="flex flex-col items-center justify-center mt-24 px-4">
+      <div className="flex flex-col items-center justify-center my-8 px-4">
         <MdMarkEmailRead className="w-32 h-32 text-cyan-600" />
         <h1 className="text-4xl font-bold text-cyan-600 text-center mt-8">
           Deine neue E-Mail-Adresse wurde erfolgreich aktiviert!
@@ -60,7 +60,7 @@ const ActivateNewEmail: React.FC<ActivateAccountProps> = ({ params }) => {
     );
   } else if (success === false) {
     return (
-      <div className="flex flex-col items-center justify-center mt-24 px-4">
+      <div className="flex flex-col items-center justify-center my-8 px-4">
         <LuMailX className="w-32 h-32 text-red-500" />
         <h1 className="text-4xl font-bold text-red-600 text-center mt-8">
           Leider konnten wir deine neue E-Mail-Adresse nicht verifizieren.

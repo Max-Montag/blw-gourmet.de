@@ -53,7 +53,7 @@ const ForgotPassword: React.FC = () => {
 
   if (sent) {
     return (
-      <div className="flex flex-col items-center justify-center py-8 px-4 my-28">
+      <div className="flex flex-col items-center justify-center py-8 px-4 my-8">
         <RiMailSendLine className="w-32 h-32 text-cyan-600" />
         <p className="text-lg text-gray-700 mt-4 text-center px-4">
           Prüfe deinen Posteingang! Wir haben dir eine E-Mail gesendet, mit der

@@ -39,7 +39,7 @@ const UserSettings: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  const apiAction = async (keyword: string, data: any) => {
+  const apiAction = async (keyword: string, data: Record<string, string>) => {
     setIsSaving(true);
     try {
       const response = await fetch(
@@ -51,6 +51,7 @@ const UserSettings: React.FC = () => {
             "X-CSRFToken": getCookie("csrftoken") ?? "",
           },
           body: JSON.stringify(data),
+          credentials: "include",
         },
       );
 
@@ -95,7 +96,7 @@ const UserSettings: React.FC = () => {
     if (newPassword !== confirmPassword) {
       setSaveError("Die neuen Passwörter stimmen nicht überein.");
     } else {
-      await apiAction("change_password", { oldPassword, newPassword });
+      await apiAction("change_password", { oldPassword, newPassword, confirmPassword });
     }
   };
 
@@ -107,7 +108,7 @@ const UserSettings: React.FC = () => {
     if (newEmail !== confirmNewEmail) {
       setSaveError("Die E-Mail-Adressen stimmen nicht überein.");
     } else {
-      await apiAction("change_email", { newEmail, password });
+      await apiAction("change_email", { newEmail, confirmNewEmail,  password });
     }
   };
 
