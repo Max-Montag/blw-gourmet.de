@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { CiSearch } from "react-icons/ci";
-import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import { RecipePreview } from "../../../types/recipeTypes";
@@ -20,10 +19,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
   const fetchSuggestions = useCallback(async () => {
     if (searchQuery) {
       try {
-        const response = await axios.get(`${apiUrl}/recipes/recipe/search/`, {
-          params: { query: searchQuery },
-        });
-        setSuggestions(response.data);
+        const response = await fetch(
+          `${apiUrl}/recipes/recipe/search/?query=${searchQuery}`,
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setSuggestions(data);
       } catch (error) {
         console.error("Error fetching suggestions:", error);
       }

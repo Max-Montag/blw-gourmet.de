@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import React, { useState } from "react";
 import { FaSpinner, FaImage } from "react-icons/fa";
 
@@ -27,23 +26,24 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     formData.append("image", file);
 
     try {
-      const response = await axios.post(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}${uploadUrl}`,
-        formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          method: "POST",
+          body: formData,
         },
       );
 
-      if (response.status === 200) {
-        const imageUrl = response.data.optimized_image_url;
+      if (response.ok) {
+        const data = await response.json();
+        const imageUrl = data.optimized_image_url;
         setImageUrl(imageUrl);
         setUploading(false);
+      } else {
+        throw new Error("Hochladen fehlgeschlagen");
       }
     } catch (error) {
-      console.error("Fehler beim Upload des Bildes", error);
+      console.error("Fehler beim Upload des Bildes:", error);
       setError("Fehler beim Upload des Bildes");
       setUploading(false);
     }

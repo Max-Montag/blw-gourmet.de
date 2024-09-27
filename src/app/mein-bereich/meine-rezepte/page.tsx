@@ -1,9 +1,6 @@
 "use client";
 
-// export const dynamic = "force-dynamic";
-
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { format } from "date-fns";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import ErrorMessage from "@/components/error/ErrorMessage";
@@ -19,10 +16,16 @@ const MyRecipesPage: React.FC = () => {
   useEffect(() => {
     const fetchMyRecipes = async () => {
       try {
-        const response = await axios.get<AdminRecipePreview[]>(
-          `${apiUrl}/recipes/my-recipes/`,
-        );
-        setRecipes(response.data);
+        const response = await fetch(`${apiUrl}/recipes/my-recipes/`, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          throw new Error("Fehler beim Laden deiner Rezepte.");
+        }
+
+        const data = await response.json();
+        setRecipes(data);
         setLoading(false);
       } catch (err) {
         setError("Fehler beim Laden deiner Rezepte.");

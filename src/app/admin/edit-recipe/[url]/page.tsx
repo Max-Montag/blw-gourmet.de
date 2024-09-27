@@ -1,9 +1,6 @@
 "use client";
 
-// export const dynamic = "force-dynamic";
-
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import set from "lodash/set";
 import * as Yup from "yup";
@@ -68,10 +65,14 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const response = await axios.get<RecipeData>(
+        const response = await fetch(
           `${apiUrl}/recipes/recipe/recipe-detail/${url}/`,
         );
-        const loadedRecipe = ensureEmptyFields(response.data);
+        if (!response.ok) {
+          throw new Error("Fehler beim Abrufen vom Server.");
+        }
+        const data: RecipeData = await response.json();
+        const loadedRecipe = ensureEmptyFields(data);
         setRecipe(loadedRecipe);
         handleValidate(loadedRecipe);
         setLoading(false);
@@ -135,18 +136,18 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         })),
       };
 
-      const response = await axios.put(
-        `${apiUrl}/recipes/recipe/update/${url}/`,
-        JSON.stringify(filteredData),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const response = await fetch(`${apiUrl}/recipes/recipe/update/${url}/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(filteredData),
+      });
 
-      if (response.status === 200) {
+      if (response.ok) {
         router.push(`/admin/dashboard/`);
+      } else {
+        throw new Error("Fehler beim Speichern!");
       }
     } catch (error) {
       console.error("Es ist ein Fehler aufgetreten:", error);
@@ -165,13 +166,17 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   };
 
   const handleDeleteRecipe = async () => {
-    if (!recipe) {
-      return;
-    }
+    if (!recipe) return;
 
     try {
-      await axios.delete(`${apiUrl}/recipes/recipe/delete/${url}/`);
-      router.push("/admin/dashboard/");
+      const response = await fetch(`${apiUrl}/recipes/recipe/delete/${url}/`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        router.push("/admin/dashboard/");
+      } else {
+        throw new Error("Fehler beim Löschen!");
+      }
     } catch (error) {
       console.error("Fehler beim Löschen:", error);
       alert("Fehler beim Löschen!");

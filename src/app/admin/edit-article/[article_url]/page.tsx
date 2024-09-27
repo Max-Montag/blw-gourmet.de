@@ -1,10 +1,7 @@
 "use client";
 
-// export const dynamic = "force-dynamic";
-
 import React, { useEffect, useState } from "react";
 import EditArticleDisplay from "@/components/article/EditArticleDisplay";
-import axios from "axios";
 import { FaSave } from "react-icons/fa";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import { ArticleData } from "@/types/articleTypes";
@@ -24,18 +21,34 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [articleData, setArticleData] = useState<ArticleData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await axios.get<ArticleData>(
+        const response = await fetch(
           `${apiUrl}/articles/article/${article_url}/`,
+          {
+            method: "GET",
+          },
         );
-        setArticleData(response.data);
-        setLoading(false);
+
+        if (!response.ok) {
+          throw new Error("Serverfehler");
+        }
+
+        const data = await response.json();
+        setArticleData(data);
       } catch (error) {
-        console.error("Fehler beim Laden des Artikels", error);
+        if (error instanceof Error) {
+          setError("Fehler beim Laden des Artikels: " + error.message);
+          console.error("Fehler beim Laden des Artikels:", error.message);
+        } else {
+          setError("Fehler beim Laden des Artikels");
+          console.error("Fehler beim Laden des Artikels");
+        }
+      } finally {
         setLoading(false);
       }
     };
@@ -56,18 +69,26 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
         title: articleData?.title || "",
         content: articleData?.content || [],
       };
+
       if (!articleData) {
         return;
       }
-      await axios.put(
+
+      const response = await fetch(
         `${apiUrl}/articles/article/update/${articleData.url}/`,
-        JSON.stringify(data),
         {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(data),
         },
       );
+
+      if (!response.ok) {
+        throw new Error("Fehler beim Speichern des Artikels");
+      }
+
       router.push("/admin/dashboard/");
     } catch (error) {
       console.error("Fehler beim Speichern des Artikels", error);
@@ -81,6 +102,10 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
 
   if (!articleData) {
     return <ErrorMessage message="Artikel nicht gefunden" />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} />;
   }
 
   return (

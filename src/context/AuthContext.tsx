@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useState, useEffect, useContext } from "react";
-import axios from "axios";
 import { getCookie } from "@/utils/Utils";
 
 interface AuthContextType {
@@ -33,15 +32,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loggingIn, setLoggingIn] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
 
-  axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
-  axios.defaults.withCredentials = true;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const checkAuth = async () => {
     try {
-      const response = await axios.get("/auth/user/");
+      const response = await fetch(`${apiUrl}/auth/user/`, {
+        credentials: "include",
+      });
+      if (!response.ok) throw new Error("Nicht authentifiziert");
+
+      const data = await response.json();
       setIsAuthenticated(true);
-      setUsername(response.data.username);
-      setIsAdmin(response.data.is_admin);
+      setUsername(data.username);
+      setIsAdmin(data.is_admin);
     } catch (error) {
       setIsAuthenticated(false);
       setUsername(null);
@@ -64,12 +67,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       formData.append("email", email);
       formData.append("password", password);
 
-      await axios.post("/auth/login/", formData, {
+      const response = await fetch(`${apiUrl}/auth/login/`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
         headers: {
-          "Content-Type": "multipart/form-data",
           "X-CSRFToken": getCookie("csrftoken") ?? "",
         },
       });
+
+      if (!response.ok) throw new Error("Login fehlgeschlagen");
 
       await checkAuth();
     } catch (error) {
@@ -83,11 +90,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = async () => {
     try {
       setLoading(true);
-      await axios.post("/auth/logout/", null, {
+
+      const response = await fetch(`${apiUrl}/auth/logout/`, {
+        method: "POST",
+        credentials: "include",
         headers: {
           "X-CSRFToken": getCookie("csrftoken") ?? "",
         },
       });
+
+      if (!response.ok) throw new Error("Logout fehlgeschlagen");
     } catch (error) {
       console.error("Fehler beim Abmelden");
     } finally {

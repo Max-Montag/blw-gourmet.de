@@ -1,9 +1,6 @@
 "use client";
 
-// export const dynamic = "force-dynamic";
-
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { AdminRecipePreview } from "@/types/recipeTypes";
@@ -38,13 +35,13 @@ const AdminDashboard: React.FC = () => {
     const fetchData = async () => {
       try {
         const [recipesResponse, articlesResponse] = await Promise.all([
-          axios.get<AdminRecipePreview[]>(`${apiUrl}/recipes/all-recipes/`),
-          axios.get<AdminArticlePreview[]>(
-            `${apiUrl}/articles/admin-all-articles/`,
+          fetch(`${apiUrl}/recipes/all-recipes/`).then((res) => res.json()),
+          fetch(`${apiUrl}/articles/admin-all-articles/`).then((res) =>
+            res.json(),
           ),
         ]);
-        setRecipes(recipesResponse.data);
-        setArticles(articlesResponse.data);
+        setRecipes(recipesResponse);
+        setArticles(articlesResponse);
         setLoading(false);
       } catch (err) {
         setError("Fehler beim Laden der Daten.");
@@ -57,13 +54,17 @@ const AdminDashboard: React.FC = () => {
 
   const handleAddRecipe = async () => {
     try {
-      const response = await axios.post(
-        `${apiUrl}/recipes/create/`,
-        JSON.stringify({}),
-      );
+      const response = await fetch(`${apiUrl}/recipes/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      });
 
       if (response.status === 201) {
-        router.push(`/admin/edit-recipe/${response.data.recipe_url}`);
+        const data = await response.json();
+        router.push(`/admin/edit-recipe/${data.recipe_url}`);
       }
     } catch (error) {
       console.error("Fehler beim Anlegen!", error);
@@ -73,13 +74,17 @@ const AdminDashboard: React.FC = () => {
 
   const handleAddArticle = async () => {
     try {
-      const response = await axios.post(
-        `${apiUrl}/articles/create/`,
-        JSON.stringify({}),
-      );
+      const response = await fetch(`${apiUrl}/articles/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      });
 
       if (response.status === 201) {
-        router.push(`/admin/edit-article/${response.data.article_url}`);
+        const data = await response.json();
+        router.push(`/admin/edit-article/${data.article_url}`);
       }
     } catch (error) {
       console.error("Fehler beim Anlegen!", error);
@@ -90,9 +95,9 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteRecipe = async () => {
     if (selectedRecipeUrl) {
       try {
-        await axios.delete(
-          `${apiUrl}/recipes/recipe/delete/${selectedRecipeUrl}/`,
-        );
+        await fetch(`${apiUrl}/recipes/recipe/delete/${selectedRecipeUrl}/`, {
+          method: "DELETE",
+        });
         setRecipes((prevRecipes) =>
           prevRecipes.filter((recipe) => recipe.url !== selectedRecipeUrl),
         );
@@ -109,8 +114,11 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteArticle = async () => {
     if (selectedArticleUrl) {
       try {
-        await axios.delete(
+        await fetch(
           `${apiUrl}/articles/article/delete/${selectedArticleUrl}/`,
+          {
+            method: "DELETE",
+          },
         );
         setArticles((prevArticles) =>
           prevArticles.filter((article) => article.url !== selectedArticleUrl),
