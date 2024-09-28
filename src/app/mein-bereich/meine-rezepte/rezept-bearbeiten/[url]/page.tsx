@@ -239,15 +239,15 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   }
 
   const navButtons = (
-    <div className="flex justify-evenly my-8 space-x-4">
+    <div className="flex justify-evenly my-8">
       <button onClick={() => router.push("/mein-bereich/meine-rezepte/")}>
-        <IoArrowBack className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+        <IoArrowBack className="w-10 h-10 md:w-14 md:h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
       </button>
       <button data-action="unpublish" onClick={handleUpload}>
         {savingPrivate ? (
-          <FaSpinner className="w-14 h-14 text-zinc-800 animate-spin" />
+          <FaSpinner className="w-10 h-10 md:w-14 md:h-14 text-zinc-800 animate-spin" />
         ) : (
-          <TbWorldOff className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+          <TbWorldOff className="w-10 h-10 md:w-14 md:h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
         )}
       </button>
       <button
@@ -256,11 +256,11 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         disabled={saving() === true || !validData}
       >
         {savingPublic ? (
-          <FaSpinner className="w-14 h-14 text-zinc-800 animate-spin" />
+          <FaSpinner className="w-10 h-10 md:w-14 md:h-14 text-zinc-800 animate-spin" />
         ) : validData ? (
-          <TbWorldUp className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+          <TbWorldUp className="w-10 h-10 md:w-14 md:h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
         ) : (
-          <TbWorldUp className="w-14 h-14 text-zinc-300 cursor-not-allowed" />
+          <TbWorldUp className="w-10 h-10 md:w-14 md:h-14 text-zinc-300 cursor-not-allowed" />
         )}
       </button>
       <button>
@@ -270,7 +270,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         />
       </button>
       <button onClick={() => setShowDeleteModal(true)}>
-        <MdDelete className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+        <MdDelete className="w-10 h-10 md:w-14 md:h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
       </button>
     </div>
   );

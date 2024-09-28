@@ -8,10 +8,6 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
       screens: {
         xxs: "370px",
         xs: "450px",
@@ -20,12 +16,6 @@ const config: Config = {
         xs: "0.6rem",
         "1.5xl": "1.375rem",
         "base+": "1.125rem",
-      },
-      padding: {
-        header: "var(--header-height)",
-      },
-      height: {
-        header: "var(--header-height)",
       },
     },
   },

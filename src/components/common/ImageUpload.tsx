@@ -58,7 +58,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     <div>
       <label htmlFor="image-upload">
         {!uploading && (
-          <FaImage className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
+          <FaImage className="w-10 h-10 md:w-14 md:h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
         )}
       </label>
       <input
@@ -69,7 +69,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         disabled={uploading}
         className="hidden"
       />
-      {uploading && <FaSpinner className="w-14 h-14 animate-spin" />}
+      {uploading && (
+        <FaSpinner className="w-10 h-10 md:w-14 md:h-14 animate-spin" />
+      )}
       {error && <p>{error}</p>}
     </div>
   );

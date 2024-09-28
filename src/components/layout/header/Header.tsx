@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { CiMenuBurger } from "react-icons/ci";
+import { CiMenuBurger, CiSearch } from "react-icons/ci";
 import { FaRegUserCircle, FaSpinner } from "react-icons/fa";
 import SearchBar from "./SearchBar";
 import { useAuth } from "@/context/AuthContext";
@@ -33,6 +33,7 @@ const Header: React.FC = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [upScolls, setUpScrolls] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const [miniSearchBarOpen, setMiniSearchBarOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
@@ -41,6 +42,7 @@ const Header: React.FC = () => {
       !headerRef.current.contains(event.target as Node)
     ) {
       setIsMenuOpen(false);
+      setMiniSearchBarOpen(false);
     }
   }, []);
 
@@ -78,33 +80,35 @@ const Header: React.FC = () => {
   return (
     <header
       ref={headerRef}
-      className={`fixed h-header w-full top-0 left-0 bg-cyan-100 py-4 z-30 shadow-sm transition-transform duration-300 ${
+      className={`w-full flex items-center justify-center fixed min-h-[var(--header-height)] max-h-[var(--header-height)] top-0 left-0 bg-cyan-100 py-4 z-30 shadow-sm transition-transform duration-300 ${
         isVisible ? "transform translate-y-0" : "transform -translate-y-full"
       }`}
     >
-      <div className="h-full flex items-center justify-between px-6">
+      <div className="w-full h-full flex items-center justify-between px-6">
         <div className="flex items-center">
-          <Link
-            href="/"
-            className="text-2xl font-bold text-cyan-950 cursor-pointer"
-          >
-            <div className="relative flex flex-col items-center group">
-              <div className="absolute group-hover:-translate-y-[6px] transition-all duration-150 text-cyan-200">
+          {!miniSearchBarOpen && (
+            <Link
+              href="/"
+              className="text-2xl font-bold text-cyan-950 cursor-pointer"
+            >
+              <div className="relative flex flex-col items-center group">
+                <div className="absolute group-hover:-translate-y-[6px] transition-all duration-150 text-cyan-200">
+                  <Image
+                    src="/logo/animation-hat.svg"
+                    alt="Chef Hat"
+                    width={44}
+                    height={44}
+                  />
+                </div>
                 <Image
-                  src="/logo/animation-hat.svg"
-                  alt="Chef Hat"
+                  src="/logo/animation-baby.svg"
+                  alt="Baby"
                   width={44}
                   height={44}
                 />
               </div>
-              <Image
-                src="/logo/animation-baby.svg"
-                alt="Baby"
-                width={44}
-                height={44}
-              />
-            </div>
-          </Link>
+            </Link>
+          )}
           <nav className="ml-4 divide-x divide-cyan-600 hidden lg:block">
             {menuItems.map((item) => (
               <Link
@@ -121,11 +125,25 @@ const Header: React.FC = () => {
         <div className="hidden xxs:block">
           <SearchBar closeMenu={closeMenu} />
         </div>
+        <div className="xxs:hidden">
+          {miniSearchBarOpen ? (
+            <SearchBar closeMenu={closeMenu} />
+          ) : (
+            <button
+              onClick={() => setMiniSearchBarOpen(true)}
+              className="text-gray-700 border border-gray-400 bg-gray-200 bg-opacity-40 hover:bg-opacity-30 rounded-full py-1.5 px-5"
+            >
+              <CiSearch className="w-6 h-6" />
+            </button>
+          )}
+        </div>
         <div className="text-cyan-950 cursor-pointer">
-          <CiMenuBurger
-            className="block lg:hidden w-6 h-6"
-            onClick={toggleMenu}
-          />
+          {!miniSearchBarOpen && (
+            <CiMenuBurger
+              className="block lg:hidden w-6 h-6"
+              onClick={toggleMenu}
+            />
+          )}
           <div className="hidden lg:flex items-center">
             {username && (
               <Link
@@ -139,60 +157,64 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="lg:flex lg:items-end lg:justify-end" onClick={closeMenu}>
-        <div className="bg-cyan-100 lg:w-fit lg:text-center shadow-xl">
-          <div
-            className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
-              isMenuOpen ? "max-h-screen" : "max-h-0"
-            }`}
-          >
-            <div className="mt-6 lg:hidden divide-y divide-cyan-600">
-              <div className="xxs:hidden pb-4">
-                <SearchBar closeMenu={closeMenu} />
-              </div>
-              {menuItems.map((item) => (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  onClick={closeMenu}
-                  className="block text-cyan-950 hover:text-cyan-700 font-semibold px-4 py-3"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
+      <div
+        className="absolute z-30 right-0 top-[var(--header-height)] -mt-0.5 bg-cyan-100 w-full lg:w-fit lg:text-center"
+        style={{ boxShadow: "0px 5px 5px -5px rgba(0, 0, 0, 0.2)" }}
+      >
+        <div
+          className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
+            isMenuOpen ? "max-h-screen" : "max-h-0"
+          }`}
+        >
+          <div className="lg:hidden divide-y divide-cyan-600">
+            {menuItems.map((item) => (
+              <Link
+                key={item.path}
+                href={item.path}
+                onClick={closeMenu}
+                className="block text-cyan-950 hover:text-cyan-700 font-semibold px-4 py-3"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
-          <div
-            className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
-              isMenuOpen ? "max-h-screen" : "max-h-0"
-            }`}
-            onClick={closeMenu}
-          >
-            <div className="mt-4 divide-y divide-cyan-600">
-              {isAuthenticated ? (
-                <>
-                  {username && (
-                    <div className="py-1 space-y-1">
-                      <p className="block xl:hidden text-center px-2 font-semibold">
-                        Eingeloggt als
-                      </p>
-                      <Link
-                        href="/konoteinstellungen"
-                        className="block xl:hidden text-cyan-800 text-center hover:text-cyan-700 px-2 font-semibold"
-                      >
-                        {username}
-                      </Link>
-                    </div>
-                  )}
-                  <Link
-                    href="/mein-bereich/meine-rezepte"
-                    className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
-                  >
-                    Meine Rezepte
-                  </Link>
-                </>
-              ) : (
-                <>
+        </div>
+        <hr
+          className={`lg:hidden border-0 bg-cyan-600 transition-height duration-500 ease-in-out  ${isMenuOpen ? "h-0.5" : "h-0"}`}
+        />
+        <div
+          className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
+            isMenuOpen ? "max-h-screen" : "max-h-0"
+          }`}
+          onClick={closeMenu}
+        >
+          {isAuthenticated && username && (
+            <div className="block xl:hidden pt-3">
+              <p className="text-center px-2 font-semibold">Eingeloggt als</p>
+              <Link
+                href="/konoteinstellungen"
+                className="block xl:hidden text-cyan-800 text-center hover:text-cyan-700 px-2 font-semibold"
+              >
+                {username}
+              </Link>
+              <hr
+                className={`hidden lg:block mt-3 border-0 bg-cyan-600 transition-height duration-500 ease-in-out ${isMenuOpen ? "h-0.5" : "h-0"}`}
+              />
+            </div>
+          )}
+          <div className="divide-y divide-cyan-600">
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href="/mein-bereich/meine-rezepte"
+                  className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
+                >
+                  Meine Rezepte
+                </Link>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-center items-center">
                   <form
                     className="w-fit text-cyan-950 px-4 py-3 space-y-2"
                     onClick={(e) => e.stopPropagation()}
@@ -251,42 +273,44 @@ const Header: React.FC = () => {
                       </p>
                     )}
                   </form>
+                </div>
+                <div className="flex justify-center items-center">
                   <Link
                     href="/registrieren"
                     className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                   >
                     Registrieren
                   </Link>
-                </>
-              )}
-              {isAuthenticated && isAdmin && (
+                </div>
+              </>
+            )}
+            {isAuthenticated && isAdmin && (
+              <Link
+                href="/admin/alle-artikel/"
+                className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
+              >
+                Artikelübersicht
+              </Link>
+            )}
+            {isAuthenticated && (
+              <>
                 <Link
-                  href="/admin/alle-artikel/"
+                  href="/mein-bereich/kontoeinstellungen"
                   className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                 >
-                  Artikelübersicht
+                  Kontoeinstellungen
                 </Link>
-              )}
-              {isAuthenticated && (
-                <>
-                  <Link
-                    href="/mein-bereich/kontoeinstellungen"
-                    className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
-                  >
-                    Kontoeinstellungen
-                  </Link>
-                  <button
-                    onClick={async () => {
-                      logout();
-                      router.push("/");
-                    }}
-                    className="w-full text-start lg:text-center block text-cyan-950 hover:text-cyan-700 px-4 py-3"
-                  >
-                    Abmelden
-                  </button>
-                </>
-              )}
-            </div>
+                <button
+                  onClick={async () => {
+                    logout();
+                    router.push("/");
+                  }}
+                  className="w-full text-start lg:text-center block text-cyan-950 hover:text-cyan-700 px-4 py-3"
+                >
+                  Abmelden
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={`flex flex-col min-h-screen ${noto.className}`}>
         <Providers>
           <Header />
-          <main className="flex flex-grow items-center justify-center pt-header">
+          <main className="flex flex-grow items-center justify-center pt-[var(--header-height)]">
             {children}
           </main>
           <Footer />
