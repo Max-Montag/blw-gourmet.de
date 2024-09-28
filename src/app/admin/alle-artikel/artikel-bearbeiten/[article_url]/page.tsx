@@ -104,14 +104,14 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
     }
   };
 
+  if (loading) {
+    return <LoadingAnimation />;
+  }
+
   if (!isAdmin) {
     return (
       <ErrorMessage message="Fehlende Berechtigung. Bitte meld dich an." />
     );
-  }
-
-  if (loading) {
-    return <LoadingAnimation />;
   }
 
   if (!articleData) {

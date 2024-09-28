@@ -216,17 +216,17 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     e.target.select();
   };
 
-  if (!isAuthenticated) {
-    return (
-      <ErrorMessage message="Fehlende Berechtigung. Bitte meld dich an." />
-    );
-  }
-
   if (loading) {
     return (
       <div className="text-center mt-10">
         <LoadingAnimation />
       </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <ErrorMessage message="Fehlende Berechtigung. Bitte meld dich an." />
     );
   }
 
