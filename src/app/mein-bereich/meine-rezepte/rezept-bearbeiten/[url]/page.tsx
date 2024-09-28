@@ -19,6 +19,7 @@ import ImageUpload from "@/components/common/ImageUpload";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { recipeValidationSchema } from "@/utils/validationSchemas/recipeValidationSchema";
 import { getCSRFToken } from "@/utils/cookieUtils";
+import { useAuth } from "@/context/AuthContext";
 
 interface EditRecipeProps {
   params: {
@@ -41,6 +42,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const [error, setError] = useState<string | null>(null);
   const [recipeErrors, setRecipeErrors] = useState<RecipeError>({});
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const { isAuthenticated, isAdmin } = useAuth();
 
   const handleValidate = useCallback(async (newRecipe: RecipeData) => {
     try {
@@ -87,8 +89,10 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       }
     };
 
-    fetchRecipe();
-  }, [url, apiUrl, handleValidate]);
+    if (isAuthenticated) {
+      fetchRecipe();
+    }
+  }, [url, apiUrl, handleValidate, isAuthenticated]);
 
   const handleUpload = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const publish = e.currentTarget.getAttribute("data-action") === "publish";
@@ -152,7 +156,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       });
 
       if (response.ok) {
-        router.push(`/admin/dashboard/`);
+        router.push(`/mein-bereich/meine-rezepte/`);
       } else {
         throw new Error("Fehler beim Speichern!");
       }
@@ -184,7 +188,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         },
       });
       if (response.ok) {
-        router.push("/admin/dashboard/");
+        router.push("/mein-bereich/meine-rezepte/");
       } else {
         throw new Error("Fehler beim Löschen!");
       }
@@ -212,6 +216,12 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     e.target.select();
   };
 
+  if (!isAuthenticated) {
+    return (
+      <ErrorMessage message="Fehlende Berechtigung. Bitte meld dich an." />
+    );
+  }
+
   if (loading) {
     return (
       <div className="text-center mt-10">
@@ -230,7 +240,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
 
   const navButtons = (
     <div className="flex justify-evenly my-8 space-x-4">
-      <button onClick={() => router.push("/admin/dashboard/")}>
+      <button onClick={() => router.push("/mein-bereich/meine-rezepte/")}>
         <IoArrowBack className="w-14 h-14 text-zinc-800 hover:text-zinc-500 cursor-pointer" />
       </button>
       <button data-action="unpublish" onClick={handleUpload}>
@@ -282,14 +292,16 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
           <div className="min-h-48">
             <RecipeDisplay recipe={recipe} />
           </div>
-          <div className="flex-grow mt-4">
-            <textarea
-              value={JSON.stringify(recipe, null, 2)}
-              onChange={handleJsonChange}
-              onFocus={handleFocus}
-              className="w-full h-full min-h-[600px] p-2 bg-zinc-50 rounded-md text-sm"
-            />
-          </div>
+          {isAdmin && (
+            <div className="flex-grow mt-4">
+              <textarea
+                value={JSON.stringify(recipe, null, 2)}
+                onChange={handleJsonChange}
+                onFocus={handleFocus}
+                className="w-full h-full min-h-[600px] p-2 bg-zinc-50 rounded-md text-sm"
+              />
+            </div>
+          )}
         </div>
       </div>
       <ConfirmModal

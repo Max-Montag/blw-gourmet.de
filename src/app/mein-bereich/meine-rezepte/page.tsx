@@ -8,6 +8,7 @@ import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimat
 import ErrorMessage from "@/components/error/ErrorMessage";
 import EditRecipeList from "@/components/recipe/EditRecipeList";
 import { AdminRecipePreview } from "@/types/recipeTypes";
+import { useAuth } from "@/context/AuthContext";
 
 const MyRecipesPage: React.FC = () => {
   const router = useRouter();
@@ -15,6 +16,7 @@ const MyRecipesPage: React.FC = () => {
   const [recipes, setRecipes] = useState<AdminRecipePreview[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated } = useAuth();
   const [showDeleteRecipeModal, setShowDeleteRecipeModal] =
     useState<boolean>(false);
   const [selectedRecipeUrl, setSelectedRecipeUrl] = useState<string | null>(
@@ -42,8 +44,10 @@ const MyRecipesPage: React.FC = () => {
       }
     };
 
-    fetchMyRecipes();
-  }, [apiUrl]);
+    if (isAuthenticated) {
+      fetchMyRecipes();
+    }
+  }, [apiUrl, isAuthenticated]);
 
   const handleAddRecipe = async () => {
     try {
@@ -97,6 +101,12 @@ const MyRecipesPage: React.FC = () => {
     setShowDeleteRecipeModal(true);
   };
 
+  if (!isAuthenticated) {
+    return (
+      <ErrorMessage message="Fehlende Berechtigung. Bitte meld dich an." />
+    );
+  }
+
   if (loading) {
     return (
       <div className="text-center mt-10">
@@ -115,7 +125,6 @@ const MyRecipesPage: React.FC = () => {
       <EditRecipeList
         recipes={recipes}
         apiUrl={apiUrl}
-        listUrl="mein-bereich"
         handleAddRecipe={handleAddRecipe}
         openDeleteRecipeModal={openDeleteRecipeModal}
       />

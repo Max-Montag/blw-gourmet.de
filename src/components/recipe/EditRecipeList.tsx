@@ -8,7 +8,6 @@ import { formatDate } from "@/utils/dateUtils";
 interface EditRecipeListProps {
   recipes: AdminRecipePreview[];
   apiUrl?: string;
-  listUrl: string;
   handleAddRecipe: () => void;
   openDeleteRecipeModal: (recipeUrl: string) => void;
 }
@@ -16,7 +15,6 @@ interface EditRecipeListProps {
 const EditRecipeList: React.FC<EditRecipeListProps> = ({
   recipes,
   apiUrl,
-  listUrl,
   handleAddRecipe,
   openDeleteRecipeModal,
 }) => {
@@ -40,7 +38,9 @@ const EditRecipeList: React.FC<EditRecipeListProps> = ({
             key={recipe.url}
             className="bg-white shadow-md hover:shadow-xl rounded-md relative"
           >
-            <Link href={`/${listUrl}/rezept-bearbeiten/${recipe.url}`}>
+            <Link
+              href={`/mein-bereich/meine-rezepte/rezept-bearbeiten/${recipe.url}`}
+            >
               {recipe.thumbnail ? (
                 <Image
                   src={`${apiUrl}${recipe.thumbnail}`}

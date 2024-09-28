@@ -40,7 +40,9 @@ const EditArticleList: React.FC<EditArticleListProps> = ({
             key={article.url}
             className="bg-white shadow-md hover:shadow-xl rounded-md relative"
           >
-            <Link href={`/admin/artikel-bearbeiten/${article.url}`}>
+            <Link
+              href={`/admin/alle-artikel/artikel-bearbeiten/${article.url}`}
+            >
               {article.thumbnail ? (
                 <Image
                   src={`${apiUrl}${article.thumbnail}`}

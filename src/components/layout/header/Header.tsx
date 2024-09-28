@@ -261,10 +261,10 @@ const Header: React.FC = () => {
               )}
               {isAuthenticated && isAdmin && (
                 <Link
-                  href="/admin/dashboard"
+                  href="/admin/alle-artikel/"
                   className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                 >
-                  Admin-Bereich
+                  Artikelübersicht
                 </Link>
               )}
               {isAuthenticated && (

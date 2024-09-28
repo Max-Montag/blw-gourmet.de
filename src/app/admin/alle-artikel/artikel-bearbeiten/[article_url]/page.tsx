@@ -10,6 +10,7 @@ import ArticleDisplay from "@/components/article/ArticleDisplay";
 import { useRouter } from "next/navigation";
 import ImageUpload from "@/components/common/ImageUpload";
 import { getCSRFToken } from "@/utils/cookieUtils";
+import { useAuth } from "@/context/AuthContext";
 
 interface PageProps {
   params: {
@@ -23,6 +24,7 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
   const [articleData, setArticleData] = useState<ArticleData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { isAdmin } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -55,8 +57,10 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
       }
     };
 
-    fetchArticle();
-  }, [apiUrl, article_url]);
+    if (isAdmin) {
+      fetchArticle();
+    }
+  }, [apiUrl, article_url, isAdmin]);
 
   const setImageUrl = (url: string) => {
     if (!articleData) {
@@ -93,12 +97,18 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
         throw new Error("Fehler beim Speichern des Artikels");
       }
 
-      router.push("/admin/dashboard/");
+      router.push("/admin/alle-artikel/");
     } catch (error) {
       console.error("Fehler beim Speichern des Artikels", error);
       alert(error);
     }
   };
+
+  if (!isAdmin) {
+    return (
+      <ErrorMessage message="Fehlende Berechtigung. Bitte meld dich an." />
+    );
+  }
 
   if (loading) {
     return <LoadingAnimation />;
