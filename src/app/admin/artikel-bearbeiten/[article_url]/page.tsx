@@ -9,6 +9,7 @@ import ErrorMessage from "@/components/error/ErrorMessage";
 import ArticleDisplay from "@/components/article/ArticleDisplay";
 import { useRouter } from "next/navigation";
 import ImageUpload from "@/components/common/ImageUpload";
+import { getCSRFToken } from "@/utils/cookieUtils";
 
 interface PageProps {
   params: {
@@ -31,6 +32,7 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
           `${apiUrl}/articles/article/${article_url}/`,
           {
             method: "GET",
+            credentials: "include",
           },
         );
 
@@ -80,7 +82,9 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken(),
           },
+          credentials: "include",
           body: JSON.stringify(data),
         },
       );

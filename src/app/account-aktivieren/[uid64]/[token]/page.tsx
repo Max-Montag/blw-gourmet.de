@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { MdMarkEmailRead } from "react-icons/md";
 import { LuMailX } from "react-icons/lu";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
-import { getCookie } from "@/utils/Utils";
 
 interface ActivateAccountProps {
   params: { uid64: string; token: string };
@@ -25,7 +24,6 @@ const ActivateAccount: React.FC<ActivateAccountProps> = ({ params }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": getCookie("csrftoken") ?? "",
           },
         },
       )

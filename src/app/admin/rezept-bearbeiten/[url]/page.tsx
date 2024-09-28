@@ -18,6 +18,7 @@ import ErrorMessage from "@/components/error/ErrorMessage";
 import ImageUpload from "@/components/common/ImageUpload";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { recipeValidationSchema } from "@/utils/validationSchemas/recipeValidationSchema";
+import { getCSRFToken } from "@/utils/cookieUtils";
 
 interface EditRecipeProps {
   params: {
@@ -67,6 +68,10 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       try {
         const response = await fetch(
           `${apiUrl}/recipes/recipe/recipe-detail/${url}/`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
         );
         if (!response.ok) {
           throw new Error("Fehler beim Abrufen vom Server.");
@@ -140,7 +145,9 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
         },
+        credentials: "include",
         body: JSON.stringify(filteredData),
       });
 
@@ -171,6 +178,10 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
     try {
       const response = await fetch(`${apiUrl}/recipes/recipe/delete/${url}/`, {
         method: "DELETE",
+        credentials: "include",
+        headers: {
+          "X-CSRFToken": getCSRFToken(),
+        },
       });
       if (response.ok) {
         router.push("/admin/dashboard/");

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, KeyboardEvent, useCallback } from "react";
 import Image from "next/image";
 import { TbReload } from "react-icons/tb";
-import { getCookie } from "@/utils/Utils";
 
 interface CaptchaProps {
   onCaptchaChange: (captchaData: { key: string; value: string }) => void;
@@ -29,7 +28,6 @@ const Captcha: React.FC<CaptchaProps> = ({
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": getCookie("csrftoken") ?? "",
           },
         },
       );

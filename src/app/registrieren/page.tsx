@@ -4,7 +4,6 @@ import { useState, useEffect, KeyboardEvent } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-import { getCookie } from "@/utils/Utils";
 import { RiMailSendLine } from "react-icons/ri";
 import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
@@ -68,7 +67,6 @@ const Register: React.FC = () => {
       setIsSaving(true);
       setSaveError("");
 
-      const csrftoken = getCookie("csrftoken") ?? "";
       const captcha = { key: captchaKey, value: captchaValue };
 
       try {
@@ -78,10 +76,8 @@ const Register: React.FC = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "X-CSRFToken": csrftoken,
             },
             body: JSON.stringify({ ...values, captcha }),
-            credentials: "include",
           },
         );
 

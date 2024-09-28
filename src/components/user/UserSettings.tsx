@@ -11,7 +11,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaDoorOpen, FaCheck } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { useAuth } from "@/context/AuthContext";
-import { getCookie } from "@/utils/Utils";
+import { getCSRFToken } from "@/utils/cookieUtils";
 
 const CHECK_TEXT = "Ich möchte, dass mein Account gelöscht wird!";
 
@@ -46,18 +46,19 @@ const UserSettings: React.FC = () => {
   }, [isOpen]);
 
   const apiAction = async (keyword: string, data: Record<string, string>) => {
-    setIsSaving(true);
     try {
+      setIsSaving(true);
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/${keyword}/`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": getCookie("csrftoken") ?? "",
+            "X-CSRFToken": getCSRFToken(),
           },
-          body: JSON.stringify(data),
           credentials: "include",
+          body: JSON.stringify(data),
         },
       );
 
@@ -68,7 +69,7 @@ const UserSettings: React.FC = () => {
         }, 3000);
         handleClose();
       } else {
-        setSaveError("Fehler beim Speichern. Bitte versuche es erneut.");
+        throw new Error("Serverfehler");
       }
     } catch (error) {
       setSaveError("Fehler beim Speichern. Bitte versuche es erneut.");

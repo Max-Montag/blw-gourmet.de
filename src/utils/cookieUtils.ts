@@ -1,17 +1,5 @@
-function setLocalStorageItem(
-  cookieConsentGiven: boolean,
-  key: string,
-  value: string,
-) {
-  if (cookieConsentGiven) {
-    localStorage.setItem(key, value);
-    return true;
-  }
-  return false;
-}
-
-function getCookie(name: string) {
-  let cookieValue = null;
+function getCookie(name: string): string {
+  let cookieValue = "";
   if (document.cookie && document.cookie !== "") {
     const cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
@@ -25,4 +13,14 @@ function getCookie(name: string) {
   return cookieValue;
 }
 
-export { getCookie, setLocalStorageItem };
+function getCSRFToken(): string {
+  const csrftoken = getCookie("csrftoken");
+
+  if (!csrftoken) {
+    throw new Error("CSRF-Token nicht gefunden");
+  }
+
+  return csrftoken;
+}
+
+export { getCSRFToken };

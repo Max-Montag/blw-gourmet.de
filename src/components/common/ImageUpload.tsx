@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { FaSpinner, FaImage } from "react-icons/fa";
+import { getCSRFToken } from "@/utils/cookieUtils";
 
 interface ImageUploadProps {
   setImageUrl: (url: string) => void;
@@ -31,6 +32,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         {
           method: "POST",
           body: formData,
+          credentials: "include",
+          headers: {
+            "X-CSRFToken": getCSRFToken(),
+          },
         },
       );
 

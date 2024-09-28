@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { getCookie } from "@/utils/Utils";
 
 interface ResetPasswordProps {
   params: { uid64: string; token: string };
@@ -22,8 +21,6 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ params }) => {
       return;
     }
 
-    const csrftoken = getCookie("csrftoken") ?? "";
-
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/reset_password/${uid64}/${token}/`,
@@ -31,7 +28,6 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ params }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": csrftoken,
           },
           body: JSON.stringify({ password }),
           credentials: "include",

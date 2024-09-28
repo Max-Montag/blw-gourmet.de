@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useEffect, useContext } from "react";
-import { getCookie } from "@/utils/Utils";
+import { getCSRFToken } from "@/utils/cookieUtils";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -37,6 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const checkAuth = async () => {
     try {
       const response = await fetch(`${apiUrl}/auth/user/`, {
+        method: "GET",
         credentials: "include",
       });
       if (!response.ok) throw new Error("Nicht authentifiziert");
@@ -71,9 +72,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         method: "POST",
         body: formData,
         credentials: "include",
-        headers: {
-          "X-CSRFToken": getCookie("csrftoken") ?? "",
-        },
       });
 
       if (!response.ok) throw new Error("Login fehlgeschlagen");
@@ -93,10 +91,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const response = await fetch(`${apiUrl}/auth/logout/`, {
         method: "POST",
-        credentials: "include",
         headers: {
-          "X-CSRFToken": getCookie("csrftoken") ?? "",
+          "X-CSRFToken": getCSRFToken(),
         },
+        credentials: "include",
       });
 
       if (!response.ok) throw new Error("Logout fehlgeschlagen");

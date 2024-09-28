@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
 import { AdminRecipePreview } from "@/types/recipeTypes";
 import { AdminArticlePreview } from "@/types/articleTypes";
 import Confirmodal from "@/components/common/ConfirmModal";
@@ -10,6 +9,7 @@ import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimat
 import ErrorMessage from "@/components/error/ErrorMessage";
 import EditRecipeList from "@/components/recipe/EditRecipeList";
 import EditArticleList from "@/components/article/EditArticleList";
+import { getCSRFToken } from "@/utils/cookieUtils";
 
 const AdminDashboard: React.FC = () => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -35,10 +35,14 @@ const AdminDashboard: React.FC = () => {
     const fetchData = async () => {
       try {
         const [recipesResponse, articlesResponse] = await Promise.all([
-          fetch(`${apiUrl}/recipes/all-recipes/`).then((res) => res.json()),
-          fetch(`${apiUrl}/articles/admin-all-articles/`).then((res) =>
-            res.json(),
-          ),
+          fetch(`${apiUrl}/recipes/accessible-recipes/`, {
+            method: "GET",
+            credentials: "include",
+          }).then((res) => res.json()),
+          fetch(`${apiUrl}/articles/all-articles/`, {
+            method: "GET",
+            credentials: "include",
+          }).then((res) => res.json()),
         ]);
         setRecipes(recipesResponse);
         setArticles(articlesResponse);
@@ -58,13 +62,15 @@ const AdminDashboard: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
         },
+        credentials: "include",
         body: JSON.stringify({}),
       });
 
       if (response.status === 201) {
         const data = await response.json();
-        router.push(`/admin/edit-recipe/${data.recipe_url}`);
+        router.push(`/admin/rezept-bearbeiten/${data.recipe_url}`);
       }
     } catch (error) {
       console.error("Fehler beim Anlegen!", error);
@@ -78,13 +84,15 @@ const AdminDashboard: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
         },
+        credentials: "include",
         body: JSON.stringify({}),
       });
 
       if (response.status === 201) {
         const data = await response.json();
-        router.push(`/admin/edit-article/${data.article_url}`);
+        router.push(`/admin/artikel-bearbeiten/${data.article_url}`);
       }
     } catch (error) {
       console.error("Fehler beim Anlegen!", error);
@@ -97,6 +105,10 @@ const AdminDashboard: React.FC = () => {
       try {
         await fetch(`${apiUrl}/recipes/recipe/delete/${selectedRecipeUrl}/`, {
           method: "DELETE",
+          headers: {
+            "X-CSRFToken": getCSRFToken(),
+          },
+          credentials: "include",
         });
         setRecipes((prevRecipes) =>
           prevRecipes.filter((recipe) => recipe.url !== selectedRecipeUrl),
@@ -118,6 +130,10 @@ const AdminDashboard: React.FC = () => {
           `${apiUrl}/articles/article/delete/${selectedArticleUrl}/`,
           {
             method: "DELETE",
+            headers: {
+              "X-CSRFToken": getCSRFToken(),
+            },
+            credentials: "include",
           },
         );
         setArticles((prevArticles) =>
@@ -143,10 +159,6 @@ const AdminDashboard: React.FC = () => {
     setShowDeleteArticleModal(true);
   };
 
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), "dd.MM.yyyy, HH:mm");
-  };
-
   if (loading) {
     return (
       <div className="text-center mt-10">
@@ -165,9 +177,9 @@ const AdminDashboard: React.FC = () => {
       <EditRecipeList
         recipes={recipes}
         apiUrl={apiUrl}
+        listUrl="admin"
         handleAddRecipe={handleAddRecipe}
         openDeleteRecipeModal={openDeleteRecipeModal}
-        formatDate={formatDate}
       />
       <hr className="my-8" />
       <h2 className="text-2xl font-bold mb-4 pl-2 md:pl-0">Artikel</h2>
@@ -176,7 +188,6 @@ const AdminDashboard: React.FC = () => {
         apiUrl={apiUrl}
         handleAddArticle={handleAddArticle}
         openDeleteArticleModal={openDeleteArticleModal}
-        formatDate={formatDate}
       />
       <Confirmodal
         show={showDeleteRecipeModal}

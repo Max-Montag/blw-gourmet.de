@@ -4,7 +4,6 @@ import { useState, FormEvent, KeyboardEvent } from "react";
 import Link from "next/link";
 import { FaSpinner } from "react-icons/fa";
 import { RiMailSendLine } from "react-icons/ri";
-import { getCookie } from "@/utils/Utils";
 import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 
@@ -31,7 +30,6 @@ const ForgotPassword: React.FC = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": getCookie("csrftoken") ?? "",
           },
           body: JSON.stringify({ email, captcha }),
         },
