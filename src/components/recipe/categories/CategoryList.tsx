@@ -11,11 +11,11 @@ const categories = [
   { name: "tiefkühlgeeignet", icon: "❄️" },
 ];
 
-interface RecipeListProps {
+interface CategoryListProps {
   amount?: number;
 }
 
-const RecipeList: React.FC<RecipeListProps> = ({ amount = 8 }) => {
+const CategoryList: React.FC<CategoryListProps> = ({ amount = 8 }) => {
   return (
     <div
       className={`grid gap-6 px-12 xxs:px-4 sm:px-12 ${amount === 4 ? `xxs:grid-cols-2` : "grid-cols-1 xxs:grid-cols-2 md:grid-cols-4"}`}
@@ -31,4 +31,4 @@ const RecipeList: React.FC<RecipeListProps> = ({ amount = 8 }) => {
   );
 };
 
-export default RecipeList;
+export default CategoryList;

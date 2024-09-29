@@ -1,17 +1,29 @@
 import React from "react";
 import Image from "next/image";
 import CategoryList from "@/components/recipe/categories/CategoryList";
-import "./gradient-animation.css";
+import "@/styles/gradient-animation.css";
 import { Lato } from "next/font/google";
+import RecipeSlider from "../recipe/RecipeSlider";
+import { getRecipesByCategory } from "@/utils/apiUtils";
+import WhatIsBlw from "@/app/was-ist-blw/page";
+
+// const categories = ["frühstück", "snack", "schnell", "vegetarisch"];
+const categories = ["frühstück", "frühstück", "frühstück", "frühstück"];
 
 const lato = Lato({
   subsets: ["latin"],
   weight: ["400", "900"],
 });
 
-const LandingPage: React.FC = () => {
+export default async function LandingPage() {
+  const category = await Promise.all(
+    categories.map(async (category) => {
+      return await getRecipesByCategory(category);
+    }),
+  );
+
   return (
-    <div className="py-6">
+    <div className={`py-6 ${lato.className}`}>
       <Image
         src="/vegetables.webp"
         alt=""
@@ -21,9 +33,7 @@ const LandingPage: React.FC = () => {
       <div className="absolute object-cover w-full h-full bg-gradient-to-b from-cyan-950 to-transparent to-90% top-0 left-0 -z-20"></div>
       <div className="absolute object-cover w-full h-full bg-gradient-to-b from-transparent to-zinc-50 from-60% top-0 left-0 -z-10"></div>
       <section className="w-full flex flex-wrap justify-center text-center">
-        <div
-          className={`my-8 mx-8 lg:mt-12 px-4 w-10/12 lg:w-7/12 ${lato.className}`}
-        >
+        <div className="my-8 mx-8 lg:mt-12 px-4 w-10/12 lg:w-7/12">
           <h1 className="animated-gradient text-start text-3xl xxs:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold bg-clip-text text-transparent">
             Leckere Rezepte für euer Baby-led Weaning Abenteuer
           </h1>
@@ -36,8 +46,26 @@ const LandingPage: React.FC = () => {
           <CategoryList amount={4} />
         </div>
       </section>
+
+      {category && category.length > 0 && (
+        <section className="mt-8 md:mt-16 w-full flex justify-center">
+          <div className="w-svw py-8 text-center md:text-start">
+            {category.map(
+              (recipes, index) =>
+                recipes &&
+                recipes.length > 0 && (
+                  <div className="mb-8 md:mb-12" key={categories[index]}>
+                    <RecipeSlider name={categories[index]} recipes={recipes} />
+                  </div>
+                ),
+            )}
+          </div>
+        </section>
+      )}
+
+      <section className="mt-4 w-full flex justify-center">
+        <WhatIsBlw />
+      </section>
     </div>
   );
-};
-
-export default LandingPage;
+}

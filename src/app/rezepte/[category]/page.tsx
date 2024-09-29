@@ -1,30 +1,11 @@
 import React from "react";
-import { RecipePreview } from "@/types/recipeTypes";
 import RecipeList from "@/components/recipe/RecipeList";
 import ErrorMessage from "@/components/error/ErrorMessage";
 import NoRecipesAvailable from "@/components/error/NoRecipesAvailable";
+import { getRecipesByCategory } from "@/utils/apiUtils";
 
-interface ListRecipesProps {
+interface CategoryProps {
   params: { category: string };
-}
-
-async function getRecipesByCategory(
-  category: string,
-): Promise<RecipePreview[] | null> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/recipes/category/?category=${category}`,
-    {
-      cache: "no-cache",
-    },
-    // TODO uncomment
-    // {
-    //   next: { revalidate: 3600 },
-    // },
-  );
-  if (!res.ok) {
-    return null;
-  }
-  return res.json();
 }
 
 export async function generateStaticParams() {
@@ -47,7 +28,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function ListRecipes({ params }: ListRecipesProps) {
+export default async function Category({ params }: CategoryProps) {
   const { category } = params;
   const decodedCategory = decodeURIComponent(category);
   const recipes = await getRecipesByCategory(category);
