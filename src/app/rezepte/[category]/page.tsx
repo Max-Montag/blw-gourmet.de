@@ -1,6 +1,6 @@
 import React from "react";
 import { RecipePreview } from "@/types/recipeTypes";
-import Category from "@/components/recipe/categories/Category";
+import RecipeList from "@/components/recipe/RecipeList";
 import ErrorMessage from "@/components/error/ErrorMessage";
 import NoRecipesAvailable from "@/components/error/NoRecipesAvailable";
 
@@ -60,5 +60,5 @@ export default async function ListRecipes({ params }: ListRecipesProps) {
     return <NoRecipesAvailable />;
   }
 
-  return <Category name={decodedCategory} recipes={recipes} />;
+  return <RecipeList name={decodedCategory} recipes={recipes} />;
 }
