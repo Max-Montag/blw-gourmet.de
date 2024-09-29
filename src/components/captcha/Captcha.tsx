@@ -81,7 +81,7 @@ const Captcha: React.FC<CaptchaProps> = ({
           <div className="relative">
             <div className="absolute rounded-full flex items-center justify-center p-2 bg-gray-100 bottom-2 right-2 z-10 opacity-60 hover:opacity-80 text-gray-800 font-semibold">
               <button onClick={handleReset}>
-                <TbReload className="w-10 h-10" />
+                <TbReload className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
               </button>
             </div>
             <Image

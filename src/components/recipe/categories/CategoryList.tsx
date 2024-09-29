@@ -13,7 +13,7 @@ const categories = [
 
 const CategoryList: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 xxs:grid-cols-2 md:grid-cols-4 gap-6 px-4 sm:px-12">
       {categories.map((cat) => (
         <CategoryCard
           key={cat.name}

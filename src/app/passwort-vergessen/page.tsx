@@ -85,7 +85,7 @@ const ForgotPassword: React.FC = () => {
     return (
       <>
         <div
-          className="w-full md:w-2/3 lg:w-1/2 flex items-center justify-center px-2 xs:px-8"
+          className="w-full md:w-2/3 lg:w-1/2 flex items-center justify-center px-2 xs:px-8 my-4"
           onKeyDown={handleKeyPress}
         >
           <form

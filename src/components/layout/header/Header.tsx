@@ -95,14 +95,14 @@ const Header: React.FC = () => {
                 <div className="absolute group-hover:-translate-y-[6px] transition-all duration-150 text-cyan-200">
                   <Image
                     src="/logo/animation-hat.svg"
-                    alt="Chef Hat"
+                    alt=""
                     width={44}
                     height={44}
                   />
                 </div>
                 <Image
                   src="/logo/animation-baby.svg"
-                  alt="Baby"
+                  alt=""
                   width={44}
                   height={44}
                 />
@@ -131,9 +131,9 @@ const Header: React.FC = () => {
           ) : (
             <button
               onClick={() => setMiniSearchBarOpen(true)}
-              className="text-gray-700 border border-gray-400 bg-gray-200 bg-opacity-40 hover:bg-opacity-30 rounded-full py-1.5 px-5"
+              className="text-gray-700 bg-gray-100 bg-opacity-40 hover:bg-opacity-30 rounded-full py-1.5 px-5 group"
             >
-              <CiSearch className="w-6 h-6" />
+              <CiSearch className="w-6 h-6 group-h" />
             </button>
           )}
         </div>
@@ -216,7 +216,7 @@ const Header: React.FC = () => {
               <>
                 <div className="flex justify-center items-center">
                   <form
-                    className="w-fit text-cyan-950 px-4 py-3 space-y-2"
+                    className="w-fit text-cyan-950 px-4 py-4 space-y-2"
                     onClick={(e) => e.stopPropagation()}
                     onSubmit={async (e) => {
                       e.preventDefault();
@@ -257,7 +257,7 @@ const Header: React.FC = () => {
                       </Link>
                     </div>
                     <button
-                      className="w-full flex justify-center items-center block p-1 bg-cyan-50 h-10 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all cursor-pointer"
+                      className="w-full flex justify-center items-center block p-1 bg-cyan-50 h-10 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all duration-100 cursor-pointer"
                       type="submit"
                       disabled={loading}
                     >
@@ -267,20 +267,18 @@ const Header: React.FC = () => {
                         "Anmelden"
                       )}
                     </button>
+                    <Link
+                      href="/registrieren"
+                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-100 text-cyan-950 hover:text-cyan-700 ring-cyan-500 ring-2 px-4 py-3 h-10 rounded-md transition-all duration-100 cursor-pointer"
+                    >
+                      Registrieren
+                    </Link>
                     {logInError && (
                       <p className="text-red-500 text-sm text-start">
                         {logInError}
                       </p>
                     )}
                   </form>
-                </div>
-                <div className="flex justify-center items-center">
-                  <Link
-                    href="/registrieren"
-                    className="block text-cyan-950 hover:text-cyan-700 px-4 py-3"
-                  >
-                    Registrieren
-                  </Link>
                 </div>
               </>
             )}

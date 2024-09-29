@@ -52,7 +52,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ params }) => {
   };
 
   return (
-    <div className="w-full md:w-1/2 flex items-center justify-center px-8">
+    <div className="w-full md:w-1/2 flex items-center justify-center px-2 xs:px-8 my-4">
       <form
         className="w-full p-8 bg-white rounded-lg shadow-md"
         onSubmit={handleResetPassword}

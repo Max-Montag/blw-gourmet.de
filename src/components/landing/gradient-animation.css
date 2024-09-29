@@ -1,0 +1,17 @@
+.animated-gradient {
+  background: linear-gradient(to right, #57d3e6 10%, #cef5f9 30%, #57d3e6 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientAnimation 20s infinite reverse;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: -200% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
