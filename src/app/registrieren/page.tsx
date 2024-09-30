@@ -10,10 +10,12 @@ import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import PasswordInput from "@/components/common/PasswordInput";
 import { useAuth } from "@/context/AuthContext";
+import ErrorMessage from "@/components/error/ErrorMessage";
 
 const Register: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [loadingError, setLoadingError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -104,6 +106,10 @@ const Register: React.FC = () => {
       e.preventDefault();
     }
   };
+
+  if (loadingError) {
+    return <ErrorMessage message={loadingError} />;
+  }
 
   return (
     <>
@@ -219,6 +225,7 @@ const Register: React.FC = () => {
               <Captcha
                 onCaptchaChange={setCaptchaResponse}
                 setLoadingParent={setLoading}
+                setParentError={setLoadingError}
                 submitParentForm={formik.handleSubmit}
               />
             </div>

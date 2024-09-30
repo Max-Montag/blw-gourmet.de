@@ -6,10 +6,12 @@ import { FaSpinner } from "react-icons/fa";
 import { RiMailSendLine } from "react-icons/ri";
 import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
+import ErrorMessage from "@/components/error/ErrorMessage";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingError, setLoadingError] = useState<string>("");
   const [sending, setSending] = useState<boolean>(false);
   const [sent, setSent] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -66,6 +68,10 @@ const ForgotPassword: React.FC = () => {
     setCaptchaKey(captchaData.key);
   };
 
+  if (loadingError) {
+    return <ErrorMessage message={loadingError} />;
+  }
+
   if (sent) {
     return (
       <div className="flex flex-col items-center justify-center py-8 px-4 my-8">
@@ -112,6 +118,7 @@ const ForgotPassword: React.FC = () => {
               <Captcha
                 onCaptchaChange={setCaptchaResponse}
                 setLoadingParent={setLoading}
+                setParentError={setLoadingError}
                 submitParentForm={handleForgotPassword}
               />
             </div>

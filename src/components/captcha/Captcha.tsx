@@ -7,17 +7,18 @@ import { TbReload } from "react-icons/tb";
 interface CaptchaProps {
   onCaptchaChange: (captchaData: { key: string; value: string }) => void;
   setLoadingParent?: (loading: boolean) => void;
+  setParentError?: (error: string) => void;
   submitParentForm?: () => void;
 }
 
 const Captcha: React.FC<CaptchaProps> = ({
   onCaptchaChange,
   setLoadingParent = undefined,
+  setParentError = undefined,
   submitParentForm = undefined,
 }) => {
   const [captchaKey, setCaptchaKey] = useState<string>("");
   const [captchaImageUrl, setCaptchaImageUrl] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const fetchCaptcha = useCallback(async () => {
@@ -40,18 +41,10 @@ const Captcha: React.FC<CaptchaProps> = ({
       setCaptchaKey(data.key);
       const imgPath = process.env.NEXT_PUBLIC_BASE_URL + data.image_url;
       setCaptchaImageUrl(imgPath);
-
-      setLoading(false);
     } catch (error) {
       console.error("Fehler beim Abrufen des Captchas:", error);
     }
   }, []);
-
-  useEffect(() => {
-    if (setLoadingParent && !loading) {
-      setTimeout(() => setLoadingParent(false), 1000); // TODO !!!
-    }
-  }, [setLoadingParent, loading]);
 
   useEffect(() => {
     fetchCaptcha();
@@ -90,6 +83,13 @@ const Captcha: React.FC<CaptchaProps> = ({
               height={100}
               className="rounded-2xl w-full z-1"
               alt="Captcha"
+              onLoadingComplete={() => {
+                setLoadingParent && setLoadingParent(false);
+              }}
+              onError={() =>
+                setParentError &&
+                setParentError("Captcha konnte nicht geladen werden")
+              }
             />
           </div>
         )}

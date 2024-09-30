@@ -257,7 +257,7 @@ const Header: React.FC = () => {
                       </Link>
                     </div>
                     <button
-                      className="w-full flex justify-center items-center block p-1 bg-cyan-50 h-10 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all duration-100 cursor-pointer"
+                      className="w-full flex justify-center items-center block p-1 bg-cyan-50 font-semibold h-10 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all duration-100 cursor-pointer"
                       type="submit"
                       disabled={loading}
                     >

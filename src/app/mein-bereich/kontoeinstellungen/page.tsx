@@ -2,10 +2,15 @@
 
 import UserSettings from "@/components/user/UserSettings";
 import { useAuth } from "@/context/AuthContext";
+import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import ErrorMessage from "@/components/error/ErrorMessage";
 
 const SettingsPage: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <LoadingAnimation />;
+  }
 
   if (!isAuthenticated) {
     return (
