@@ -84,9 +84,6 @@ export const recipeValidationSchema = Yup.object({
       "ingredients",
       "Bitte füge mindestens eine Zutat hinzu",
       function (value) {
-        if (value && value.length > 0) {
-          console.log(value[0].ingredient ?? "no ingredient");
-        }
         if (
           value &&
           value.length > 0 &&

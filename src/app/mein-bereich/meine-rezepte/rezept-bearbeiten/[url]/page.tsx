@@ -200,7 +200,9 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
 
   const handleJsonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     try {
-      const updatedRecipe = ensureEmptyFields(JSON.parse(e.target.value));
+      const updatedRecipe = ensureEmptyFields(
+        JSON.parse(e.target.value.trim()),
+      );
       const imageUrl = recipe?.optimized_image;
       if (imageUrl) {
         updatedRecipe.optimized_image = imageUrl;
@@ -208,12 +210,14 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       setRecipe(updatedRecipe);
       handleValidate(updatedRecipe);
     } catch (error) {
-      console.error("Ungültiges JSON-Format", error);
+      alert("Ungültiges JSON-Format: " + error);
     }
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-    e.target.select();
+    if (e.target && e.target.select) {
+      setTimeout(() => e.target.select(), 100); // escape event delegation
+    }
   };
 
   if (loading) {
