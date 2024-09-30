@@ -81,7 +81,7 @@ const Header: React.FC = () => {
   return (
     <header
       ref={headerRef}
-      className={`w-full flex items-center justify-center fixed min-h-[var(--header-height)] max-h-[var(--header-height)] top-0 left-0 bg-cyan-100 py-4 z-30 shadow-sm transition-transform duration-300 ${
+      className={`w-full flex items-center justify-center fixed min-h-[var(--header-height)] max-h-[var(--header-height)] top-0 left-0 bg-cyan-100 py-4 z-30 shadow-md transition-transform duration-300 ${
         isVisible ? "transform translate-y-0" : "transform -translate-y-full"
       }`}
     >
@@ -257,7 +257,7 @@ const Header: React.FC = () => {
                       </Link>
                     </div>
                     <button
-                      className="w-full flex justify-center items-center block p-1 bg-cyan-50 font-semibold h-10 text-cyan-950 ring-cyan-500 ring-2 rounded-md hover:bg-cyan-100 transition-all duration-100 cursor-pointer"
+                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 shadow-sm hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all duration-100 cursor-pointer"
                       type="submit"
                       disabled={loading}
                     >
@@ -270,7 +270,7 @@ const Header: React.FC = () => {
                     <Link
                       href="/registrieren"
                       onClick={closeMenu}
-                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-100 text-cyan-950 hover:text-cyan-700 ring-cyan-500 ring-2 px-4 py-3 h-10 rounded-md transition-all duration-100 cursor-pointer"
+                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 shadow-sm hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all duration-100 cursor-pointer"
                     >
                       Registrieren
                     </Link>
