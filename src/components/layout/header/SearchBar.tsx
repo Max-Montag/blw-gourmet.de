@@ -5,6 +5,7 @@ import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
 import Image from "next/image";
 import { RecipePreview } from "../../../types/recipeTypes";
+import { useRouter } from 'next/navigation';
 
 type SearchBarProps = {
   closeMenu: () => void;
@@ -14,7 +15,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
   const [searchQuery, setsearchQuery] = useState<string>("");
   const [placeholder, setPlaceholder] = useState<string>("Rezepte durchsuchen");
   const [suggestions, setSuggestions] = useState<RecipePreview[]>([]);
+  const [selectedItem, setSelectedItem] = useState<number>(-1);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter();
 
   const fetchSuggestions = useCallback(async () => {
     if (searchQuery) {
@@ -43,11 +46,32 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
     return () => clearTimeout(debounceSearch);
   }, [fetchSuggestions]);
 
+  useEffect(() => {
+    setSelectedItem(-1);
+  }, [suggestions]);
+
   const handleLinkClick = (suggestionName: string) => {
     closeMenu();
     setsearchQuery("");
     setPlaceholder(suggestionName);
     setSuggestions([]);
+    setSelectedItem(-1);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedItem((prev) => (prev < suggestions.length - 1 ? prev + 1 : prev));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedItem((prev) => (prev > 0 ? prev - 1 : 0));
+    } else if (e.key === 'Enter') {
+      if (selectedItem >= 0 && suggestions[selectedItem]) {
+        e.preventDefault();
+        handleLinkClick(suggestions[selectedItem].name);
+        router.push(`/rezept/${suggestions[selectedItem].url}`);
+      }
+    }
   };
 
   return (
@@ -56,6 +80,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
         type="text"
         value={searchQuery}
         onChange={(e) => setsearchQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className="bg-cyan-50 text-black pl-3 pr-8 py-2 rounded-md w-full outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
       />
@@ -63,12 +88,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ closeMenu }) => {
 
       {suggestions.length > 0 && (
         <div className="absolute bg-cyan-50 shadow-lg rounded-md mt-2 max-h-[400px] overflow-y-auto w-full">
-          {suggestions.map((suggestion) => (
+          {suggestions.map((suggestion, index) => (
             <Link
               href={`/rezept/${suggestion.url}`}
               onClick={() => handleLinkClick(suggestion.name)}
               key={suggestion.url}
-              className="flex items-center p-2 hover:bg-cyan-100 transition-all"
+              className={`flex items-center p-2 transition-all ${
+                selectedItem === index ? 'bg-cyan-100' : 'hover:bg-cyan-100'
+              }`}
             >
               {suggestion.thumbnail ? (
                 <Image
