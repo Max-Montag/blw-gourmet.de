@@ -396,7 +396,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
               <div className="flex space-x-2 mb-2">
                 <input
                   type="text"
-                  placeholder="Ingredient"
+                  placeholder="Zutat"
                   value={ingredient.ingredient}
                   onChange={(e) =>
                     handleIngredientChange(index, "ingredient", e.target.value)
@@ -412,7 +412,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 />
                 <input
                   type="number"
-                  placeholder="Amount"
+                  placeholder="Menge"
                   value={ingredient.amount}
                   onChange={(e) =>
                     handleIngredientChange(
@@ -432,7 +432,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 />
                 <input
                   type="text"
-                  placeholder="Unit"
+                  placeholder="Einheit"
                   value={ingredient.unit}
                   onChange={(e) =>
                     handleIngredientChange(index, "unit", e.target.value)
@@ -527,7 +527,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                   </h3>
                   <input
                     type="text"
-                    placeholder="Instruction Name"
+                    placeholder="Bezeichnung"
                     value={instruction.name}
                     onChange={(e) =>
                       handleInstructionChange(index, "name", e.target.value)
@@ -559,7 +559,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                     <div key={ingIndex} className="flex space-x-2 mb-2">
                       <input
                         type="text"
-                        placeholder="Ingredient"
+                        placeholder="Zutat"
                         value={ingredient.ingredient}
                         onChange={(e) =>
                           handleInstructionIngredientChange(
@@ -583,7 +583,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                       />
                       <input
                         type="number"
-                        placeholder="Amount"
+                        placeholder="Menge"
                         value={ingredient.amount}
                         onChange={(e) =>
                           handleInstructionIngredientChange(
@@ -607,7 +607,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                       />
                       <input
                         type="text"
-                        placeholder="Unit"
+                        placeholder="Einheit"
                         value={ingredient.unit}
                         onChange={(e) =>
                           handleInstructionIngredientChange(
@@ -733,7 +733,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                 Anleitung:
               </label>
               <textarea
-                placeholder="Instruction Details"
+                placeholder="Was ist zu tun?"
                 value={instruction.instruction}
                 onChange={(e) =>
                   handleInstructionChange(index, "instruction", e.target.value)

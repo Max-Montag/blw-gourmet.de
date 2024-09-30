@@ -1,8 +1,8 @@
 import React, { useState, forwardRef, Ref } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
-
-interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface PasswordInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   passwordRef?: Ref<HTMLInputElement>;
 }
 
@@ -37,7 +37,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         </button>
       </div>
     );
-  }
+  },
 );
 
 PasswordInput.displayName = "PasswordInput";

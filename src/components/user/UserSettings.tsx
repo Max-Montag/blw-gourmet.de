@@ -99,7 +99,7 @@ const UserSettings: React.FC = () => {
   };
 
   const handlePasswordChange = async () => {
-  const oldPassword = oldPasswordRef.current?.value as string;
+    const oldPassword = oldPasswordRef.current?.value as string;
     const newPassword = newPasswordRef.current?.value as string;
     const confirmPassword = confirmPasswordRef.current?.value as string;
 
@@ -199,7 +199,7 @@ const UserSettings: React.FC = () => {
               required
             />
             <label>Passwort</label>
-            <PasswordInput 
+            <PasswordInput
               passwordRef={emailPasswordRef}
               key="passwordForEmail"
               placeholder="Passwort"

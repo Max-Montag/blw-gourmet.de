@@ -8,7 +8,7 @@ import { getRecipesByCategory, getAllArticlesData } from "@/utils/apiUtils";
 import WhatIsBlw from "@/components/what-is-blw/WhatIsBlw";
 import ArticleList from "../article/ArticleList";
 
-// const categories = ["frühstück", "snack", "schnell", "vegetarisch"];
+// const categories = ["frühstück", "snack", "schnell", "vegetarisch"]; / TODO
 const categories = ["frühstück", "frühstück", "frühstück", "frühstück"];
 
 const lato = Lato({

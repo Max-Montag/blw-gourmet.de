@@ -242,7 +242,7 @@ const Header: React.FC = () => {
                       className="w-full block bg-cyan-50 px-2 py-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
                     />
                     <div className="flex flex-col">
-                      <PasswordInput 
+                      <PasswordInput
                         passwordRef={passwordRef}
                         key="password"
                         placeholder="Passwort"
@@ -269,6 +269,7 @@ const Header: React.FC = () => {
                     </button>
                     <Link
                       href="/registrieren"
+                      onClick={closeMenu}
                       className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-100 text-cyan-950 hover:text-cyan-700 ring-cyan-500 ring-2 px-4 py-3 h-10 rounded-md transition-all duration-100 cursor-pointer"
                     >
                       Registrieren
