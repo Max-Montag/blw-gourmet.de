@@ -10,6 +10,7 @@ import {
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaDoorOpen, FaCheck } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
+import PasswordInput from "../common/PasswordInput";
 import { useAuth } from "@/context/AuthContext";
 import { getCSRFToken } from "@/utils/cookieUtils";
 
@@ -22,8 +23,12 @@ const UserSettings: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showingConfirmation, setShowingConfirmation] = useState(false);
   const [currentAction, setCurrentAction] = useState("");
-
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const oldPasswordRef = useRef<HTMLInputElement>(null);
+  const newPasswordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const emailPasswordRef = useRef<HTMLInputElement>(null);
+  const deletePasswordRef = useRef<HTMLInputElement>(null);
   const { logout } = useAuth();
 
   useEffect(() => {
@@ -80,7 +85,7 @@ const UserSettings: React.FC = () => {
 
   const handleDeleteAccount = async (formData: FormData) => {
     const checkText = formData.get("checkText") as string;
-    const password = formData.get("password") as string;
+    const password = deletePasswordRef.current?.value as string;
 
     if (checkText !== CHECK_TEXT) {
       setSaveError("Der eingegebene Text ist nicht korrekt!");
@@ -93,10 +98,10 @@ const UserSettings: React.FC = () => {
     }
   };
 
-  const handlePasswordChange = async (formData: FormData) => {
-    const oldPassword = formData.get("oldPassword") as string;
-    const newPassword = formData.get("newPassword") as string;
-    const confirmPassword = formData.get("confirmPassword") as string;
+  const handlePasswordChange = async () => {
+  const oldPassword = oldPasswordRef.current?.value as string;
+    const newPassword = newPasswordRef.current?.value as string;
+    const confirmPassword = confirmPasswordRef.current?.value as string;
 
     if (newPassword !== confirmPassword) {
       setSaveError("Die neuen Passwörter stimmen nicht überein.");
@@ -112,7 +117,7 @@ const UserSettings: React.FC = () => {
   const handleEmailChange = async (formData: FormData) => {
     const newEmail = formData.get("newEmail") as string;
     const confirmNewEmail = formData.get("confirmNewEmail") as string;
-    const password = formData.get("passwordForEmail") as string;
+    const password = emailPasswordRef.current?.value as string;
 
     if (newEmail !== confirmNewEmail) {
       setSaveError("Die E-Mail-Adressen stimmen nicht überein.");
@@ -141,30 +146,26 @@ const UserSettings: React.FC = () => {
         return (
           <form onSubmit={(e) => handleSubmit(e, handlePasswordChange)}>
             <label>Aktuelles Passwort</label>
-            <input
-              type="password"
-              name="oldPassword"
+            <PasswordInput
+              passwordRef={oldPasswordRef}
+              key="oldPassword"
               placeholder="Aktuelles Passwort"
-              className="border rounded p-2 mt-1.5 mb-2.5 w-full"
-              required
+              className="border rounded p-2 w-full mt-1.5 mb-2.5"
             />
             <label>Neues Passwort</label>
-            <input
-              type="password"
-              name="newPassword"
+            <PasswordInput
+              passwordRef={newPasswordRef}
+              key="newPassword"
               placeholder="Neues Passwort"
               className="border rounded p-2 w-full mt-1.5 mb-2.5"
-              required
             />
             <label>Passwort bestätigen</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Neues Passwort"
+            <PasswordInput
+              passwordRef={confirmPasswordRef}
+              key="confirmPassword"
+              placeholder="Passwort bestätigen"
               className="border rounded p-2 w-full mt-1.5 mb-2.5"
-              required
             />
-
             <button
               type="submit"
               className="bg-cyan-600 hover:bg-cyan-700 h-12 text-white flex justify-center items-center mt-4 py-2 px-4 rounded-lg w-full"
@@ -198,12 +199,11 @@ const UserSettings: React.FC = () => {
               required
             />
             <label>Passwort</label>
-            <input
-              type="password"
-              name="passwordForEmail"
+            <PasswordInput 
+              passwordRef={emailPasswordRef}
+              key="passwordForEmail"
               placeholder="Passwort"
               className="border rounded p-2 w-full mt-1.5 mb-2.5"
-              required
             />
             <button
               type="submit"
@@ -233,14 +233,12 @@ const UserSettings: React.FC = () => {
               className="border rounded p-2 w-full my-2"
               required
             />
-            <input
-              type="password"
-              name="password"
+            <PasswordInput
+              passwordRef={deletePasswordRef}
+              key="password"
               placeholder="Passwort"
-              className="border rounded p-2 w-full my-2"
-              required
+              className="border rounded p-2 w-full"
             />
-
             <button
               type="submit"
               className="bg-red-600 hover:bg-red-700 h-12 text-white flex justify-center items-center mt-4 py-2 px-4 rounded-lg w-full"

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { CiMenuBurger, CiSearch } from "react-icons/ci";
 import { FaRegUserCircle, FaSpinner } from "react-icons/fa";
 import SearchBar from "./SearchBar";
+import PasswordInput from "@/components/common/PasswordInput";
 import { useAuth } from "@/context/AuthContext";
 
 const menuItems = [
@@ -238,13 +239,12 @@ const Header: React.FC = () => {
                       type="email"
                       ref={emailRef}
                       placeholder="E-Mail"
-                      className="block bg-cyan-50 px-2 py-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
+                      className="w-full block bg-cyan-50 px-2 py-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
                     />
                     <div className="flex flex-col">
-                      <input
-                        ref={passwordRef}
+                      <PasswordInput 
+                        passwordRef={passwordRef}
                         key="password"
-                        type="password"
                         placeholder="Passwort"
                         className="block bg-cyan-50 px-2 py-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
                       />

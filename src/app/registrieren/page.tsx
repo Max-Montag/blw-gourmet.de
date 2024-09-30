@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect, KeyboardEvent } from "react";
+import { useState, useEffect, useRef, KeyboardEvent } from "react";
+import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { RiMailSendLine } from "react-icons/ri";
 import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
-import Link from "next/link";
+import PasswordInput from "@/components/common/PasswordInput";
 import { useAuth } from "@/context/AuthContext";
 
 const Register: React.FC = () => {
@@ -15,6 +16,8 @@ const Register: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const [showingConfirmation, setShowingConfirmation] = useState(false);
   const [captchaKey, setCaptchaKey] = useState<string>("");
   const [captchaValue, setCaptchaValue] = useState<string>("");
@@ -152,10 +155,11 @@ const Register: React.FC = () => {
               <label htmlFor="password" className="block text-cyan-700 mb-2">
                 Passwort
               </label>
-              <input
-                type="password"
+              <PasswordInput
                 id="password"
+                passwordRef={passwordRef}
                 {...formik.getFieldProps("password")}
+                placeholder="Passwort eingeben"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
               />
               {formik.touched.password && formik.errors.password ? (
@@ -171,10 +175,11 @@ const Register: React.FC = () => {
               >
                 Passwort wiederholen
               </label>
-              <input
-                type="password"
+              <PasswordInput
                 id="confirmPassword"
+                passwordRef={confirmPasswordRef}
                 {...formik.getFieldProps("confirmPassword")}
+                placeholder="Passwort wiederholen"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
               />
               {formik.touched.confirmPassword &&
