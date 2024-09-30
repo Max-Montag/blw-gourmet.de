@@ -6,7 +6,6 @@ import ArticleNotAvailable from "@/components/error/ArticleNotAvailable";
 interface ArticlePageProps {
   params: { url: string };
 }
-
 async function getArticleData(url: string): Promise<ArticleData | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/articles/article/${url}/`,

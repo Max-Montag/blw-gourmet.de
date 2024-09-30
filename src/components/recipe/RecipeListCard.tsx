@@ -33,7 +33,9 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
           </div>
         )}
         <div className="px-2 pb-4">
-          <h2 className="text-base+ font-bold my-2">{recipe.name}</h2>
+          <h2 className="text-base+ font-bold text-cyan-900 group-hover:text-cyan-700 my-2">
+            {recipe.name}
+          </h2>
           <p className="text-gray-600 text-sm line-clamp-3">
             {recipe.description || "Keine Beschreibung verfügbar"}
           </p>

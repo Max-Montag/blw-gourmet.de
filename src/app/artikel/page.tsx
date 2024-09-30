@@ -1,20 +1,7 @@
 import React from "react";
 import NoArticlesAvailable from "@/components/error/NoArticlesAvailable";
-import { ArticlePreviewData } from "@/types/articleTypes";
 import ArticlesList from "@/components/article/ArticleList";
-
-async function getAllArticlesData(): Promise<ArticlePreviewData[]> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/articles/all-articles/`,
-    {
-      next: { revalidate: 3600 },
-    },
-  );
-  if (!res.ok) {
-    throw new Error("Failed to fetch articles");
-  }
-  return res.json();
-}
+import { getAllArticlesData } from "@/utils/apiUtils";
 
 export default async function ArticlesPage() {
   const articles = await getAllArticlesData();
@@ -23,5 +10,9 @@ export default async function ArticlesPage() {
     return <NoArticlesAvailable />;
   }
 
-  return <ArticlesList articles={articles} />;
+  return (
+    <div className="max-w-6xl mx-auto p-6">
+      <ArticlesList articles={articles} />
+    </div>
+  );
 }

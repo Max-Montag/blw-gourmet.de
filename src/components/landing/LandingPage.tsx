@@ -4,8 +4,9 @@ import CategoryList from "@/components/recipe/categories/CategoryList";
 import "@/styles/gradient-animation.css";
 import { Lato } from "next/font/google";
 import RecipeSlider from "../recipe/RecipeSlider";
-import { getRecipesByCategory } from "@/utils/apiUtils";
-import WhatIsBlw from "@/app/was-ist-blw/page";
+import { getRecipesByCategory, getAllArticlesData } from "@/utils/apiUtils";
+import WhatIsBlw from "@/components/what-is-blw/WhatIsBlw";
+import ArticleList from "../article/ArticleList";
 
 // const categories = ["frühstück", "snack", "schnell", "vegetarisch"];
 const categories = ["frühstück", "frühstück", "frühstück", "frühstück"];
@@ -22,6 +23,8 @@ export default async function LandingPage() {
     }),
   );
 
+  const articles = await getAllArticlesData();
+
   return (
     <div className={`py-6 ${lato.className}`}>
       <Image
@@ -29,9 +32,11 @@ export default async function LandingPage() {
         alt=""
         fill={true}
         className="absolute object-cover w-full top-0 left-0 -z-30 transform -translate-y-[1px]"
+        priority
       />
       <div className="absolute object-cover w-full h-full bg-gradient-to-b from-cyan-950 to-transparent to-90% top-0 left-0 -z-20"></div>
       <div className="absolute object-cover w-full h-full bg-gradient-to-b from-transparent to-zinc-50 from-60% top-0 left-0 -z-10"></div>
+
       <section className="w-full flex flex-wrap justify-center text-center">
         <div className="my-8 mx-8 lg:mt-12 px-4 w-10/12 lg:w-7/12">
           <h1 className="animated-gradient text-start text-3xl xxs:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold bg-clip-text text-transparent">
@@ -48,13 +53,13 @@ export default async function LandingPage() {
       </section>
 
       {category && category.length > 0 && (
-        <section className="mt-8 md:mt-16 w-full flex justify-center">
+        <section className="w-full flex justify-center">
           <div className="w-svw py-8 text-center md:text-start">
             {category.map(
               (recipes, index) =>
                 recipes &&
                 recipes.length > 0 && (
-                  <div className="mb-8 md:mb-12" key={categories[index]}>
+                  <div className="mt-8 md:mt-12" key={categories[index]}>
                     <RecipeSlider name={categories[index]} recipes={recipes} />
                   </div>
                 ),
@@ -65,6 +70,13 @@ export default async function LandingPage() {
 
       <section className="mt-4 w-full flex justify-center">
         <WhatIsBlw />
+      </section>
+
+      <section className="w-full flex flex-wrap justify-center pb-8 px-8 lg:px-16">
+        <h1 className="w-full animated-gradient text-center text-3xl xxs:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold mb-12">
+          Tipps zum Beikoststart
+        </h1>
+        <ArticleList articles={articles} />
       </section>
     </div>
   );
