@@ -267,7 +267,7 @@ const UserSettings: React.FC = () => {
     Icon: React.ElementType;
   }) => (
     <button
-      className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-lg transition duration-200"
+      className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-lg transition duration-50"
       onClick={() => {
         setIsOpen(true);
         setCurrentAction(keyword);

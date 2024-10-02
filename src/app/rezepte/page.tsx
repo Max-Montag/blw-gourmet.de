@@ -2,7 +2,7 @@ import CategoryList from "@/components/recipe/categories/CategoryList";
 import RecipeSlider from "@/components/recipe/RecipeSlider";
 import { getRecipesByCategory } from "@/utils/apiUtils";
 
-const categories = ["frühstück", "frühstück", "frühstück", "frühstück"]; // TODO
+const categories = ["Frühstück", "Mittagessen", "Abendessen", "Snack"];
 
 const BrowseRecipes: React.FC = async () => {
   const category = await Promise.all(

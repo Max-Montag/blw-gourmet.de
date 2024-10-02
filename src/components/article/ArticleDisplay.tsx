@@ -1,13 +1,8 @@
 import React from "react";
-import { Marcellus } from "next/font/google";
-import { Descendant, Element as SlateElement, Text as SlateText } from "slate";
 import Image from "next/image";
+import { Descendant, Element as SlateElement, Text as SlateText } from "slate";
+import { lato } from "@/styles/fonts";
 import { ArticleData } from "@/types/articleTypes";
-
-const marcellus = Marcellus({
-  subsets: ["latin"],
-  weight: ["400"],
-});
 
 interface ArticleDisplayProps {
   article: ArticleData;
@@ -96,7 +91,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
       </div>
       <div className="p-6">
         <h1
-          className={`text-2xl lg:text-4xl font-bold mb-4 text-center text-gray-800 ${marcellus.className}`}
+          className={`text-2xl lg:text-4xl font-bold mb-4 text-center text-cyan-900 ${lato.className}`}
         >
           {article.title}
         </h1>

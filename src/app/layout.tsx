@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Noto_Sans } from "next/font/google";
+import { noto } from "@/styles/fonts";
 import Header from "@/components/layout/header/Header";
 import Footer from "@/components/layout/footer/Footer";
 import "./globals.css";
 import { Providers } from "./providers";
-
-const noto = Noto_Sans({
-  subsets: ["latin"],
-  weight: ["400"],
-});
 
 export const metadata: Metadata = {
   title: "BLW-gourmet.de",
@@ -23,7 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de">
-      <body className={`flex flex-col min-h-screen ${noto.className}`}>
+      <body
+        className={`flex flex-col min-h-screen break-words ${noto.className}`}
+      >
         <Providers>
           <Header />
           <main className="flex flex-grow items-center justify-center pt-[var(--header-height)]">

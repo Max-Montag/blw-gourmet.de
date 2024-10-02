@@ -1,18 +1,13 @@
 import React from "react";
-import { Marcellus } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
 import { PiCookingPot } from "react-icons/pi";
 import { CiShoppingBasket } from "react-icons/ci";
 import Fraction from "fraction.js";
+import { lato } from "@/styles/fonts";
 import IconText from "@/components/common/IconText";
 import { RecipeData } from "@/types/recipeTypes";
 import AccurateTimerIcon from "@/components/common/AccurateTimerIcon";
-
-const marcellus = Marcellus({
-  subsets: ["latin"],
-  weight: ["400"],
-});
 
 interface DecimalToFractionProps {
   decimal: number;
@@ -67,7 +62,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
       <div className="p-6">
         {recipe.name && (
           <h1
-            className={`text-2xl lg:text-4xl font-bold mb-4 text-center text-gray-800 ${marcellus.className}`}
+            className={`text-2xl lg:text-4xl font-bold mb-4 text-center text-cyan-900 ${lato.className}`}
           >
             {recipe.name}
           </h1>

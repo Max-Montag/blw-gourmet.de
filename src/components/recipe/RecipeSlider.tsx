@@ -22,7 +22,7 @@ const RecipeSlider: React.FC<RecipeSliderProps> = ({ recipes, name }) => {
       {name && (
         <Link
           href={`/rezepte/${name}`}
-          className="text-xl sm:text-2xl text-zinc-600 hover:text-zinc-900 font-bold md:ml-8 mb-2 underline underline-offset-[3px]"
+          className="text-xl sm:text-2xl text-cyan-900 hover:text-cyan-700 font-bold md:ml-8 mb-2 underline underline-offset-[3px]"
         >
           {`${name.charAt(0).toUpperCase() + name.slice(1)}`}
         </Link>

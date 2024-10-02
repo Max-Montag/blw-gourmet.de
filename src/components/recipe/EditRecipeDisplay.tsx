@@ -304,11 +304,15 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
               </div>
               {errors.labels &&
                 errors.labels[index] &&
-                typeof errors.labels[index] === "string" && (
+                typeof errors.labels[index] === "string" &&
+                errors.labels[index].length > 1 && (
                   <WarningNotification message={errors.labels[index]} />
                 )}
             </>
           ))}
+          {errors.labels && (
+            <WarningNotification message={errors.labels.toString()} />
+          )}
         </div>
         <div>
           <label className="block text-base font-medium text-gray-700 mb-1">

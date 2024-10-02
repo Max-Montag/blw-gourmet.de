@@ -17,14 +17,9 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
+  /* padding-bottom: env(safe-area-inset-bottom); */
 }
 
 main {
   flex: 1 0 auto;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
 }

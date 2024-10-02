@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -52,13 +52,19 @@ const Header: React.FC = () => {
     if (currentScrollY > lastScrollY && currentScrollY > 100 && !isMenuOpen) {
       setIsVisible(false);
       setUpScrolls(0);
-    } else if (upScolls >= 30 || currentScrollY < 100 || isMenuOpen) {
+    } else if (upScolls >= 30 || currentScrollY < 200 || isMenuOpen) {
       setIsVisible(true);
     } else {
       setUpScrolls((prev) => prev + 1);
     }
     setLastScrollY(currentScrollY);
   }, [lastScrollY, isMenuOpen, upScolls]);
+
+  useEffect(() => {
+    if (miniSearchBarOpen) {
+      setIsMenuOpen(false);
+    }
+  }, [miniSearchBarOpen]);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -81,7 +87,7 @@ const Header: React.FC = () => {
   return (
     <header
       ref={headerRef}
-      className={`w-full flex items-center justify-center fixed min-h-[var(--header-height)] max-h-[var(--header-height)] top-0 left-0 bg-cyan-100 py-4 z-30 shadow-md transition-transform duration-300 ${
+      className={`w-full flex items-center justify-center fixed min-h-[var(--header-height)] max-h-[var(--header-height)] top-0 left-0 bg-cyan-100 py-4 z-30 shadow-sm transition-transform duration-300 ${
         isVisible ? "transform translate-y-0" : "transform -translate-y-full"
       }`}
     >
@@ -126,16 +132,20 @@ const Header: React.FC = () => {
         <div className="hidden xxs:block">
           <SearchBar closeMenu={closeMenu} />
         </div>
-        <div className="xxs:hidden">
+        <div
+          className={`xxs:hidden transition-all duration-300 ease-in-out ${miniSearchBarOpen ? "w-full" : "w-0"}`}
+        >
           {miniSearchBarOpen ? (
-            <SearchBar closeMenu={closeMenu} />
+            <SearchBar closeMenu={closeMenu} setFocus={true} />
           ) : (
-            <button
-              onClick={() => setMiniSearchBarOpen(true)}
-              className="text-gray-700 bg-gray-100 bg-opacity-40 hover:bg-opacity-30 rounded-full py-1.5 px-5 group"
-            >
-              <CiSearch className="w-6 h-6 group-h" />
-            </button>
+            <div className="w-full flex justify-center">
+              <button
+                onClick={() => setMiniSearchBarOpen(true)}
+                className="text-gray-700 bg-cyan-50 rounded-full py-1.5 px-5 -ml-2.5 group"
+              >
+                <CiSearch className="w-6 h-6 group-h" />
+              </button>
+            </div>
           )}
         </div>
         <div className="text-cyan-950 cursor-pointer">
@@ -159,7 +169,7 @@ const Header: React.FC = () => {
         </div>
       </div>
       <div
-        className="absolute z-30 right-0 top-[var(--header-height)] -mt-0.5 bg-cyan-100 w-full lg:w-fit lg:text-center"
+        className="max-h-screen absolute z-30 right-0 top-[var(--header-height)] -mt-0.5 bg-cyan-100 w-full lg:w-fit lg:text-center"
         style={{ boxShadow: "0px 5px 5px -5px rgba(0, 0, 0, 0.2)" }}
       >
         <div
@@ -257,7 +267,7 @@ const Header: React.FC = () => {
                       </Link>
                     </div>
                     <button
-                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 shadow-sm hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all duration-100 cursor-pointer"
+                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 shadow-sm hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all duration-50 cursor-pointer"
                       type="submit"
                       disabled={loading}
                     >
@@ -270,7 +280,7 @@ const Header: React.FC = () => {
                     <Link
                       href="/registrieren"
                       onClick={closeMenu}
-                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 shadow-sm hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all duration-100 cursor-pointer"
+                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 shadow-sm hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all duration-50 cursor-pointer"
                     >
                       Registrieren
                     </Link>

@@ -13,7 +13,7 @@ import "@/styles/gradient-animation.css";
 const WhatIsBlw = () => {
   return (
     <div className="min-h-screen px-8">
-      <h1 className="animated-gradient text-center text-3xl xxs:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold mb-8">
+      <h1 className="text-center text-3xl xxs:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl text-cyan-950 font-bold mb-8">
         Was ist Baby-led Weaning (BLW)?
       </h1>
 

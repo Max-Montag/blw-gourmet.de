@@ -232,7 +232,7 @@ const Register: React.FC = () => {
             <div className="w-full flex justify-center mt-8">
               <button
                 type="submit"
-                className="bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-cyan-800 transition duration-200 ease-in-out"
+                className="bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-cyan-800 transition duration-50 ease-in-out"
                 disabled={isSaving}
               >
                 {isSaving ? "Registrieren..." : "Registrieren"}

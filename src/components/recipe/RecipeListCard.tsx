@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { lato } from "@/styles/fonts";
 import IconText from "@/components/common/IconText";
 import { RecipePreview } from "@/types/recipeTypes";
 
@@ -13,7 +14,7 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
     <Link
       href={`/rezept/${recipe.url}`}
       key={recipe.name}
-      className="flex flex-col justify-between bg-white shadow-sm hover:shadow-md sm:rounded-md group cursor-pointer"
+      className="flex flex-col h-full justify-between bg-white shadow-sm hover:shadow-md sm:rounded-md group cursor-pointer"
     >
       <div>
         {recipe.thumbnail ? (
@@ -23,9 +24,9 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
               alt={recipe.name}
               width={240}
               height={160}
-              className="w-full h-40 object-cover sm:rounded-t-md group-hover:scale-105 transition-transform duration-200"
+              className="w-full h-40 object-cover sm:rounded-t-md group-hover:scale-105 transition-transform duration-50"
             />
-            <div className="absolute inset-0 bg-black sm:rounded-t-md opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+            <div className="absolute inset-0 bg-black sm:rounded-t-md opacity-0 group-hover:opacity-20 transition-opacity duration-50"></div>
           </div>
         ) : (
           <div className="flex justify-center items-center w-full h-40 bg-zinc-300">
@@ -33,10 +34,12 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
           </div>
         )}
         <div className="px-2 pb-4">
-          <h2 className="text-base+ font-bold text-cyan-900 group-hover:text-cyan-700 my-2">
+          <h2
+            className={`text-base+ xl:text-2xl font-bold text-cyan-900 group-hover:text-cyan-700 my-2 ${lato.className}`}
+          >
             {recipe.name}
           </h2>
-          <p className="text-gray-600 text-sm line-clamp-3">
+          <p className="text-gray-600 text-sm xl:text-lg line-clamp-3">
             {recipe.description || "Keine Beschreibung verfügbar"}
           </p>
         </div>
