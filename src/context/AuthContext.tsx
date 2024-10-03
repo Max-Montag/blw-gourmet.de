@@ -40,9 +40,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         method: "GET",
         credentials: "include",
       });
-      if (!response.ok) throw new Error("Nicht authentifiziert");
+
+      if (!response.ok || response.status === 202)
+        throw new Error("Nicht authentifiziert");
 
       const data = await response.json();
+      if (!data.username)
+        throw new Error("Fehler beim Laden des Benutzernamens");
+
       setIsAuthenticated(true);
       setUsername(data.username);
       setIsAdmin(data.is_admin);
@@ -78,7 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       await checkAuth();
     } catch (error) {
-      throw new Error("Fehler beim Anmelden");
+      console.error(error);
     } finally {
       setLoggingIn(false);
       setLoading(false);

@@ -50,7 +50,7 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
   }, [url, isAuthenticated]);
 
   const checkIfLikedByLocalStorage = () => {
-    return localStorage.getItem(`liked_${url}`) === "true";
+    return localStorage.getItem(`liked_${url}`) === "true"; // TODO dont set when cookie consent is not given!
   };
 
   const handleLike = async () => {
@@ -62,7 +62,6 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
       if (isAuthenticated) {
         await sendLikeToServer(newLikedStatus);
       } else {
-        alert("new liked status: " + newLikedStatus);
         localStorage.setItem(`liked_${url}`, newLikedStatus.toString()); // TODO
         await sendLikeToServer(newLikedStatus);
       }
@@ -78,7 +77,7 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
       `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/likes/${url}/`,
       {
         method: "POST",
-        credentials: "include",
+        // credentials: "include",
         body: JSON.stringify({
           liked: newLikedStatus,
         }),
@@ -95,10 +94,10 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
   };
 
   return (
-    <div className="flex justify-center items-center cursor-pointer space-x-2 group">
+    <div className="flex justify-center items-center cursor-pointer group">
       <button
         onClick={handleLike}
-        className={`focus:outline-none flex justify-center items-center space-x-1 rounded-full px-2 py-1 ${className}`}
+        className={`focus:outline-none flex justify-center items-center space-x-2.5 rounded-full px-2 py-1 ${className}`}
       >
         {liked ? (
           <FaHeart className="text-red-600 w-6 h-6 group-hover:scale-110" />

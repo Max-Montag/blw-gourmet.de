@@ -28,7 +28,7 @@ async function fetchCSRFToken(): Promise<string | undefined> {
     }
 
     const data = await response.json();
-    return data.token;
+    return data.csrf_token;
   } catch (error) {
     console.error("Fehler beim Abrufen des CSRF-Tokens:", error);
     return undefined;
@@ -39,14 +39,18 @@ async function getCSRFToken(): Promise<string> {
   {
     /** returns a token or empty string */
   }
-  try {
-    const csrftoken = getCookie("csrftoken");
 
-    if (!csrftoken) {
-      console.error(
+  let token: string | undefined;
+
+  try {
+    token = getCookie("csrftoken");
+
+    if (!token) {
+      console.warn(
         "CSRF-Token nicht gefunden. Versuche Token vom Server zu holen.",
       );
-      const token = await fetchCSRFToken();
+
+      token = await fetchCSRFToken();
 
       if (!token) {
         throw new Error("CSRF-Token konnte nicht vom Server geholt werden");
@@ -58,7 +62,7 @@ async function getCSRFToken(): Promise<string> {
     console.error("Fehler beim Abrufen des CSRF-Tokens:", error);
   }
 
-  return "";
+  return token || "";
 }
 
 export { getCSRFToken };
