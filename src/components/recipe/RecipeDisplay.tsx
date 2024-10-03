@@ -52,7 +52,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                 <Link
                   key={index}
                   href={`/rezepte/${label.toLowerCase()}`}
-                  className="bg-cyan-50 text-cyan-700 text-sm font-semibold m-0.5 md:m-1 px-1.5 py-0.5 rounded-xl border border-cyan-700 hover:scale-105 cursor-pointer"
+                  className="bg-cyan-50 text-cyan-700 text-xs sm:text-sm font-semibold m-0.5 md:m-1 px-1.5 py-0.5 rounded-xl border border-cyan-700 hover:scale-105 cursor-pointer"
                 >
                   <IconText text={label} />
                 </Link>

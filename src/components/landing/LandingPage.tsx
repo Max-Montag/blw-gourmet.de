@@ -34,7 +34,6 @@ export default async function LandingPage() {
   );
 
   const articles = await getAllArticlesData();
-  //-mt-[var(--header-height)]
   return (
     <div className={`w-full overflow-x-clip py-6 ${lato.className}`}>
       <Image
@@ -50,14 +49,13 @@ export default async function LandingPage() {
       <section className="w-full min-h-screen -mt-[var(--header-height)] flex justify-center items-center">
         <div className="w-full min-h-fit py-4 flex flex-wrap justify-center items-center">
           <div className="mx-8 mt-2 px-4 w-10/12 lg:w-7/12 text-center lg:text-start">
-            <h1 className="animated-gradient py-4 font-bold xxs:font-black text-5xl xs:text-6xl lg:text-7xl 2xl:text-8xl text-transparent">
+            <h1 className="animated-gradient py-4 font-bold xxs:font-black text-4xl xxs:text-5xl xs:text-6xl lg:text-7xl 2xl:text-8xl text-transparent">
               Leckere Rezepte für euer Baby-led Weaning Abenteuer
             </h1>
             <p className="xxs:mx-6 sm:mx-16 lg:mx-0 lg:w-8/12 mt-2 xxs:mt-6 py-4 px-8 text-cyan-950 bg-cyan-50 bg-opacity-60 backdrop-blur-sm rounded-lg lg:rounded-r-full font-bold text-xl md:text-2xl lg:text-3xl">
               Fördere die Selbstständigkeit eures Babys von Anfang an
             </p>
           </div>
-
           <div className="w-full md:w-7/12 lg:w-4/12 my-4 xs:px-16 md:px-0 ">
             <div className="hidden lg:block py-4">
               <CategoryList amount={4} />
@@ -78,7 +76,6 @@ export default async function LandingPage() {
         <section
           id="rezepte-entdecken"
           className="w-full flex justify-center py-8"
-          // overflow-x-clip
         >
           <div className="w-svw text-center md:text-start">
             {category.map(

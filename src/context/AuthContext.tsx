@@ -89,10 +89,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       setLoading(true);
 
+      const csrf_token = await getCSRFToken();
+
       const response = await fetch(`${apiUrl}/auth/logout/`, {
         method: "POST",
         headers: {
-          "X-CSRFToken": getCSRFToken(),
+          "X-CSRFToken": csrf_token,
         },
         credentials: "include",
       });

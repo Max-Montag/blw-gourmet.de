@@ -49,11 +49,13 @@ const ArticleOverview: React.FC = () => {
 
   const handleAddArticle = async () => {
     try {
+      const csrf_token = await getCSRFToken();
+
       const response = await fetch(`${apiUrl}/articles/create/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken(),
+          "X-CSRFToken": csrf_token,
         },
         credentials: "include",
         body: JSON.stringify({}),
@@ -74,12 +76,14 @@ const ArticleOverview: React.FC = () => {
   const handleDeleteArticle = async () => {
     if (selectedArticleUrl) {
       try {
+        const csrf_token = await getCSRFToken();
+
         await fetch(
           `${apiUrl}/articles/article/delete/${selectedArticleUrl}/`,
           {
             method: "DELETE",
             headers: {
-              "X-CSRFToken": getCSRFToken(),
+              "X-CSRFToken": csrf_token,
             },
             credentials: "include",
           },

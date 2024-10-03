@@ -80,13 +80,15 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
         return;
       }
 
+      const csrf_token = await getCSRFToken();
+
       const response = await fetch(
         `${apiUrl}/articles/article/update/${articleData.url}/`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": getCSRFToken(),
+            "X-CSRFToken": csrf_token,
           },
           credentials: "include",
           body: JSON.stringify(data),

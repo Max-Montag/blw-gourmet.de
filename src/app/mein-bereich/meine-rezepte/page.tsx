@@ -51,11 +51,13 @@ const MyRecipesPage: React.FC = () => {
 
   const handleAddRecipe = async () => {
     try {
+      const csrf_token = await getCSRFToken();
+
       const response = await fetch(`${apiUrl}/recipes/create/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken(),
+          "X-CSRFToken": csrf_token,
         },
         credentials: "include",
         body: JSON.stringify({}),
@@ -76,10 +78,12 @@ const MyRecipesPage: React.FC = () => {
   const handleDeleteRecipe = async () => {
     if (selectedRecipeUrl) {
       try {
+        const csrf_token = await getCSRFToken();
+
         await fetch(`${apiUrl}/recipes/recipe/delete/${selectedRecipeUrl}/`, {
           method: "DELETE",
           headers: {
-            "X-CSRFToken": getCSRFToken(),
+            "X-CSRFToken": csrf_token,
           },
           credentials: "include",
         });

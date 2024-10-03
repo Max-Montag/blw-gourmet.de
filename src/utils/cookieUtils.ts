@@ -13,14 +13,52 @@ function getCookie(name: string): string {
   return cookieValue;
 }
 
-function getCSRFToken(): string {
-  const csrftoken = getCookie("csrftoken");
+async function fetchCSRFToken(): Promise<string | undefined> {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/csrf_token/`,
+      {
+        method: "GET",
+        credentials: "include",
+      },
+    );
 
-  if (!csrftoken) {
-    throw new Error("CSRF-Token nicht gefunden");
+    if (!response.ok) {
+      throw new Error("Fehler beim Abrufen des CSRF-Tokens");
+    }
+
+    const data = await response.json();
+    return data.token;
+  } catch (error) {
+    console.error("Fehler beim Abrufen des CSRF-Tokens:", error);
+    return undefined;
+  }
+}
+
+async function getCSRFToken(): Promise<string> {
+  {
+    /** returns a token or empty string */
+  }
+  try {
+    const csrftoken = getCookie("csrftoken");
+
+    if (!csrftoken) {
+      console.error(
+        "CSRF-Token nicht gefunden. Versuche Token vom Server zu holen.",
+      );
+      const token = await fetchCSRFToken();
+
+      if (!token) {
+        throw new Error("CSRF-Token konnte nicht vom Server geholt werden");
+      }
+
+      return token;
+    }
+  } catch (error) {
+    console.error("Fehler beim Abrufen des CSRF-Tokens:", error);
   }
 
-  return csrftoken;
+  return "";
 }
 
 export { getCSRFToken };

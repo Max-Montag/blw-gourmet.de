@@ -54,13 +54,15 @@ const UserSettings: React.FC = () => {
     try {
       setIsSaving(true);
 
+      const csrf_token = await getCSRFToken();
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/${keyword}/`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": getCSRFToken(),
+            "X-CSRFToken": csrf_token,
           },
           credentials: "include",
           body: JSON.stringify(data),

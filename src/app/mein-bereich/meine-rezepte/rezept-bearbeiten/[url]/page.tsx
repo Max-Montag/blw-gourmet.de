@@ -145,11 +145,13 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
         })),
       };
 
+      const csrf_token = await getCSRFToken();
+
       const response = await fetch(`${apiUrl}/recipes/recipe/update/${url}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken(),
+          "X-CSRFToken": csrf_token,
         },
         credentials: "include",
         body: JSON.stringify(filteredData),
@@ -179,12 +181,14 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const handleDeleteRecipe = async () => {
     if (!recipe) return;
 
+    const csrf_token = await getCSRFToken();
+
     try {
       const response = await fetch(`${apiUrl}/recipes/recipe/delete/${url}/`, {
         method: "DELETE",
         credentials: "include",
         headers: {
-          "X-CSRFToken": getCSRFToken(),
+          "X-CSRFToken": csrf_token,
         },
       });
       if (response.ok) {

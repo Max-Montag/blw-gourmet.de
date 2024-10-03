@@ -26,6 +26,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     const formData = new FormData();
     formData.append("image", file);
 
+    const csrf_token = await getCSRFToken();
+
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}${uploadUrl}`,
@@ -34,7 +36,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           body: formData,
           credentials: "include",
           headers: {
-            "X-CSRFToken": getCSRFToken(),
+            "X-CSRFToken": csrf_token,
           },
         },
       );
