@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { shuffle } from "@/utils/arrayUtils";
 import { RecipePreview } from "@/types/recipeTypes";
 import RecipeListCard from "@/components/recipe/RecipeListCard";
 
@@ -29,8 +30,8 @@ const RecipeSlider: React.FC<RecipeSliderProps> = ({ recipes, name }) => {
       )}
       <div className="overflow-x-auto snap-x snap-mandatory scroll-pl-6 scroll-pr-6 scrollbar-hide">
         <div className="flex space-x-4 py-4 pl-2">
-          {recipes.map((recipe) => (
-            <div key={recipe.name} className="snap-center shrink-0 w-72">
+          {shuffle(recipes).map((recipe) => (
+            <div key={recipe.name} className="snap-center shrink-0 w-72 mx-4">
               <RecipeListCard recipe={recipe} />
             </div>
           ))}

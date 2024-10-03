@@ -15,7 +15,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ name, recipes }) => {
           <h1 className="text-1.5xl text-zinc-700 font-semibold text-start mb-4 pl-2 md:pl-0">
             Kategorie: {name.charAt(0).toUpperCase() + name.slice(1)}
           </h1>
-          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-6 scroll-smooth">
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-6">
             {recipes.map((recipe) => (
               <RecipeListCard key={recipe.name} recipe={recipe} />
             ))}

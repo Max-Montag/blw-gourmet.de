@@ -73,7 +73,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md scroll-smooth">
+    <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md">
       <div className="relative">
         {article.optimized_image ? (
           <Image

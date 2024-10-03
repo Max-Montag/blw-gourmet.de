@@ -8,6 +8,8 @@ import { lato } from "@/styles/fonts";
 import IconText from "@/components/common/IconText";
 import { RecipeData } from "@/types/recipeTypes";
 import AccurateTimerIcon from "@/components/common/AccurateTimerIcon";
+import RecipeLikes from "./components/RecipeLikes";
+import SharePopUp from "@/components/common/SharePopUp";
 
 interface DecimalToFractionProps {
   decimal: number;
@@ -27,7 +29,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
   const combinedLabels = [...recipe.dining_times, ...recipe.labels];
 
   return (
-    <div className="max-w-4xl min-h-48 mx-auto bg-zinc-50 shadow-md rounded-md scroll-smooth">
+    <div className="max-w-4xl min-h-48 mx-auto bg-zinc-50 shadow-md rounded-md">
       <div className="relative">
         {recipe.optimized_image ? (
           <Image
@@ -62,11 +64,20 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
       <div className="p-6">
         {recipe.name && (
           <h1
-            className={`text-2xl lg:text-4xl font-bold mb-4 text-center text-cyan-900 ${lato.className}`}
+            className={`text-2xl lg:text-4xl font-bold text-center text-cyan-900 ${lato.className}`}
           >
             {recipe.name}
           </h1>
         )}
+        <div className="flex justify-center items-center space-x-4 lg:space-x-10 2xl:space-x-16 my-4">
+          <RecipeLikes url={recipe.url} className="w-16 h-10" />
+          <SharePopUp
+            url={"rezept/" + recipe.url}
+            shareText="Teile dieses Rezept"
+            socialText="Dieses leckere Rezept habe ich auf blw-gourmet.de gefunden:"
+            className="w-16 h-10"
+          />
+        </div>
         {recipe.description && (
           <p className="text-gray-700 text-lg lg:text-xl mb-4 text-center">
             {recipe.description}

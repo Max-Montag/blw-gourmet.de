@@ -11,8 +11,8 @@ const ArticleList: React.FC<ArticleListProps> = ({ articles }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   return (
-    <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="w-full flex flex-col items-center">
+      <div className="max-w-5xl lg:max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {articles.map((article) => (
           <Link key={article.url} href={`/artikel/${article.url}`}>
             <div className="h-full bg-white shadow-md rounded-md overflow-hidden hover:shadow-lg transition-shadow duration-50 cursor-pointer group">

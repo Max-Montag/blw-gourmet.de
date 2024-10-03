@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, use } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -99,7 +99,7 @@ const Header: React.FC = () => {
               className="text-2xl font-bold text-cyan-950 cursor-pointer"
             >
               <div className="relative flex flex-col items-center group">
-                <div className="absolute group-hover:-translate-y-[6px] transition-all duration-150 text-cyan-200">
+                <div className="absolute lg:group-hover:-translate-y-[6px] lg:transition-all lg:duration-150 text-cyan-200">
                   <Image
                     src="/logo/animation-hat.svg"
                     alt=""
