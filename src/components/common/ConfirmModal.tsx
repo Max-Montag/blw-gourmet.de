@@ -21,7 +21,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-md shadow-md w-96">
+      <div role="dialog" className="bg-white p-6 rounded-md shadow-md w-96">
         <h2 className="text-lg font-bold mb-4">Bestätigen</h2>
         <p className="mb-6">{text || standardText}</p>
         <div className="flex justify-end space-x-4">

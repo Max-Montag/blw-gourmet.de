@@ -10,6 +10,7 @@ import { RecipeData } from "@/types/recipeTypes";
 import AccurateTimerIcon from "@/components/common/AccurateTimerIcon";
 import RecipeLikes from "./components/RecipeLikes";
 import SharePopUp from "@/components/common/SharePopUp";
+import RecipeComments from "./components/RecipeComments";
 
 interface DecimalToFractionProps {
   decimal: number;
@@ -246,6 +247,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                 </div>
               ))}
         </div>
+        <RecipeComments url={recipe.url} />
       </div>
     </div>
   );
