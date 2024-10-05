@@ -18,7 +18,7 @@ const SharePopUp: React.FC<SharePopUpProps> = ({
   socialText = "Schau dir das mal an: ",
   className = "",
 }) => {
-  url = process.env.NEXT_PUBLIC_BASE_URL + "/" + url;
+  url = process.env.NEXT_PUBLIC_FRONTEND_URL + "/" + url;
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleShareMenu = () => {

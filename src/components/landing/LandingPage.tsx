@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import CategoryList from "@/components/recipe/categories/CategoryList";
 import { lato } from "@/styles/fonts";
-import { FaArrowDown } from "react-icons/fa6";
 import "@/app/globals.css";
 import "@/styles/gradient-animation.css";
 import RecipeSlider from "../recipe/RecipeSlider";

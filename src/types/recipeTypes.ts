@@ -48,3 +48,10 @@ export interface AdminRecipePreview {
   labels: string[];
   thumbnail: string | null;
 }
+
+export interface RecipeComment {
+  id: string;
+  author: string;
+  created_at: string;
+  content: string;
+}

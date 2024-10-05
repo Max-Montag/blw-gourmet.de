@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { RecipeComment } from "@/types/recipeTypes";
 import { useAuth } from "@/context/AuthContext";
 import { getCSRFToken } from "@/utils/cookieUtils";
 import { formatDate } from "@/utils/dateUtils";
@@ -13,7 +14,7 @@ interface RecipeCommentsProps {
 
 const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
   const { isAuthenticated, username } = useAuth();
-  const [comments, setComments] = useState<any[]>([]);
+  const [comments, setComments] = useState<RecipeComment[]>([]);
   const [newComment, setNewComment] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -98,7 +99,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
       const csrf_token = await getCSRFToken();
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/comments/${url}/${commentId}/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/comments/delete/${commentId}/`,
         {
           method: "DELETE",
           credentials: "include",
@@ -125,7 +126,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
   };
 
   return (
-    <div className="w-fit mt-8">
+    <div className="w-full mt-8">
       {loading ? (
         <h3 className="text-xl font-bold text-cyan-950 mb-4">
           Kommentare werden geladen
@@ -155,7 +156,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
                         </p>
                       </div>
                     )}
-                  {isAuthenticated && comment.author_id === username && (
+                  {isAuthenticated && comment.author === username && (
                     <button
                       className="mt-2 text-red-600 text-sm"
                       onClick={() => handleDeleteComment(comment.id)}

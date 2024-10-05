@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { noto } from "@/styles/fonts";
 import Header from "@/components/layout/header/Header";
 import Footer from "@/components/layout/footer/Footer";
+import CookieBanner from "@/components/cookieBanner/CookieBanner";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           <main className="flex flex-grow items-center justify-center pt-[var(--header-height)]">
             {children}
           </main>
+          <CookieBanner />
           <Footer />
         </Providers>
       </body>

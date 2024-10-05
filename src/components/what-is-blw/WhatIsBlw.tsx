@@ -30,7 +30,7 @@ const WhatIsBlw = () => {
         <h2 className="text-3xl font-semibold text-cyan-700 mb-4 flex items-center">
           <FaBaby className="mr-4 text-cyan-500" /> Definition von BLW
         </h2>
-        <p className="text-cyan-800 mb-4">
+        <p className="text-gray-800 mb-4">
           Baby-led Weaning ist eine Methode der Beikosteinführung, bei der Babys
           von Anfang an selbstständig essen lernen. Statt Brei bekommen die
           Kleinen feste Nahrung in mundgerechten Stücken angeboten, die sie
@@ -44,7 +44,7 @@ const WhatIsBlw = () => {
         <h2 className="text-3xl font-semibold text-cyan-700 mb-4 flex items-center">
           <FaCarrot className="mr-4 text-cyan-500" /> Wie funktioniert BLW?
         </h2>
-        <ul className="list-disc list-inside text-cyan-800 mb-4">
+        <ul className="list-disc list-inside text-gray-800 mb-4">
           <li>
             Beginn mit etwa 6 Monaten, wenn das Baby sitzen kann und Interesse
             an Essen zeigt
@@ -65,10 +65,10 @@ const WhatIsBlw = () => {
           <FaAppleAlt className="mr-4 text-cyan-500" /> Geeignete erste
           Lebensmittel
         </h2>
-        <p className="text-cyan-800 mb-4">
+        <p className="text-gray-800 mb-4">
           Bei Emilia habe ich mit folgenden Lebensmitteln begonnen:
         </p>
-        <ul className="list-disc list-inside text-cyan-800 mb-4">
+        <ul className="list-disc list-inside text-gray-800 mb-4">
           <li>Gedämpfte Gemüsesticks (Karotte, Brokkoli, Süßkartoffel)</li>
           <li>Weiche Obstsorten (reife Birne, Pfirsich, Banane)</li>
           <li>Avocadostreifen</li>
@@ -81,7 +81,7 @@ const WhatIsBlw = () => {
         <h2 className="text-3xl font-semibold text-cyan-700 mb-4 flex items-center">
           <FaHeartbeat className="mr-4 text-cyan-500" /> Vorteile von BLW
         </h2>
-        <ul className="list-disc list-inside text-cyan-800 mb-4">
+        <ul className="list-disc list-inside text-gray-800 mb-4">
           <li>Fördert die Entwicklung der Feinmotorik</li>
           <li>Unterstützt ein gesundes Verhältnis zu Essen</li>
           <li>Ermöglicht frühzeitige Geschmacks- und Texturerfahrungen</li>
@@ -96,7 +96,7 @@ const WhatIsBlw = () => {
         <h2 className="text-3xl font-semibold text-cyan-700 mb-4 flex items-center">
           <FaBook className="mr-4 text-cyan-500" /> Meine Erfahrungen mit Emilia
         </h2>
-        <p className="text-cyan-800 mb-4">
+        <p className="text-gray-800 mb-4">
           Als ich mit Emilia BLW begann, war ich anfangs nervös. Würde sie genug
           essen? Könnte sie sich verschlucken? Aber ich war erstaunt, wie
           schnell sie lernte, Nahrung zu greifen und zum Mund zu führen.
@@ -104,7 +104,7 @@ const WhatIsBlw = () => {
           Zeit damit, den Boden zu putzen. Aber die Freude in Emilias Augen,
           wenn sie neue Lebensmittel entdeckte, war unbezahlbar.
         </p>
-        <p className="text-cyan-800 mb-4">
+        <p className="text-gray-800 mb-4">
           Ein besonderer Moment war, als Emilia zum ersten Mal ein
           Brokkoli-Röschen selbstständig aß. Sie untersuchte es gründlich,
           führte es vorsichtig zum Mund und kaute darauf herum. Ich war so stolz
@@ -116,7 +116,7 @@ const WhatIsBlw = () => {
         <h2 className="text-3xl font-semibold text-cyan-700 mb-4 flex items-center">
           <FaSmile className="mr-4 text-cyan-500" /> Tipps für BLW-Anfänger
         </h2>
-        <ul className="list-disc list-inside text-cyan-800 mb-4">
+        <ul className="list-disc list-inside text-gray-800 mb-4">
           <li>Bleiben Sie entspannt und geduldig</li>
           <li>Bieten Sie eine Vielfalt an Lebensmitteln an</li>
           <li>
@@ -140,14 +140,14 @@ const WhatIsBlw = () => {
         <h2 className="text-3xl font-semibold text-cyan-700 mb-4 flex items-center">
           <FaUsers className="mr-4 text-cyan-500" /> BLW und Familie
         </h2>
-        <p className="text-cyan-800 mb-4">
+        <p className="text-gray-800 mb-4">
           BLW hat nicht nur Emilias Essverhalten positiv beeinflusst, sondern
           auch unsere gesamte Familienesskultur verändert. Wir achten jetzt mehr
           auf gesunde, vielfältige Mahlzeiten und genießen die gemeinsame Zeit
           am Tisch. Es ist wunderbar zu sehen, wie Emilia Teil unserer
           Essensroutine geworden ist und wie sie von uns lernt.
         </p>
-        <p className="text-cyan-800 mb-4">
+        <p className="text-gray-800 mb-4">
           Natürlich gab es auch Herausforderungen. Mein Mann war anfangs
           skeptisch und besorgt über mögliche Erstickungsgefahren. Aber nachdem
           er sah, wie geschickt Emilia mit dem Essen umging und wie viel Freude
@@ -159,7 +159,7 @@ const WhatIsBlw = () => {
 
       <section className="mb-12">
         <h2 className="text-3xl font-semibold text-cyan-700 mb-4">Fazit</h2>
-        <p className="text-cyan-800 mb-4">
+        <p className="text-gray-800 mb-4">
           Baby-led Weaning war für uns der richtige Weg. Es hat Emilia zu einer
           begeisterten und neugierigen Esserin gemacht. Natürlich ist BLW nicht
           für jede Familie geeignet, und es ist wichtig, dass jeder den Weg
@@ -168,7 +168,7 @@ const WhatIsBlw = () => {
           Unsicherheit werden durch die Freude und das Selbstvertrauen, das euer
           Baby entwickelt, mehr als aufgewogen.
         </p>
-        <p className="text-cyan-800 mb-4">
+        <p className="text-gray-800 mb-4">
           Egal, welchen Weg ihr wählt: Genießt die spannende Zeit der
           Beikosteinführung mit eurem kleinen Schatz!
         </p>

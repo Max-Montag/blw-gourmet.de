@@ -39,7 +39,7 @@ const Captcha: React.FC<CaptchaProps> = ({
 
       const data = await response.json();
       setCaptchaKey(data.key);
-      const imgPath = process.env.NEXT_PUBLIC_BASE_URL + data.image_url;
+      const imgPath = process.env.NEXT_PUBLIC_API_BASE_URL + data.image_url;
       setCaptchaImageUrl(imgPath);
     } catch (error) {
       console.error("Fehler beim Abrufen des Captchas:", error);
