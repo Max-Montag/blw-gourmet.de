@@ -107,7 +107,7 @@ const Header: React.FC = () => {
               </div>
             </Link>
           )}
-          <nav className="ml-4 divide-x divide-cyan-600 hidden lg:block">
+          <nav className="ml-4 hidden lg:block">
             {menuItems.map((item) => (
               <Link
                 key={item.path}
@@ -168,7 +168,7 @@ const Header: React.FC = () => {
             isMenuOpen ? "max-h-screen" : "max-h-0"
           }`}
         >
-          <div className="lg:hidden divide-y divide-cyan-600">
+          <div className="lg:hidden">
             {menuItems.map((item) => (
               <Link
                 key={item.path}
@@ -181,11 +181,8 @@ const Header: React.FC = () => {
             ))}
           </div>
         </div>
-        <hr
-          className={`lg:hidden border-0 bg-cyan-600 transition-height duration-500 ease-in-out  ${isMenuOpen ? "h-0.5" : "h-0"}`}
-        />
         <div
-          className={`bg-cyan-100 transition-max-height duration-500 ease-in-out overflow-hidden ${
+          className={`bg-cyan-100 text-center transition-max-height duration-500 ease-in-out overflow-hidden ${
             isMenuOpen ? "max-h-screen" : "max-h-0"
           }`}
           onClick={closeMenu}
@@ -199,12 +196,9 @@ const Header: React.FC = () => {
               >
                 {username}
               </Link>
-              <hr
-                className={`hidden lg:block mt-3 border-0 bg-cyan-600 transition-height duration-500 ease-in-out ${isMenuOpen ? "h-0.5" : "h-0"}`}
-              />
             </div>
           )}
-          <div className="divide-y divide-cyan-600">
+          <div>
             {isAuthenticated ? (
               <>
                 <Link
@@ -242,7 +236,7 @@ const Header: React.FC = () => {
                     logout();
                     router.push("/");
                   }}
-                  className="w-full text-start lg:text-center block text-cyan-950 hover:text-cyan-700 px-4 py-3"
+                  className="w-full text-center block text-cyan-950 hover:text-cyan-700 px-4 py-3"
                 >
                   Abmelden
                 </button>
