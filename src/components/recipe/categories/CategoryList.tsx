@@ -1,35 +1,39 @@
 import CategoryCard from "./CategoryCard";
-
-const categories = [
-  { name: "Frühstück", icon: "⏰" },
-  { name: "Mittagessen", icon: "🍴" },
-  { name: "Abendessen", icon: "🕕" },
-  { name: "Snack", icon: "🍌" },
-  { name: "vegetarisch", icon: "🥦" },
-  { name: "vegan", icon: "🥗" },
-  { name: "schnell", icon: "🚀" },
-  { name: "tiefkühlgeeignet", icon: "❄️" },
-];
+import { categoryIcons } from "@/utils/categoryIcons";
 
 interface CategoryListProps {
-  amount?: number;
+  categories?: string[];
+  className?: string;
 }
 
-const CategoryList: React.FC<CategoryListProps> = ({ amount = 8 }) => {
-  // TODO pass classname via ...props instead of comparing amount to 4
+export default async function CategoryList({
+  categories,
+  className,
+}: CategoryListProps) {
+  const categoriesAvailable = categories || [];
+
+  if (!categoriesAvailable) {
+    return null;
+  }
+
   return (
     <div
-      className={`px-4 grid gap-6 ${amount === 4 ? `grid-cols-2` : "grid-cols-1 xxs:grid-cols-2 md:grid-cols-4"}`}
+      className={`px-4 grid gap-6 ${className ? className : "grid-cols-1 xxs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"}`}
     >
-      {categories.slice(0, amount).map((cat) => (
+      {categoriesAvailable.map((cat) => (
         <CategoryCard
-          key={cat.name}
-          category={cat.name}
-          icon={<span>{cat.icon}</span>}
+          key={cat}
+          category={cat}
+          icon={
+            categoryIcons[
+              cat
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-zA-Z^äöüß]/g, "")
+            ] || undefined
+          }
         />
       ))}
     </div>
   );
-};
-
-export default CategoryList;
+}

@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 
 interface NiceToggleProps extends React.InputHTMLAttributes<HTMLInputElement> {
   enabled: boolean;
   setEnabled: (enabled: boolean) => void;
+  disabled?: boolean;
 }
 
 const NiceToggle: React.FC<NiceToggleProps> = ({
   enabled,
   setEnabled,
-  ...props
+  disabled = false,
 }) => {
+  const handleChange = useCallback(() => {
+    setEnabled(!enabled);
+  }, [enabled, setEnabled]);
+
+  useEffect(() => {
+    if (disabled) {
+      setEnabled(false);
+    }
+  }, [disabled, setEnabled]);
+
   return (
     <div>
       <div>
@@ -18,19 +29,25 @@ const NiceToggle: React.FC<NiceToggleProps> = ({
             type="checkbox"
             className="opacity-0 w-0 h-0"
             checked={enabled}
-            onChange={() => setEnabled(!enabled)}
-            {...props}
+            onChange={handleChange}
+            disabled={disabled}
           />
           <span
             className={`${
-              enabled ? "bg-cyan-700" : "bg-cyan-100"
+              disabled
+                ? "bg-slate-200"
+                : enabled
+                  ? "bg-cyan-700"
+                  : "ring-1 ring-cyan-700"
             } absolute cursor-pointer top-0 left-0 right-0 bottom-0 transition-colors rounded-full`}
           >
             <span
               className={`${
-                enabled
-                  ? "translate-x-[36px] bg-cyan-100"
-                  : "translate-x-[4px] bg-cyan-700"
+                disabled
+                  ? "translate-x-[4px] bg-slate-400"
+                  : enabled
+                    ? "translate-x-[36px] bg-cyan-100"
+                    : "translate-x-[4px] bg-cyan-700"
               } translate-y-1 inline-block w-6 h-6 transform bg-secondary rounded-full transition-transform`}
             />
           </span>

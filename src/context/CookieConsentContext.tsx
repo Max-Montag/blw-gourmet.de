@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import Cookies from "js-cookie";
 
 interface CookieConsentContextProps {
@@ -66,3 +66,5 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
     </CookieConsentContext.Provider>
   );
 };
+
+export const useCookieConsent = () => useContext(CookieConsentContext);

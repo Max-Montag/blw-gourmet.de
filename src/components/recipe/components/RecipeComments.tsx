@@ -7,6 +7,7 @@ import { getCSRFToken } from "@/utils/cookieUtils";
 import { formatDate } from "@/utils/dateUtils";
 import WarningNotification from "@/components/common/WarningNotification";
 import Notification from "@/components/common/notification/Notification";
+import Link from "next/link";
 
 interface RecipeCommentsProps {
   url: string;
@@ -190,7 +191,11 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
             </div>
           ) : (
             <p className="mt-6 text-cyan-950">
-              Bitte melde dich an, um einen Kommentar zu hinterlassen.
+              <span>Bitte </span>
+              <Link href="/login" className="text-cyan-600 hover:text-cyan-500">
+                melde dich an
+              </Link>
+              <span>, um einen Kommentar zu hinterlassen.</span>
             </p>
           )}
         </>

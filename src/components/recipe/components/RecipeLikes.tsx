@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import Notification from "@/components/common/notification/Notification";
+import { useCookieConsent } from "@/context/CookieConsentContext";
 import { useAuth } from "@/context/AuthContext";
 import { getCSRFToken } from "@/utils/cookieUtils";
 
@@ -13,7 +14,10 @@ interface RecipeLikesProps {
 
 const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
   const { isAuthenticated } = useAuth();
+  const { optional } = useCookieConsent();
   const [showRegNotification, setShowRegNotification] =
+    useState<boolean>(false);
+  const [showCannotSaveNotification, setShowCannotSaveNotification] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [likes, setLikes] = useState<number>(0);
@@ -54,23 +58,30 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
   }, [url, isAuthenticated]);
 
   const checkIfLikedByLocalStorage = () => {
-    return localStorage.getItem(`liked_${url}`) === "true"; // TODO dont set when cookie consent is not given!
+    return localStorage.getItem(`liked_${url}`) === "true";
   };
 
   const handleLike = async () => {
     try {
-      const newLikedStatus = !liked;
-      setLiked(newLikedStatus);
-      setLikes(newLikedStatus ? likes + 1 : likes - 1);
+      const changeLikeStatus = async () => {
+        const newLikedStatus = !liked;
+        setLiked(newLikedStatus);
+        setLikes(newLikedStatus ? likes + 1 : likes - 1);
+        return newLikedStatus;
+      };
 
       if (isAuthenticated) {
+        const newLikedStatus = await changeLikeStatus();
         await sendLikeToServer(newLikedStatus);
-      } else {
+      } else if (optional) {
+        const newLikedStatus = await changeLikeStatus();
         if (newLikedStatus) {
           setShowRegNotification(true);
         }
-        localStorage.setItem(`liked_${url}`, newLikedStatus.toString()); // TODO
+        localStorage.setItem(`liked_${url}`, newLikedStatus.toString());
         await sendLikeToServer(newLikedStatus);
+      } else {
+        setShowCannotSaveNotification(true);
       }
     } catch (error) {
       console.error("Fehler beim Setzen des Likes:", error);
@@ -123,6 +134,14 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
         setIsShown={setShowRegNotification}
         message={
           "Da du nicht angemeldet bist, speichern wir deine Lieblingsrezepte in deinem Browser. Denke darüber nach, dich zu anzumelden oder zu registrieren, um sie auch auf anderen Geräten zu sehen."
+        }
+      />
+      <Notification
+        type="error"
+        isShown={showCannotSaveNotification}
+        setIsShown={setShowCannotSaveNotification}
+        message={
+          "Bitte melde dich an, um deine Lieblingsrezepte geräteübergreifend zu speichern oder akzeptiere optionale Cookies, um sie in deinem Browser zu speichern."
         }
       />
     </>

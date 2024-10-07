@@ -47,7 +47,7 @@ export default async function LandingPage() {
 
       <section className="w-full min-h-screen -mt-[var(--header-height)] flex justify-center items-center">
         <div className="w-full min-h-fit py-4 flex flex-wrap justify-center items-center">
-          <div className="mx-8 mt-2 px-4 w-10/12 lg:w-7/12 text-center lg:text-start">
+          <div className="mx-8 px-4 w-10/12 lg:w-7/12 text-center lg:text-start">
             <h1 className="animated-gradient py-4 font-bold xxs:font-black text-4xl xxs:text-5xl xs:text-6xl lg:text-7xl 2xl:text-8xl text-transparent">
               Leckere Rezepte für euer Baby-led Weaning Abenteuer
             </h1>
@@ -55,9 +55,12 @@ export default async function LandingPage() {
               Fördere die Selbstständigkeit eures Babys von Anfang an
             </p>
           </div>
-          <div className="w-full md:w-7/12 lg:w-4/12 my-4 xs:px-16 md:px-0 ">
+          <div className="w-full md:w-7/12 lg:w-4/12 mt-4 xs:px-16 md:px-0 ">
             <div className="hidden lg:block py-4">
-              <CategoryList amount={4} />
+              <CategoryList
+                categories={["Frühstück", "Mittagessen", "Abendessen", "Snack"]}
+                className="grid-cols-2"
+              />
             </div>
             <div className="w-full py-4 flex justify-center items-center group">
               <Link

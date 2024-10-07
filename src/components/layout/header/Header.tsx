@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { CiMenuBurger, CiSearch } from "react-icons/ci";
-import { FaRegUserCircle, FaSpinner } from "react-icons/fa";
+import { FaRegUserCircle } from "react-icons/fa";
 import SearchBar from "./SearchBar";
-import PasswordInput from "@/components/common/PasswordInput";
+import Login from "@/components/common/Login";
 import { useAuth } from "@/context/AuthContext";
 
 const menuItems = [
@@ -19,18 +19,8 @@ const menuItems = [
 const Header: React.FC = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {
-    isAuthenticated,
-    isAdmin,
-    login,
-    logout,
-    loading,
-    loggingIn,
-    username,
-  } = useAuth();
-  const [logInError, setLogInError] = useState<string>("");
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const { isAuthenticated, isAdmin, logout, username } = useAuth();
+
   const [lastScrollY, setLastScrollY] = useState(0);
   const [upScolls, setUpScrolls] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
@@ -97,6 +87,7 @@ const Header: React.FC = () => {
             <Link
               href="/"
               className="text-2xl font-bold text-cyan-950 cursor-pointer"
+              onClick={closeMenu}
             >
               <div className="relative flex flex-col items-center group">
                 <div className="absolute lg:group-hover:-translate-y-[6px] lg:transition-all lg:duration-150 text-cyan-200">
@@ -226,70 +217,7 @@ const Header: React.FC = () => {
             ) : (
               <>
                 <div className="flex justify-center items-center">
-                  <form
-                    className="w-fit text-cyan-950 px-4 py-4 space-y-2"
-                    onClick={(e) => e.stopPropagation()}
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-                      try {
-                        if (!emailRef.current || !passwordRef.current) {
-                          throw new Error("Fehler beim Anmelden");
-                        }
-                        await login(
-                          emailRef.current.value,
-                          passwordRef.current.value,
-                        );
-                      } catch (error) {
-                        setLogInError("Fehler beim Anmelden");
-                      }
-                    }}
-                  >
-                    <input
-                      key="email"
-                      type="email"
-                      ref={emailRef}
-                      placeholder="E-Mail"
-                      className="w-full block bg-cyan-50 px-2 py-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
-                    />
-                    <div className="flex flex-col">
-                      <PasswordInput
-                        passwordRef={passwordRef}
-                        key="password"
-                        placeholder="Passwort"
-                        className="block bg-cyan-50 px-2 py-1 rounded-md outline-none focus:ring-2 focus:ring-cyan-500 hover:ring-2 hover:ring-cyan-500 transition-all"
-                      />
-                      <Link
-                        href="/passwort-vergessen"
-                        onClick={closeMenu}
-                        className="text-cyan-950 text-start text-xs font-light px-1 mt-1.5 mb-2"
-                      >
-                        Passwort vergessen? Hier klicken!
-                      </Link>
-                    </div>
-                    <button
-                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 shadow-sm hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all duration-50 cursor-pointer"
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loggingIn ? (
-                        <FaSpinner className="animate-spin" />
-                      ) : (
-                        "Anmelden"
-                      )}
-                    </button>
-                    <Link
-                      href="/registrieren"
-                      onClick={closeMenu}
-                      className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 shadow-sm hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all duration-50 cursor-pointer"
-                    >
-                      Registrieren
-                    </Link>
-                    {logInError && (
-                      <p className="text-red-500 text-sm text-start">
-                        {logInError}
-                      </p>
-                    )}
-                  </form>
+                  <Login clickHandler={closeMenu} />
                 </div>
               </>
             )}

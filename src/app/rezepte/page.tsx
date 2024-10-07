@@ -2,9 +2,31 @@ import CategoryList from "@/components/recipe/categories/CategoryList";
 import RecipeSlider from "@/components/recipe/RecipeSlider";
 import { getRecipesByCategory } from "@/utils/apiUtils";
 
-const categories = ["Frühstück", "Mittagessen", "Abendessen", "Snack"];
+async function getCategories(): Promise<string[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/categories/`,
+    {
+      cache: "no-cache",
+    },
+    // TODO uncomment
+    // {
+    //   next: { revalidate: 86400 },
+    // },
+  );
+  if (!res.ok) {
+    return [];
+  }
+  return await res.json();
+}
 
 const BrowseRecipes: React.FC = async () => {
+  const categories = (await getCategories()) || [
+    "Frühstück",
+    "Mittagessen",
+    "Abendessen",
+    "Snack",
+  ];
+
   const category = await Promise.all(
     categories.map(async (category) => {
       return await getRecipesByCategory(category);
@@ -13,8 +35,8 @@ const BrowseRecipes: React.FC = async () => {
 
   return (
     <div className="w-full flx-grow flex flex-col justify-center items-center p-8">
-      <section className="my-8">
-        <CategoryList />
+      <section>
+        <CategoryList categories={categories} />
       </section>
 
       {category && category.length > 0 && (
