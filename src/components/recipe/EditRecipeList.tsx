@@ -1,7 +1,8 @@
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import Link from "next/link";
 import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
 import { AdminRecipePreview } from "@/types/recipeTypes";
 import { formatDate } from "@/utils/dateUtils";
 
@@ -10,6 +11,8 @@ interface EditRecipeListProps {
   apiUrl?: string;
   handleAddRecipe: () => void;
   openDeleteRecipeModal: (recipeUrl: string) => void;
+  openPublishModal: (recipeUrl: string) => void;
+  handleUnpublishRecipe: (recipeUrl: string) => void;
 }
 
 const EditRecipeList: React.FC<EditRecipeListProps> = ({
@@ -17,7 +20,11 @@ const EditRecipeList: React.FC<EditRecipeListProps> = ({
   apiUrl,
   handleAddRecipe,
   openDeleteRecipeModal,
+  openPublishModal,
+  handleUnpublishRecipe,
 }) => {
+  const { isAdmin } = useAuth();
+
   return (
     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       <li
@@ -72,9 +79,11 @@ const EditRecipeList: React.FC<EditRecipeListProps> = ({
                       Bearbeitet: {formatDate(recipe.last_changed)}
                     </p>
                   )}
-                  <p className="text-sm text-gray-500">
-                    Ersteller: {recipe.owner === 1 ? "Admin" : "User"}
-                  </p>
+                  {isAdmin && (
+                    <p className="text-sm text-gray-500">
+                      Ersteller: {recipe.owner === 1 ? "Admin" : "User"}
+                    </p>
+                  )}
                 </div>
               </div>
             </Link>
@@ -83,6 +92,19 @@ const EditRecipeList: React.FC<EditRecipeListProps> = ({
               size={24}
               onClick={() => openDeleteRecipeModal(recipe.url)}
             />
+            {recipe.published ? (
+              <FaRegEye
+                className="absolute top-2 left-2 text-emerald-500 cursor-pointer"
+                size={24}
+                onClick={() => handleUnpublishRecipe(recipe.url)}
+              />
+            ) : (
+              <FaRegEyeSlash
+                className="absolute top-2 left-2 text-gray-700 cursor-pointer"
+                size={24}
+                onClick={() => openPublishModal(recipe.url)}
+              />
+            )}
           </li>
         ))}
     </ul>

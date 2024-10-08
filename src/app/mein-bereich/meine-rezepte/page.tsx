@@ -19,6 +19,7 @@ const MyRecipesPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
   const { showNotification } = useNotification();
+  const [showPublishModal, setShowPublishModal] = useState<boolean>(false);
   const [showDeleteRecipeModal, setShowDeleteRecipeModal] =
     useState<boolean>(false);
   const [selectedRecipeUrl, setSelectedRecipeUrl] = useState<string | null>(
@@ -95,16 +96,74 @@ const MyRecipesPage: React.FC = () => {
         setShowDeleteRecipeModal(false);
         setSelectedRecipeUrl(null);
       } catch (err) {
-        setError("Fehler beim Löschen.");
+        console.error("Fehler beim Löschen!", error);
+        showNotification("Fehler beim Löschen!", "error");
         setShowDeleteRecipeModal(false);
         setSelectedRecipeUrl(null);
       }
     }
   };
 
+  const handlePublishRecipe = async (
+    newStatus: boolean,
+    recipeUrl?: string | null,
+  ) => {
+    recipeUrl = recipeUrl || selectedRecipeUrl;
+    setShowPublishModal(false);
+    if (recipeUrl) {
+      try {
+        const csrf_token = await getCSRFToken();
+
+        const response = await fetch(
+          `${apiUrl}/recipes/recipe/publish/${recipeUrl}/`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrf_token,
+            },
+            body: JSON.stringify({ is_published: newStatus }),
+            credentials: "include",
+          },
+        );
+        alert(response.status);
+        if (response.status === 400) {
+          throw new Error(
+            "Bitte behebe vor der Veröffentlichung die Fehler im Rezept.",
+          );
+        } else if (response.status !== 200) {
+          throw new Error("Fehler beim Veröffentlichen.");
+        }
+
+        setRecipes((prevRecipes) =>
+          prevRecipes.map((recipe) =>
+            recipe.url === recipeUrl
+              ? { ...recipe, published: newStatus }
+              : recipe,
+          ),
+        );
+      } catch (err) {
+        console.error(err);
+        showNotification(
+          err instanceof Error ? err.message : "Fehler beim Veröffentlichen.",
+          "error",
+        );
+      }
+    }
+
+    if (selectedRecipeUrl) {
+      setSelectedRecipeUrl(null);
+    }
+  };
+
   const openDeleteRecipeModal = (recipeUrl: string) => {
     setSelectedRecipeUrl(recipeUrl);
     setShowDeleteRecipeModal(true);
+  };
+
+  const openPublishModal = (recipeUrl: string) => {
+    setSelectedRecipeUrl(recipeUrl);
+    setShowPublishModal(true);
   };
 
   if (loading) {
@@ -133,12 +192,25 @@ const MyRecipesPage: React.FC = () => {
         apiUrl={apiUrl}
         handleAddRecipe={handleAddRecipe}
         openDeleteRecipeModal={openDeleteRecipeModal}
+        openPublishModal={openPublishModal}
+        handleUnpublishRecipe={(url) => {
+          handlePublishRecipe(false, url);
+        }}
       />
       <Confirmodal
         show={showDeleteRecipeModal}
         onClose={() => setShowDeleteRecipeModal(false)}
         onConfirm={handleDeleteRecipe}
         text="Bist du sicher, dass du dieses Rezept löschen möchtest?"
+      />
+      <Confirmodal
+        show={showPublishModal}
+        onClose={() => setShowPublishModal(false)}
+        onConfirm={() => {
+          handlePublishRecipe(true);
+        }}
+        text="Bist du sicher, dass du dieses Rezept veröffentlichen möchtest?"
+        buttonText="Veröffentlichen"
       />
     </div>
   );

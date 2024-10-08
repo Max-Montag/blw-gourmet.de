@@ -6,12 +6,15 @@ import { lato } from "@/styles/fonts";
 import "@/app/globals.css";
 import "@/styles/gradient-animation.css";
 import RecipeSlider from "../recipe/RecipeSlider";
-import { getCategories, getRecipesByCategory, getAllArticlesData } from "@/utils/apiUtils";
+import {
+  getCategories,
+  getRecipesByCategory,
+  getAllArticlesData,
+} from "@/utils/apiUtils";
 import WhatIsBlw from "@/components/what-is-blw/WhatIsBlw";
 import ArticleList from "../article/ArticleList";
 
 export default async function LandingPage() {
-
   const categories = (await getCategories()) || [
     "Frühstück",
     "Mittagessen",

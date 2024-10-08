@@ -47,6 +47,7 @@ export interface AdminRecipePreview {
   dining_times: string[];
   labels: string[];
   thumbnail: string | null;
+  published: boolean;
 }
 
 export interface RecipeComment {

@@ -35,7 +35,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
             onClick={onConfirm}
             className="px-4 py-2 bg-red-500 text-white rounded-md"
           >
-            {standartButtonText || buttonText}
+            {buttonText || standartButtonText}
           </button>
         </div>
       </div>
