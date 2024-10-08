@@ -18,7 +18,9 @@ const Register: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const [usernameAvailable, setUsernameAvailable] = useState<string | null>(null);
+  const [usernameAvailable, setUsernameAvailable] = useState<string | null>(
+    null,
+  );
   const [saveError, setSaveError] = useState("");
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
@@ -46,7 +48,7 @@ const Register: React.FC = () => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${username}`
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${username}`,
       );
 
       if (response.ok) {

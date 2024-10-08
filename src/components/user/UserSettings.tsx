@@ -20,7 +20,9 @@ const CHECK_TEXT = "Ich möchte, dass mein Account gelöscht wird!";
 const UserSettings: React.FC = () => {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
-  const [usernameAvailable, setUsernameAvailable] = useState<string | null>(null);
+  const [usernameAvailable, setUsernameAvailable] = useState<string | null>(
+    null,
+  );
   const [saveError, setSaveError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [showingConfirmation, setShowingConfirmation] = useState(false);
@@ -61,7 +63,7 @@ const UserSettings: React.FC = () => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${username}`
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${username}`,
       );
 
       if (response.ok) {
@@ -157,7 +159,7 @@ const UserSettings: React.FC = () => {
       await apiAction("change_email", { newEmail, confirmNewEmail, password });
     }
   };
-  
+
   const handleUsernameChange = async (formData: FormData) => {
     const newUsername = formData.get("newUsername") as string;
     const password = usernamePasswordRef.current?.value as string;
@@ -169,7 +171,7 @@ const UserSettings: React.FC = () => {
     } else {
       setSaveError("Der Nutzername ist bereits vergeben.");
     }
-  }
+  };
 
   const handleSubmit = (
     e: React.FormEvent<HTMLFormElement>,
@@ -196,31 +198,31 @@ const UserSettings: React.FC = () => {
           <form onSubmit={(e) => handleSubmit(e, handleUsernameChange)}>
             <label>Neuer Benutzername</label>
             <div className="mt-1 mb-2.5">
-            <input
-              type="text"
-              name="newUsername"
-              placeholder="Neuer Benutzername"
-              className="border rounded p-2 w-full"
-              required
-              onBlur={handleUsernameBlur}
-            />
-            <div className="min-h-3 h-3 max-h-3 pt-1 flex flex-col justify-center">
-            {usernameAvailable === "available" && (
-                <div className="text-green-500 text-xs">
-                  Nutzername verfügbar.
-                  <FaCheck className="inline-block ml-1.5 w-2.5 h-2.5" />
-                </div>
-              )}
-              {usernameAvailable === "unavailable" && (
-                <div className="text-red-500 text-xs">
-                  Nutzername bereits vergeben.
-                </div>
-              )}
-              {usernameAvailable === "error" && (
-                <div className="text-red-500 text-xs">
-                  Fehler beim Überprüfen des Nutzernamens.
-                </div>
-              )}
+              <input
+                type="text"
+                name="newUsername"
+                placeholder="Neuer Benutzername"
+                className="border rounded p-2 w-full"
+                required
+                onBlur={handleUsernameBlur}
+              />
+              <div className="min-h-3 h-3 max-h-3 pt-1 flex flex-col justify-center">
+                {usernameAvailable === "available" && (
+                  <div className="text-green-500 text-xs">
+                    Nutzername verfügbar.
+                    <FaCheck className="inline-block ml-1.5 w-2.5 h-2.5" />
+                  </div>
+                )}
+                {usernameAvailable === "unavailable" && (
+                  <div className="text-red-500 text-xs">
+                    Nutzername bereits vergeben.
+                  </div>
+                )}
+                {usernameAvailable === "error" && (
+                  <div className="text-red-500 text-xs">
+                    Fehler beim Überprüfen des Nutzernamens.
+                  </div>
+                )}
               </div>
             </div>
             <label>Passwort</label>
