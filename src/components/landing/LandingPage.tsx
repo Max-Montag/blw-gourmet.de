@@ -15,14 +15,9 @@ const categories = [
   "tiefkühlgeeignet",
   "schnell",
   "vegetarisch",
-  "vegan",
   "Mittagessen",
   "Abendessen",
   "Snack",
-  "Frühstück",
-  "Mittagessen",
-  "Abendessen",
-  // "Snack",
 ];
 
 export default async function LandingPage() {

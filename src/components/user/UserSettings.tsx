@@ -6,6 +6,7 @@ import {
   MdOutlineLockReset,
   MdOutlineMarkEmailRead,
   MdOutlineErrorOutline,
+  MdVerifiedUser,
 } from "react-icons/md";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaDoorOpen, FaCheck } from "react-icons/fa";
@@ -19,11 +20,13 @@ const CHECK_TEXT = "Ich möchte, dass mein Account gelöscht wird!";
 const UserSettings: React.FC = () => {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState<string | null>(null);
   const [saveError, setSaveError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [showingConfirmation, setShowingConfirmation] = useState(false);
   const [currentAction, setCurrentAction] = useState("");
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const usernamePasswordRef = useRef<HTMLInputElement>(null);
   const oldPasswordRef = useRef<HTMLInputElement>(null);
   const newPasswordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
@@ -49,6 +52,33 @@ const UserSettings: React.FC = () => {
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
+
+  const checkUsernameAvailability = async (username: string) => {
+    if (!username) {
+      setUsernameAvailable(null);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${username}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.available) {
+          setUsernameAvailable("available");
+        } else {
+          setUsernameAvailable("unavailable");
+        }
+      } else {
+        setUsernameAvailable("error");
+      }
+    } catch (error) {
+      console.error("Error checking username availability:", error);
+      setUsernameAvailable("error");
+    }
+  };
 
   const apiAction = async (keyword: string, data: Record<string, string>) => {
     try {
@@ -127,6 +157,19 @@ const UserSettings: React.FC = () => {
       await apiAction("change_email", { newEmail, confirmNewEmail, password });
     }
   };
+  
+  const handleUsernameChange = async (formData: FormData) => {
+    const newUsername = formData.get("newUsername") as string;
+    const password = usernamePasswordRef.current?.value as string;
+
+    await checkUsernameAvailability(newUsername);
+
+    if (usernameAvailable === "available") {
+      await apiAction("change_username", { newUsername, password });
+    } else {
+      setSaveError("Der Nutzername ist bereits vergeben.");
+    }
+  }
 
   const handleSubmit = (
     e: React.FormEvent<HTMLFormElement>,
@@ -137,6 +180,10 @@ const UserSettings: React.FC = () => {
     action(formData);
   };
 
+  const handleUsernameBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+    await checkUsernameAvailability(e.target.value);
+  };
+
   const handleClose = () => {
     setIsOpen(false);
     setSaveError("");
@@ -144,6 +191,58 @@ const UserSettings: React.FC = () => {
 
   const renderPopupContent = () => {
     switch (currentAction) {
+      case "change_username":
+        return (
+          <form onSubmit={(e) => handleSubmit(e, handleUsernameChange)}>
+            <label>Neuer Benutzername</label>
+            <div className="mt-1 mb-2.5">
+            <input
+              type="text"
+              name="newUsername"
+              placeholder="Neuer Benutzername"
+              className="border rounded p-2 w-full"
+              required
+              onBlur={handleUsernameBlur}
+            />
+            <div className="min-h-3 h-3 max-h-3 pt-1 flex flex-col justify-center">
+            {usernameAvailable === "available" && (
+                <div className="text-green-500 text-xs">
+                  Nutzername verfügbar.
+                  <FaCheck className="inline-block ml-1.5 w-2.5 h-2.5" />
+                </div>
+              )}
+              {usernameAvailable === "unavailable" && (
+                <div className="text-red-500 text-xs">
+                  Nutzername bereits vergeben.
+                </div>
+              )}
+              {usernameAvailable === "error" && (
+                <div className="text-red-500 text-xs">
+                  Fehler beim Überprüfen des Nutzernamens.
+                </div>
+              )}
+              </div>
+            </div>
+            <label>Passwort</label>
+            <PasswordInput
+              passwordRef={usernamePasswordRef}
+              key="passwordForUsername"
+              placeholder="Passwort"
+              className="border rounded p-2 w-full mt-2.5 mb-2.5"
+            />
+            <button
+              type="submit"
+              className="bg-cyan-600 hover:bg-cyan-700 h-12 text-white flex justify-center items-center mt-4 py-2 px-4 rounded-lg w-full"
+            >
+              {" "}
+              {isSaving ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <p>Benutzernamen ändern</p>
+              )}
+            </button>
+          </form>
+        );
       case "change_password":
         return (
           <form onSubmit={(e) => handleSubmit(e, handlePasswordChange)}>
@@ -291,6 +390,11 @@ const UserSettings: React.FC = () => {
     <div className="w-full bg-white text-lg shadow-md rounded px-8 pt-6 pb-8 max-w-md mx-auto relative">
       <div className="space-y-4">
         <h1 className="xs:text-lg md:text-2xl mb-2">Kontoeinstellungen</h1>
+        <ActionButton
+          text="Benutzernamen ändern"
+          keyword="change_username"
+          Icon={MdVerifiedUser}
+        />
         <ActionButton
           text="Passwort ändern"
           keyword="change_password"
