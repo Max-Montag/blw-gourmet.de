@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { RiMailSendLine } from "react-icons/ri";
+import { FaCheck } from "react-icons/fa6";
 import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import PasswordInput from "@/components/common/PasswordInput";
@@ -17,6 +18,7 @@ const Register: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState<string | null>(null);
   const [saveError, setSaveError] = useState("");
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
@@ -35,6 +37,33 @@ const Register: React.FC = () => {
       router.push("/");
     }
   }, [isAuthenticated]);
+
+  const checkUsernameAvailability = async (username: string) => {
+    if (!username) {
+      setUsernameAvailable(null);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${username}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.available) {
+          setUsernameAvailable("available");
+        } else {
+          setUsernameAvailable("unavailable");
+        }
+      } else {
+        setUsernameAvailable("error");
+      }
+    } catch (error) {
+      console.error("Error checking username availability:", error);
+      setUsernameAvailable("error");
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -107,6 +136,10 @@ const Register: React.FC = () => {
     }
   };
 
+  const handleUsernameBlur = async () => {
+    await checkUsernameAvailability(formik.values.username);
+  };
+
   if (loadingError) {
     return <ErrorMessage message={loadingError} />;
   }
@@ -143,12 +176,13 @@ const Register: React.FC = () => {
             </div>
             <div className="mb-4">
               <label htmlFor="username" className="block text-cyan-700 mb-2">
-                Nutzername
+                Nutzername (wird öffentlich angezeigt)
               </label>
               <input
                 type="text"
                 id="username"
                 {...formik.getFieldProps("username")}
+                onBlur={handleUsernameBlur}
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600"
               />
               {formik.touched.username && formik.errors.username ? (
@@ -156,6 +190,22 @@ const Register: React.FC = () => {
                   {formik.errors.username}
                 </div>
               ) : null}
+              {usernameAvailable === "available" && (
+                <div className="text-green-500 text-xs mt-2">
+                  Nutzername verfügbar.
+                  <FaCheck className="inline-block ml-1.5 w-2.5 h-2.5" />
+                </div>
+              )}
+              {usernameAvailable === "unavailable" && (
+                <div className="text-red-500 text-xs mt-2">
+                  Nutzername bereits vergeben.
+                </div>
+              )}
+              {usernameAvailable === "error" && (
+                <div className="text-red-500 text-xs mt-2">
+                  Fehler beim Überprüfen des Nutzernamens.
+                </div>
+              )}
             </div>
             <div className="mb-4">
               <label htmlFor="password" className="block text-cyan-700 mb-2">

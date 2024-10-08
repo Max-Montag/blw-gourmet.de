@@ -20,7 +20,7 @@ const NotificationList = () => {
         return (
           <div
             key={id}
-            className={`fixed top-[${(index + 2) * 64}px] left-0 w-full max-w-7-xl z-50 pointer-events-none animate-slide-in`}
+            className={`fixed top-[${(index + 1) * 64}px] left-0 w-full max-w-7-xl z-50 pointer-events-none animate-slide-in`}
           >
             <div
               className={`m-5 absolute rounded-xl font-semibold bg-opacity-95 p-4 shadow-sm ${typeClasses}`}
