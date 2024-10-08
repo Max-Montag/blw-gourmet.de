@@ -1,6 +1,23 @@
 import { RecipePreview } from "@/types/recipeTypes";
 import { ArticlePreviewData } from "@/types/articleTypes";
 
+async function getCategories(): Promise<string[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/categories/`,
+    {
+      cache: "no-cache",
+    },
+    // TODO uncomment
+    // {
+    //   next: { revalidate: 86400 },
+    // },
+  );
+  if (!res.ok) {
+    return [];
+  }
+  return await res.json();
+}
+
 async function getRecipesByCategory(
   category: string,
 ): Promise<RecipePreview[] | null> {
@@ -37,4 +54,4 @@ async function getAllArticlesData(): Promise<ArticlePreviewData[]> {
   return res.json();
 }
 
-export { getRecipesByCategory, getAllArticlesData };
+export { getCategories, getRecipesByCategory, getAllArticlesData };

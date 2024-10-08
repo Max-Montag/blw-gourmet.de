@@ -1,23 +1,6 @@
 import CategoryList from "@/components/recipe/categories/CategoryList";
 import RecipeSlider from "@/components/recipe/RecipeSlider";
-import { getRecipesByCategory } from "@/utils/apiUtils";
-
-async function getCategories(): Promise<string[]> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/recipes/categories/`,
-    {
-      cache: "no-cache",
-    },
-    // TODO uncomment
-    // {
-    //   next: { revalidate: 86400 },
-    // },
-  );
-  if (!res.ok) {
-    return [];
-  }
-  return await res.json();
-}
+import { getRecipesByCategory, getCategories } from "@/utils/apiUtils";
 
 const BrowseRecipes: React.FC = async () => {
   const categories = (await getCategories()) || [

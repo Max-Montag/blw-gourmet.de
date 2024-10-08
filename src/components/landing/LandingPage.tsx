@@ -6,21 +6,19 @@ import { lato } from "@/styles/fonts";
 import "@/app/globals.css";
 import "@/styles/gradient-animation.css";
 import RecipeSlider from "../recipe/RecipeSlider";
-import { getRecipesByCategory, getAllArticlesData } from "@/utils/apiUtils";
+import { getCategories, getRecipesByCategory, getAllArticlesData } from "@/utils/apiUtils";
 import WhatIsBlw from "@/components/what-is-blw/WhatIsBlw";
 import ArticleList from "../article/ArticleList";
 
-const categories = [
-  "Frühstück",
-  "tiefkühlgeeignet",
-  "schnell",
-  "vegetarisch",
-  "Mittagessen",
-  "Abendessen",
-  "Snack",
-];
-
 export default async function LandingPage() {
+
+  const categories = (await getCategories()) || [
+    "Frühstück",
+    "Mittagessen",
+    "Abendessen",
+    "Snack",
+  ];
+
   const category = await Promise.all(
     categories.map(async (category) => {
       return await getRecipesByCategory(category);

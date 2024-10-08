@@ -197,7 +197,7 @@ const UserSettings: React.FC = () => {
         return (
           <form onSubmit={(e) => handleSubmit(e, handleUsernameChange)}>
             <label>Neuer Benutzername</label>
-            <div className="mt-1 mb-2.5">
+            <div className="mt-2.5 mb-2.5">
               <input
                 type="text"
                 name="newUsername"

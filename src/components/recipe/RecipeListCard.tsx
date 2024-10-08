@@ -14,7 +14,7 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
     <Link
       href={`/rezept/${recipe.url}`}
       key={recipe.name}
-      className="flex flex-col h-full justify-between bg-white shadow-sm md:hover:shadow-md rounded-md group cursor-pointer"
+      className="flex flex-col h-full justify-between bg-white shadow-sm md:hover:shadow-md rounded-md group overflow-hidden cursor-pointer"
     >
       <div>
         {recipe.thumbnail ? (
@@ -24,9 +24,9 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
               alt={recipe.name}
               width={240}
               height={160}
-              className="w-full h-40 object-cover rounded-t-md group-hover:scale-105 transition-transform duration-50"
+              className="w-full h-40 object-cover group-hover:scale-105 overflow-hidden transition-transform duration-50"
             />
-            <div className="absolute inset-0 bg-black rounded-t-md opacity-0 group-hover:opacity-20 transition-opacity duration-50"></div>
+            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-50"></div>
           </div>
         ) : (
           <div className="flex justify-center items-center w-full h-40 bg-zinc-300">
