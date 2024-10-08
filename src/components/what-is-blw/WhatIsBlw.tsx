@@ -19,10 +19,10 @@ const WhatIsBlw = () => {
 
       <div className="rounded-lg p-6 mb-8">
         <p className="bg-cyan-50 rounded-xl text-cyan-700 text-lg mb-4 p-6">
-          Hallo! Ich bin Vanessa, 31 Jahre alt und stolze Mutter der 9 Monate
-          alten Emilia. Heute möchte ich euch von meiner aufregenden Reise mit
-          Baby-led Weaning (BLW) erzählen und euch alles darüber beibringen, was
-          ich in den letzten Monaten gelernt habe.
+          Hallo! Ich bin Vanessa, 31 Jahre alt, Psychologin und stolze Mutter
+          der 9 Monate alten Emilia. Heute möchte ich euch von meiner
+          aufregenden Reise mit Baby-led Weaning (BLW) erzählen mit euch teilen,
+          was ich in den letzten Monaten gelernt habe.
         </p>
       </div>
 
@@ -32,11 +32,11 @@ const WhatIsBlw = () => {
         </h2>
         <p className="text-gray-800 mb-4">
           Baby-led Weaning ist eine Methode der Beikosteinführung, bei der Babys
-          von Anfang an selbstständig essen lernen. Statt Brei bekommen die
-          Kleinen feste Nahrung in mundgerechten Stücken angeboten, die sie
-          selbst greifen und essen können. Der Grundgedanke ist, dass Babys ihre
-          Ernährung selbst steuern und von Beginn an am Familientisch
-          teilnehmen.
+          von Anfang an selbstständig essen lernen. Statt gefüttert zu werden,
+          bekommen die Kleinen feste Nahrung in mundgerechten Stücken oder auch
+          Brei angeboten, die sie selbst greifen und essen können. Der
+          Grundgedanke ist, dass Babys ihre Ernährung selbst steuern und von
+          Beginn an am Familientisch teilnehmen.
         </p>
       </section>
 
@@ -46,14 +46,14 @@ const WhatIsBlw = () => {
         </h2>
         <ul className="list-disc list-inside text-gray-800 mb-4">
           <li>
-            Beginn mit etwa 6 Monaten, wenn das Baby sitzen kann und Interesse
-            an Essen zeigt
+            Beginn mit etwa 6 Monaten, wenn dein Baby die Reifezeichen erfüllt
+            und Interesse an Essen zeigt
           </li>
           <li>
-            Anbieten von weichen, länglichen Lebensmitteln, die das Baby gut
-            greifen kann
+            üblicherweise Anbieten von weichen, länglichen Lebensmitteln, die
+            das Baby gut greifen kann
           </li>
-          <li>Baby isst selbstständig mit den Händen</li>
+          <li>Baby isst selbstständig mit den Händen oder Esslernbesteck</li>
           <li>Eltern essen mit und sind Vorbilder</li>
           <li>Kein Füttern oder Überreden zum Essen</li>
           <li>Baby bestimmt Tempo und Menge</li>
@@ -70,9 +70,9 @@ const WhatIsBlw = () => {
         </p>
         <ul className="list-disc list-inside text-gray-800 mb-4">
           <li>Gedämpfte Gemüsesticks (Karotte, Brokkoli, Süßkartoffel)</li>
-          <li>Weiche Obstsorten (reife Birne, Pfirsich, Banane)</li>
+          <li>Weiche Obstsorten (reife Birne, Erdbeeren, Banane)</li>
           <li>Avocadostreifen</li>
-          <li>Gekochte Pastastücke</li>
+          <li>Gekochte Pasta</li>
           <li>Toaststreifen mit Avocado oder Frischkäse</li>
         </ul>
       </section>
@@ -82,13 +82,12 @@ const WhatIsBlw = () => {
           <FaHeartbeat className="mr-4 text-cyan-500" /> Vorteile von BLW
         </h2>
         <ul className="list-disc list-inside text-gray-800 mb-4">
-          <li>Fördert die Entwicklung der Feinmotorik</li>
-          <li>Unterstützt ein gesundes Verhältnis zu Essen</li>
-          <li>Ermöglicht frühzeitige Geschmacks- und Texturerfahrungen</li>
-          <li>Stärkt das Selbstvertrauen des Babys</li>
-          <li>Erleichtert die Teilnahme an Familienmahlzeiten</li>
-          <li>Kann Übergewicht im späteren Leben vorbeugen</li>
-          <li>Spart Zeit, da kein separates Essen zubereitet werden muss</li>
+          <li>fördert die Entwicklung der Feinmotorik</li>
+          <li>unterstützt ein gesundes Verhältnis zu Essen</li>
+          <li>ermöglicht frühzeitige Geschmacks- und Texturerfahrungen</li>
+          <li>stärkt das Selbstvertrauen des Babys</li>
+          <li>erleichtert die Teilnahme an Familienmahlzeiten</li>
+          <li>kann Übergewicht im späteren Leben vorbeugen</li>
         </ul>
       </section>
 
@@ -97,18 +96,19 @@ const WhatIsBlw = () => {
           <FaBook className="mr-4 text-cyan-500" /> Meine Erfahrungen mit Emilia
         </h2>
         <p className="text-gray-800 mb-4">
-          Als ich mit Emilia BLW begann, war ich anfangs nervös. Würde sie genug
-          essen? Könnte sie sich verschlucken? Aber ich war erstaunt, wie
-          schnell sie lernte, Nahrung zu greifen und zum Mund zu führen.
-          Natürlich war es am Anfang sehr chaotisch, und ich verbrachte viel
-          Zeit damit, den Boden zu putzen. Aber die Freude in Emilias Augen,
-          wenn sie neue Lebensmittel entdeckte, war unbezahlbar.
+          Als ich mit Emilia BLW begann, war ich anfangs nervös und hatte Angst
+          davor, dass sie sich verschluckt. Aber ich war erstaunt, wie schnell
+          sie lernte, Nahrung zu greifen und zum Mund zu führen. Natürlich war
+          es am Anfang sehr chaotisch und ich verbrachte viel Zeit damit, den
+          Boden, die Wände, den Tisch und die Stühle zu putzen. Aber die Freude
+          in Emilias Augen, wenn sie neue Lebensmittel entdeckte, war
+          unbezahlbar.
         </p>
         <p className="text-gray-800 mb-4">
           Ein besonderer Moment war, als Emilia zum ersten Mal ein
-          Brokkoli-Röschen selbstständig aß. Sie untersuchte es gründlich,
-          führte es vorsichtig zum Mund und kaute darauf herum. Ich war so stolz
-          auf ihre Neugier und ihren Mut, Neues auszuprobieren.
+          Brokkoli-Röschen selbstständig gegessen hat. Sie untersuchte es
+          gründlich, führte es vorsichtig zum Mund und „kaute“ darauf herum. Ich
+          war so stolz auf ihre Neugier und ihren Mut, Neues auszuprobieren.
         </p>
       </section>
 
@@ -117,22 +117,23 @@ const WhatIsBlw = () => {
           <FaSmile className="mr-4 text-cyan-500" /> Tipps für BLW-Anfänger
         </h2>
         <ul className="list-disc list-inside text-gray-800 mb-4">
-          <li>Bleiben Sie entspannt und geduldig</li>
-          <li>Bieten Sie eine Vielfalt an Lebensmitteln an</li>
+          <li>bleib entspannt und geduldig</li>
+          <li>biete eine Vielfalt an Lebensmitteln an</li>
           <li>
-            Achten Sie auf eine sichere Esssituation (aufrechte Sitzposition,
-            keine Ablenkungen)
+            achte auf eine sichere Esssituation (aufrechte Sitzposition,
+            Fußablage)
           </li>
-          <li>Lassen Sie Ihr Baby das Tempo bestimmen</li>
-          <li>Seien Sie Vorbild und essen Sie gemeinsam</li>
+          <li>lass dein Baby das Tempo bestimmen</li>
+          <li>sei Vorbild und essen Sie gemeinsam</li>
           <li>
-            Bereiten Sie sich auf Unordnung vor (Bodenschutz, leicht abwischbare
+            Bereite dich auf Unordnung vor (Bodenschutz, leicht abwischbare
             Kleidung)
           </li>
           <li>
-            Informieren Sie sich über den Unterschied zwischen Würgen und
+            informiere dich über den Unterschied zwischen Würgen und
             Verschlucken
           </li>
+          <li>besuche ggf. einen Erste-Hilfe-Kurs für Säuglinge</li>
         </ul>
       </section>
 
@@ -151,9 +152,10 @@ const WhatIsBlw = () => {
           Natürlich gab es auch Herausforderungen. Mein Mann war anfangs
           skeptisch und besorgt über mögliche Erstickungsgefahren. Aber nachdem
           er sah, wie geschickt Emilia mit dem Essen umging und wie viel Freude
-          sie dabei hatte, wurde er zum BLW-Fan. Auch die Großeltern mussten
-          sich erst daran gewöhnen, dass wir Emilia keine Breie fütterten, aber
-          mittlerweile sind sie begeistert von ihrer Selbstständigkeit.
+          sie dabei hatte, wurde auch er zum BLW-Fan. Auch die Großeltern
+          mussten sich erst daran gewöhnen, dass wir Emilia keine Breie
+          fütterten, aber mittlerweile sind sie begeistert von ihrer
+          Selbstständigkeit.
         </p>
       </section>
 
@@ -162,7 +164,7 @@ const WhatIsBlw = () => {
         <p className="text-gray-800 mb-4">
           Baby-led Weaning war für uns der richtige Weg. Es hat Emilia zu einer
           begeisterten und neugierigen Esserin gemacht. Natürlich ist BLW nicht
-          für jede Familie geeignet, und es ist wichtig, dass jeder den Weg
+          für jede Familie geeignet und es ist wichtig, dass jeder den Weg
           findet, der für sich und sein Baby am besten passt. Aber ich kann nur
           ermutigen, es auszuprobieren. Die Unordnung und anfängliche
           Unsicherheit werden durch die Freude und das Selbstvertrauen, das euer

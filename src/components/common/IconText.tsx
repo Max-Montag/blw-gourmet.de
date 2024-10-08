@@ -1,15 +1,25 @@
 import React from "react";
-import { TbFridge } from "react-icons/tb";
-import { FaRegSnowflake } from "react-icons/fa";
-import { FaRegCalendarCheck, FaCookieBite } from "react-icons/fa6";
-import { IoHandLeftOutline } from "react-icons/io5";
-import { LuVegan } from "react-icons/lu";
-import { TbMeat, TbMeatOff } from "react-icons/tb";
-import { LuClock7, LuClock9, LuClock12 } from "react-icons/lu";
-
-interface IconTextProps {
-  text: string;
-}
+import {
+  TbFridge,
+  TbMeat,
+  TbMeatOff,
+  TbChefHat,
+  TbCookie,
+} from "react-icons/tb";
+import { PiOven } from "react-icons/pi";
+import {
+  FaRegSnowflake,
+  FaRegCalendarCheck,
+  FaCookieBite,
+  FaBabyCarriage,
+  FaPizzaSlice,
+  FaSeedling,
+  FaEgg,
+} from "react-icons/fa6";
+import { FaHome } from "react-icons/fa";
+import { IoHandLeftOutline, IoFastFoodOutline } from "react-icons/io5";
+import { GiCookingPot, GiForkKnifeSpoon } from "react-icons/gi";
+import { LuVegan, LuClock7, LuClock9, LuClock12 } from "react-icons/lu";
 
 const icons: { [key: string]: JSX.Element } = {
   kühlschrank: <TbFridge />,
@@ -26,7 +36,34 @@ const icons: { [key: string]: JSX.Element } = {
   frühstück: <LuClock9 />,
   mittagessen: <LuClock12 />,
   abendessen: <LuClock7 />,
+  default: <TbFridge />,
+  proteinreich: <FaEgg />,
+  einfach: <GiCookingPot />,
+  wenige_zutaten: <TbCookie />,
+  tiefkühlgeeignet: <FaRegSnowflake />,
+  babygerecht: <FaBabyCarriage />,
+  pfannengericht: <IoFastFoodOutline />,
+  drei_tage_im_kühlschrank: <TbFridge />,
+  süß: <TbCookie />,
+  zuckerfrei: <FaSeedling />,
+  backen: <PiOven />,
+  brot: <FaPizzaSlice />,
+  ab_9_monaten: <FaBabyCarriage />,
+  schnell: <GiForkKnifeSpoon />,
+  herzhaft: <TbChefHat />,
+  familienessen: <FaHome />,
+  ofengericht: <PiOven />,
 };
+
+export const getIconForCategory = (category: string): JSX.Element => {
+  const icon =
+    icons[category.toLowerCase().replace(/\s+/g, "_") as keyof typeof icons];
+  return icon || icons.default;
+};
+
+interface IconTextProps {
+  text: string;
+}
 
 const IconText: React.FC<IconTextProps> = ({ text }) => {
   const matchedIcon = Object.keys(icons).find((key) =>

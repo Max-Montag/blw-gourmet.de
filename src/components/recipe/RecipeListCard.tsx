@@ -18,7 +18,7 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
     >
       <div>
         {recipe.thumbnail ? (
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden bg-cyan-100">
             <Image
               src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.thumbnail}`}
               alt={recipe.name}
