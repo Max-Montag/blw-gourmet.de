@@ -20,6 +20,7 @@ import ConfirmModal from "@/components/common/ConfirmModal";
 import { recipeValidationSchema } from "@/utils/validationSchemas/recipeValidationSchema";
 import { getCSRFToken } from "@/utils/cookieUtils";
 import { useAuth } from "@/context/AuthContext";
+import { useNotification } from "@/context/NotificationContext";
 
 interface EditRecipeProps {
   params: {
@@ -43,6 +44,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const [recipeErrors, setRecipeErrors] = useState<RecipeError>({});
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const { isAuthenticated, isAdmin } = useAuth();
+  const { showNotification } = useNotification();
 
   const handleValidate = useCallback(async (newRecipe: RecipeData) => {
     try {
@@ -164,7 +166,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       }
     } catch (error) {
       console.error("Es ist ein Fehler aufgetreten:", error);
-      alert("Fehler beim Speichern!");
+      showNotification("Fehler beim Speichern!", "error");
     } finally {
       setSavingPublic(false);
       setSavingPrivate(false);
@@ -198,7 +200,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       }
     } catch (error) {
       console.error("Fehler beim Löschen:", error);
-      alert("Fehler beim Löschen!");
+      showNotification("Fehler beim Löschen!", "error");
     }
   };
 
@@ -214,7 +216,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       setRecipe(updatedRecipe);
       handleValidate(updatedRecipe);
     } catch (error) {
-      alert("Ungültiges JSON-Format: " + error);
+      console.error("Fehler beim Parsen:", error);
+      showNotification("Fehler beim Parsen!", "error");
     }
   };
 

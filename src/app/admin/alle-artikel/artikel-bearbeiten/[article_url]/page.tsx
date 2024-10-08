@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import ImageUpload from "@/components/common/ImageUpload";
 import { getCSRFToken } from "@/utils/cookieUtils";
 import { useAuth } from "@/context/AuthContext";
+import { useNotification } from "@/context/NotificationContext";
 
 interface PageProps {
   params: {
@@ -25,6 +26,7 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { isAdmin } = useAuth();
+  const { showNotification } = useNotification();
   const router = useRouter();
 
   useEffect(() => {
@@ -101,8 +103,8 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
 
       router.push("/admin/alle-artikel/");
     } catch (error) {
-      console.error("Fehler beim Speichern des Artikels", error);
-      alert(error);
+      showNotification("Fehler beim Speichern des Artikels", "error");
+      console.error("Fehler beim Speichern des Artikels:", error);
     }
   };
 

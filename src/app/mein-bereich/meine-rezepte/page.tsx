@@ -9,6 +9,7 @@ import ErrorMessage from "@/components/error/ErrorMessage";
 import EditRecipeList from "@/components/recipe/EditRecipeList";
 import { AdminRecipePreview } from "@/types/recipeTypes";
 import { useAuth } from "@/context/AuthContext";
+import { useNotification } from "@/context/NotificationContext";
 
 const MyRecipesPage: React.FC = () => {
   const router = useRouter();
@@ -17,6 +18,7 @@ const MyRecipesPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
+  const { showNotification } = useNotification();
   const [showDeleteRecipeModal, setShowDeleteRecipeModal] =
     useState<boolean>(false);
   const [selectedRecipeUrl, setSelectedRecipeUrl] = useState<string | null>(
@@ -71,7 +73,7 @@ const MyRecipesPage: React.FC = () => {
       }
     } catch (error) {
       console.error("Fehler beim Anlegen!", error);
-      alert("Fehler beim Anlegen!");
+      showNotification("Fehler beim Anlegen!", "error");
     }
   };
 

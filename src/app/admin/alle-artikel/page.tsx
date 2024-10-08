@@ -8,6 +8,7 @@ import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimat
 import ErrorMessage from "@/components/error/ErrorMessage";
 import EditArticleList from "@/components/article/EditArticleList";
 import { useAuth } from "@/context/AuthContext";
+import { useNotification } from "@/context/NotificationContext";
 import { getCSRFToken } from "@/utils/cookieUtils";
 
 const ArticleOverview: React.FC = () => {
@@ -16,6 +17,7 @@ const ArticleOverview: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { isAdmin } = useAuth();
+  const { showNotification } = useNotification();
 
   const [showDeleteArticleModal, setShowDeleteArticleModal] =
     useState<boolean>(false);
@@ -68,8 +70,7 @@ const ArticleOverview: React.FC = () => {
         );
       }
     } catch (error) {
-      console.error("Fehler beim Anlegen!", error);
-      alert("Fehler beim Anlegen!");
+      showNotification("Fehler beim Anlegen!", "error");
     }
   };
 

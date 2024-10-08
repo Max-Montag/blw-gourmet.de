@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import Notification from "@/components/common/notification/Notification";
 import { useCookieConsent } from "@/context/CookieConsentContext";
 import { useAuth } from "@/context/AuthContext";
+import { useNotification } from "@/context/NotificationContext";
 import { getCSRFToken } from "@/utils/cookieUtils";
 
 interface RecipeLikesProps {
@@ -14,11 +14,8 @@ interface RecipeLikesProps {
 
 const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
   const { isAuthenticated } = useAuth();
+  const { showNotification } = useNotification();
   const { optional } = useCookieConsent();
-  const [showRegNotification, setShowRegNotification] =
-    useState<boolean>(false);
-  const [showCannotSaveNotification, setShowCannotSaveNotification] =
-    useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [likes, setLikes] = useState<number>(0);
   const [liked, setLiked] = useState<boolean>(false);
@@ -76,12 +73,20 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
       } else if (optional) {
         const newLikedStatus = await changeLikeStatus();
         if (newLikedStatus) {
-          setShowRegNotification(true);
+          showNotification(
+            "Da du nicht angemeldet bist, speichern wir deine Lieblingsrezepte in deinem Browser. Denke darüber nach, dich zu anzumelden oder zu registrieren, um sie auch auf anderen Geräten zu sehen.",
+            "info",
+            8000,
+          );
         }
         localStorage.setItem(`liked_${url}`, newLikedStatus.toString());
         await sendLikeToServer(newLikedStatus);
       } else {
-        setShowCannotSaveNotification(true);
+        showNotification(
+          "Bitte melde dich an, um deine Lieblingsrezepte geräteübergreifend zu speichern oder akzeptiere optionale Cookies, um sie in deinem Browser zu speichern.",
+          "error",
+          8000,
+        );
       }
     } catch (error) {
       console.error("Fehler beim Setzen des Likes:", error);
@@ -128,22 +133,6 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
           )}
         </button>
       </div>
-      <Notification
-        type="info"
-        isShown={showRegNotification}
-        setIsShown={setShowRegNotification}
-        message={
-          "Da du nicht angemeldet bist, speichern wir deine Lieblingsrezepte in deinem Browser. Denke darüber nach, dich zu anzumelden oder zu registrieren, um sie auch auf anderen Geräten zu sehen."
-        }
-      />
-      <Notification
-        type="error"
-        isShown={showCannotSaveNotification}
-        setIsShown={setShowCannotSaveNotification}
-        message={
-          "Bitte melde dich an, um deine Lieblingsrezepte geräteübergreifend zu speichern oder akzeptiere optionale Cookies, um sie in deinem Browser zu speichern."
-        }
-      />
     </>
   );
 };

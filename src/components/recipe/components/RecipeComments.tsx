@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { RecipeComment } from "@/types/recipeTypes";
 import { useAuth } from "@/context/AuthContext";
 import { getCSRFToken } from "@/utils/cookieUtils";
 import { formatDate } from "@/utils/dateUtils";
 import WarningNotification from "@/components/common/WarningNotification";
-import Notification from "@/components/common/notification/Notification";
+import { useNotification } from "@/context/NotificationContext";
 import Link from "next/link";
 
 interface RecipeCommentsProps {
@@ -15,10 +15,10 @@ interface RecipeCommentsProps {
 
 const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
   const { isAuthenticated, username } = useAuth();
+  const { showNotification } = useNotification();
   const [comments, setComments] = useState<RecipeComment[]>([]);
   const [newComment, setNewComment] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -38,7 +38,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
         const data = await response.json();
         setComments(data.comments);
       } catch (error) {
-        setError("Fehler beim Laden der Kommentare");
+        showNotification("Fehler beim Laden der Kommentare", "error", 3000);
       } finally {
         setLoading(false);
       }
@@ -46,19 +46,6 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
 
     fetchComments();
   }, [url]);
-
-  const isShowing = useCallback(() => {
-    return error !== null;
-  }, [error]);
-
-  const setShowNotification = useCallback(
-    (showing: boolean) => {
-      if (!showing) {
-        setError(null);
-      }
-    },
-    [setError],
-  );
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
@@ -88,7 +75,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
       setComments([newCommentData, ...comments]);
       setNewComment("");
     } catch (error) {
-      setError("Fehler beim Hinzufügen des Kommentars");
+      showNotification("Fehler beim Hinzufügen des Kommentars", "error", 3000);
     } finally {
       setLoading(false);
     }
@@ -116,7 +103,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
 
       setComments(comments.filter((comment) => comment.id !== commentId));
     } catch (error) {
-      setError("Fehler beim Löschen des Kommentars");
+      showNotification("Fehler beim Löschen des Kommentars", "error", 3000);
     } finally {
       setLoading(false);
     }
@@ -199,15 +186,6 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
             </p>
           )}
         </>
-      )}
-
-      {error && (
-        <Notification
-          type="error"
-          isShown={isShowing()}
-          setIsShown={setShowNotification}
-          message={error}
-        />
       )}
     </div>
   );
