@@ -34,7 +34,7 @@ const UserSettings: React.FC = () => {
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const emailPasswordRef = useRef<HTMLInputElement>(null);
   const deletePasswordRef = useRef<HTMLInputElement>(null);
-  const { logout } = useAuth();
+  const { username, logout } = useAuth();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -55,15 +55,15 @@ const UserSettings: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  const checkUsernameAvailability = async (username: string) => {
-    if (!username) {
+  const checkUsernameAvailability = async (newUsername: string) => {
+    if (!newUsername || newUsername === username) {
       setUsernameAvailable(null);
       return;
     }
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${username}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${newUsername}`,
       );
 
       if (response.ok) {
@@ -196,12 +196,12 @@ const UserSettings: React.FC = () => {
       case "change_username":
         return (
           <form onSubmit={(e) => handleSubmit(e, handleUsernameChange)}>
-            <label>Neuer Benutzername</label>
+            <label>Neuer Benutzername (öffentlich)</label>
             <div className="mt-2.5 mb-2.5">
               <input
                 type="text"
                 name="newUsername"
-                placeholder="Neuer Benutzername"
+                placeholder={username || "Neuer Benutzername"}
                 className="border rounded p-2 w-full"
                 required
                 onBlur={handleUsernameBlur}
@@ -380,8 +380,8 @@ const UserSettings: React.FC = () => {
       {isSaving ? (
         <AiOutlineLoading3Quarters className="animate-spin" />
       ) : (
-        <div className="flex items-center justify-center">
-          <Icon className="w-6 h-6 mr-2" />
+        <div className="flex items-center justify-start">
+          <Icon className="hidden xxs:block w-6 h-6 mr-auto" />
           {text}
         </div>
       )}
@@ -391,7 +391,9 @@ const UserSettings: React.FC = () => {
   return (
     <div className="w-full bg-white text-lg shadow-md rounded px-8 pt-6 pb-8 max-w-md mx-auto relative">
       <div className="space-y-4">
-        <h1 className="xs:text-lg md:text-2xl mb-2">Kontoeinstellungen</h1>
+        <h1 className="xs:text-lg md:text-2xl text-start mb-2">
+          Kontoeinstellungen
+        </h1>
         <ActionButton
           text="Benutzernamen ändern"
           keyword="change_username"

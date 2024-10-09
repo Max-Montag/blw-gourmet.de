@@ -30,19 +30,18 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
   const combinedLabels = [...recipe.dining_times, ...recipe.labels];
 
   return (
-    <div className="max-w-4xl min-h-48 mx-auto bg-zinc-50 shadow-md rounded-md">
-      <div className="relative">
+    <div className="max-w-4xl mx-auto min-h-48 bg-zinc-50 shadow-md rounded-md">
+      <div className="relative h-56 lg:h-72">
         {recipe.optimized_image ? (
           <Image
             key={recipe.optimized_image}
             src={`${apiUrl}${recipe.optimized_image}`}
             alt={(recipe.name || "Recipe") + " Image"}
-            width={512}
-            height={288}
-            className="w-full h-72 object-cover"
+            fill
+            className="w-full h-auto object-cover"
           />
         ) : (
-          <div className="flex justify-center items-center w-full h-72 bg-zinc-300">
+          <div className="flex justify-center items-center w-full h-56 lg:h-72 bg-zinc-300">
             <span className="text-xs text-zinc-600">Bild nicht gefunden</span>
           </div>
         )}

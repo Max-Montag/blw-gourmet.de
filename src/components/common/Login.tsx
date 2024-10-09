@@ -55,7 +55,7 @@ const Login: React.FC<LoginProps> = ({ clickHandler = () => {} }) => {
         </Link>
       </div>
       <button
-        className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all cursor-pointer"
+        className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 hover:text-cyan-50 font-semibold px-4 py-3 h-10 rounded-md cursor-pointer"
         type="submit"
         disabled={loading}
       >
@@ -64,7 +64,7 @@ const Login: React.FC<LoginProps> = ({ clickHandler = () => {} }) => {
       <Link
         href="/registrieren"
         onClick={clickHandler}
-        className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 hover:text-cyan-50 hover:text-lg font-semibold hover:font-normal px-4 py-3 h-10 rounded-md transition-all duration-50 cursor-pointer"
+        className="w-full flex items-center justify-center bg-cyan-50 hover:bg-cyan-800 text-cyan-950 hover:text-cyan-50 font-semibold px-4 py-3 h-10 rounded-md cursor-pointer"
       >
         Registrieren
       </Link>

@@ -1,14 +1,17 @@
 import CategoryList from "@/components/recipe/categories/CategoryList";
 import RecipeSlider from "@/components/recipe/RecipeSlider";
-import { getRecipesByCategory, getCategories } from "@/utils/apiUtils";
+// import { getRecipesByCategory, getCategories } from "@/utils/apiUtils";
+import { getRecipesByCategory } from "@/utils/apiUtils";
 
 const BrowseRecipes: React.FC = async () => {
-  const categories = (await getCategories()) || [
-    "Frühstück",
-    "Mittagessen",
-    "Abendessen",
-    "Snack",
-  ];
+  // const categories = (await getCategories()) || [ // TODO
+  //   "Frühstück",
+  //   "Mittagessen",
+  //   "Abendessen",
+  //   "Snack",
+  // ];
+
+  const categories = ["Frühstück", "Mittagessen", "Abendessen", "Snack"];
 
   const category = await Promise.all(
     categories.map(async (category) => {
@@ -17,7 +20,7 @@ const BrowseRecipes: React.FC = async () => {
   );
 
   return (
-    <div className="w-full flx-grow flex flex-col justify-center items-center p-8">
+    <div className="w-full flex flex-col justify-center items-center p-8">
       <section>
         <CategoryList categories={categories} />
       </section>

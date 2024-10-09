@@ -18,13 +18,14 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
     >
       <div>
         {recipe.thumbnail ? (
-          <div className="relative overflow-hidden bg-cyan-100">
+          <div className="relative w-full h-[160px] overflow-hidden bg-cyan-50">
             <Image
+              key={recipe.url + "thumbnail"}
               src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.thumbnail}`}
               alt={recipe.name}
-              width={240}
-              height={160}
-              className="w-full h-40 object-cover group-hover:scale-105 overflow-hidden transition-transform duration-50"
+              fill
+              sizes="280px"
+              className="w-full h-auto object-cover group-hover:scale-105 overflow-hidden transition-transform duration-50"
             />
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-50"></div>
           </div>
@@ -33,14 +34,14 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
             <span className="text-xs text-zinc-600">Bild nicht gefunden</span>
           </div>
         )}
-        <div className="px-2 pb-4">
-          <h2
-            className={`text-base+ xl:text-2xl font-bold text-cyan-900 group-hover:text-cyan-700 my-2 ${lato.className}`}
+        <div className="text-start px-2 pb-4">
+          <h1
+            className={`text-lg xl:text-xl font-bold text-cyan-900 group-hover:text-cyan-700 my-2 min-h-[3.5rem] line-clamp-2 ${lato.className}`}
           >
             {recipe.name}
-          </h2>
-          <p className="text-gray-600 text-sm xl:text-lg line-clamp-3">
-            {recipe.description || "Keine Beschreibung verfügbar"}
+          </h1>
+          <p className="text-gray-600 text-sm xl:text-base line-clamp-3">
+            {recipe.description || "Keine Beschreibung verfügbar..."}
           </p>
         </div>
       </div>
@@ -50,7 +51,7 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
             {combinedLabels.map((label, index) => (
               <div
                 key={index}
-                className="bg-cyan-50 text-cyan-700 text-xs font-semibold m-0.5 px-1.5 py-0.5 rounded-xl border border-cyan-700"
+                className="bg-cyan-50 text-cyan-700 text-[0.5rem] font-semibold m-0.5 px-1 py-px rounded-xl border border-cyan-700"
               >
                 <IconText text={label} />
               </div>

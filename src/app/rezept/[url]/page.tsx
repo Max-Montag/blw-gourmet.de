@@ -20,6 +20,7 @@ async function getRecipeData(url: string): Promise<RecipeData | null> {
   return res.json();
 }
 
+// TODO only fetch the urls of all recipes not the whole recipe
 export async function generateStaticParams() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/all-recipes/`,

@@ -12,6 +12,7 @@ const LoadingAnimation: React.FC = () => {
             alt="Chef Hat will-change-transform"
             width={200}
             height={200}
+            priority
           />
         </div>
         <Image

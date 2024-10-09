@@ -41,7 +41,8 @@ const Nutzungsbedingungen = () => {
             Um Rezepte hochzuladen oder zu kommentieren, müssen Sie sich
             registrieren. Sie sind für die Geheimhaltung Ihres Passworts
             verantwortlich. Alle Aktivitäten, die unter Ihrem Konto stattfinden,
-            liegen in Ihrer Verantwortung.
+            liegen in Ihrer Verantwortung, mit Ausnahme von Änderungen die unser
+            Team vorgenommen hat.
           </p>
           <p className="text-cyan-800 mb-4">
             Beim Hochladen von Rezepten oder anderen Inhalten:
@@ -54,6 +55,12 @@ const Nutzungsbedingungen = () => {
               Erteilen Sie uns eine weltweite, nicht-exklusive, gebührenfreie
               Lizenz zur Nutzung, Vervielfältigung und Anzeige dieser Inhalte
               auf unserer Website.
+            </li>
+            <li>
+              Stimmen Sie zu, dass wir Ihre Inhalte (Rezepte), die gegen diese
+              Nutzungsbedingungen oder geltendes Recht verstoßen, entfernen oder
+              im Falle von Rechtschreib- oder Formatierungs sowie anderen
+              kleinen Fehlern bearbeiten dürfen.
             </li>
             <li>
               Stimmen Sie zu, keine beleidigenden, obszönen, bedrohlichen oder

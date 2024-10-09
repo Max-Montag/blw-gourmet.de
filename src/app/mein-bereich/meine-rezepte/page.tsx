@@ -126,7 +126,6 @@ const MyRecipesPage: React.FC = () => {
             credentials: "include",
           },
         );
-        alert(response.status);
         if (response.status === 400) {
           throw new Error(
             "Bitte behebe vor der Veröffentlichung die Fehler im Rezept.",

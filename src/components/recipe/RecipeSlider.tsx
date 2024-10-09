@@ -19,7 +19,7 @@ const RecipeSlider: React.FC<RecipeSliderProps> = ({ recipes, name }) => {
   }
 
   return (
-    <div className="w-full bg-slate-100 pt-4">
+    <div className="w-full bg-slate-100 pt-4 px-4">
       {name && (
         <Link
           href={`/rezepte/${name}`}
@@ -29,12 +29,9 @@ const RecipeSlider: React.FC<RecipeSliderProps> = ({ recipes, name }) => {
         </Link>
       )}
       <div className="overflow-x-auto snap-x snap-mandatory scroll-pl-6 scroll-pr-6 scrollbar-hide">
-        <div className="flex space-x-4 pt-4 pb-8">
+        <div className="flex pt-4 pb-8">
           {shuffle(recipes).map((recipe) => (
-            <div
-              key={recipe.name}
-              className="snap-center shrink-0 w-72 mx-4 pr-4"
-            >
+            <div key={recipe.name} className="snap-center shrink-0 w-72 mx-4">
               <RecipeListCard recipe={recipe} />
             </div>
           ))}

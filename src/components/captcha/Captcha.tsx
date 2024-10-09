@@ -83,7 +83,7 @@ const Captcha: React.FC<CaptchaProps> = ({
               height={100}
               className="rounded-2xl w-full z-1"
               alt="Captcha"
-              onLoadingComplete={() => {
+              onLoad={() => {
                 setLoadingParent && setLoadingParent(false);
               }}
               onError={() =>

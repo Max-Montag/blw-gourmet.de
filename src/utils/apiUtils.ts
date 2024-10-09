@@ -13,14 +13,14 @@ async function getCategories(): Promise<string[]> {
     // },
   );
   if (!res.ok) {
-    return [];
+    throw new Error("Failed to fetch categories");
   }
   return await res.json();
 }
 
 async function getRecipesByCategory(
   category: string,
-): Promise<RecipePreview[] | null> {
+): Promise<RecipePreview[]> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/category/?category=${category}`,
     {
@@ -32,7 +32,7 @@ async function getRecipesByCategory(
     // },
   );
   if (!res.ok) {
-    return null;
+    throw new Error("Failed to fetch recipes");
   }
   return res.json();
 }

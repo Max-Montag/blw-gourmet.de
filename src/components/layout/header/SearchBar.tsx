@@ -84,6 +84,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         handleLinkClick(suggestions[selectedItem].name);
         router.push(`/rezept/${suggestions[selectedItem].url}`);
       }
+    } else if (e.key === "Escape") {
+      setSuggestions([]);
     }
   };
 
