@@ -12,12 +12,8 @@ export async function generateStaticParams() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/categories/`,
     {
-      cache: "no-cache",
+      next: { revalidate: 86400 },
     },
-    // TODO uncomment
-    // {
-    //   next: { revalidate: 86400 },
-    // },
   );
   if (!res.ok) {
     return [];

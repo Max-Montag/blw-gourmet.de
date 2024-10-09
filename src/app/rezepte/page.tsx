@@ -1,17 +1,29 @@
 import CategoryList from "@/components/recipe/categories/CategoryList";
 import RecipeSlider from "@/components/recipe/RecipeSlider";
-// import { getRecipesByCategory, getCategories } from "@/utils/apiUtils";
 import { getRecipesByCategory } from "@/utils/apiUtils";
 
 const BrowseRecipes: React.FC = async () => {
-  // const categories = (await getCategories()) || [ // TODO
-  //   "Frühstück",
-  //   "Mittagessen",
-  //   "Abendessen",
-  //   "Snack",
-  // ];
+  async function getCategories(): Promise<string[]> {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/recipes/categories/`,
+      // {cache: "no-cache",},
+      {
+        next: { revalidate: 86400 },
+      },
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch categories");
+    }
+    const categories: string[] = await res.json();
+    return categories;
+  }
 
-  const categories = ["Frühstück", "Mittagessen", "Abendessen", "Snack"];
+  const categories = (await getCategories()) || [
+    "Frühstück",
+    "Mittagessen",
+    "Abendessen",
+    "Snack",
+  ];
 
   const category = await Promise.all(
     categories.map(async (category) => {

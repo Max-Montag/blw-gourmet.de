@@ -20,10 +20,9 @@ async function getRecipeData(url: string): Promise<RecipeData | null> {
   return res.json();
 }
 
-// TODO only fetch the urls of all recipes not the whole recipe
 export async function generateStaticParams() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/recipes/all-recipes/`,
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/all-recipe-urls/`,
     {
       next: { revalidate: 3600 },
     },
@@ -31,10 +30,8 @@ export async function generateStaticParams() {
   if (!res.ok) {
     return [];
   }
-  const recipes: RecipeData[] = await res.json();
-  return recipes.map((recipe) => ({
-    url: recipe.url,
-  }));
+  const urls: string[] = await res.json();
+  return urls.map((url) => ({ url }));
 }
 
 export default async function RecipePage({ params }: RecipePageProps) {

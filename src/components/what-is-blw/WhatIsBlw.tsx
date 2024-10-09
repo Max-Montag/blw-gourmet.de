@@ -124,7 +124,7 @@ const WhatIsBlw = () => {
             Fußablage)
           </li>
           <li>lass dein Baby das Tempo bestimmen</li>
-          <li>mach's vor und iss mit deinem kleinen Schatz gemeinsam</li>
+          <li>mach&aposs vor und iss mit deinem kleinen Schatz gemeinsam</li>
           <li>
             Bereite dich auf Unordnung vor (Bodenschutz, leicht abwischbare
             Kleidung)

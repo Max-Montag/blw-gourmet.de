@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { FaHeart } from "react-icons/fa";
 import { PiCookingPot } from "react-icons/pi";
 import { CiShoppingBasket } from "react-icons/ci";
 import Fraction from "fraction.js";
@@ -18,6 +19,7 @@ interface DecimalToFractionProps {
 
 interface RecipeDisplayProps {
   recipe: RecipeData;
+  displaySocials?: boolean;
 }
 
 const DecimalToFraction: React.FC<DecimalToFractionProps> = ({ decimal }) => {
@@ -25,7 +27,12 @@ const DecimalToFraction: React.FC<DecimalToFractionProps> = ({ decimal }) => {
   return <>{fraction}</>;
 };
 
-const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
+const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
+  recipe,
+  displaySocials,
+}) => {
+  displaySocials =
+    (displaySocials === undefined ? recipe.published : displaySocials) || false;
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const combinedLabels = [...recipe.dining_times, ...recipe.labels];
 
@@ -70,7 +77,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
           </h1>
         )}
         <div className="flex justify-center items-center space-x-4 lg:space-x-10 2xl:space-x-16 my-4">
-          <RecipeLikes url={recipe.url} className="w-16 h-10" />
+          {displaySocials && recipe.url ? (
+            <RecipeLikes url={recipe.url} className="w-16 h-10" />
+          ) : (
+            <FaHeart className="text-red-600 w-6 h-6 group-hover:scale-110" />
+          )}
           <SharePopUp
             url={"rezept/" + recipe.url}
             shareText="Teile dieses Rezept"
@@ -246,7 +257,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
                 </div>
               ))}
         </div>
-        <RecipeComments url={recipe.url} />
+        {displaySocials && <RecipeComments url={recipe.url} />}
       </div>
     </div>
   );
