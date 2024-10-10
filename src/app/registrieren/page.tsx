@@ -38,7 +38,7 @@ const Register: React.FC = () => {
     if (isAuthenticated) {
       router.push("/");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
   const checkUsernameAvailability = async (username: string) => {
     if (!username) {
@@ -80,7 +80,8 @@ const Register: React.FC = () => {
         .email("Ungültige E-Mail-Adresse.")
         .required("E-Mail ist erforderlich."),
       username: Yup.string()
-        .min(5, "Nutzername muss mindestens 5 Zeichen lang sein.")
+        .min(5, "Nutzername muss mindestens 3 Zeichen lang sein.")
+        .max(25, "Nutzername darf maximal 25 Zeichen lang sein.")
         .required("Nutzername ist erforderlich."),
       password: Yup.string()
         .required("Passwort ist erforderlich.")

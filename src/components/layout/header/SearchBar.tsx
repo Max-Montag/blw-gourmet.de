@@ -56,10 +56,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   }, [suggestions]);
 
   useEffect(() => {
-    if (setFocus && inputRef.current) {
+    if (setFocus && inputRef && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [inputRef]);
+  }, [inputRef, setFocus]);
 
   const handleLinkClick = (suggestionName: string) => {
     closeMenu();

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useCookieConsent } from "@/context/CookieConsentContext";
 import { useAuth } from "@/context/AuthContext";
@@ -20,8 +20,13 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
   const [likes, setLikes] = useState<number>(0);
   const [liked, setLiked] = useState<boolean>(false);
 
+  const checkIfLikedByLocalStorage = useCallback(() => {
+    return localStorage.getItem(`liked_${url}`) === "true";
+  }, [url]);
+
   useEffect(() => {
     const fetchLikes = async () => {
+      if (!url || isAuthenticated === undefined || checkIfLikedByLocalStorage === undefined) return;
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/likes/${url}/`,
@@ -52,11 +57,7 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
     };
 
     fetchLikes();
-  }, [url, isAuthenticated]);
-
-  const checkIfLikedByLocalStorage = () => {
-    return localStorage.getItem(`liked_${url}`) === "true";
-  };
+  }, [url, isAuthenticated, checkIfLikedByLocalStorage]);
 
   const handleLike = async () => {
     try {

@@ -423,7 +423,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                     handleIngredientChange(
                       index,
                       "amount",
-                      parseFloat(e.target.value) || e.target.value || 0,
+                      parseFloat(e.target.value) || "",
                     )
                   }
                   onBlur={handleValidate}

@@ -22,6 +22,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
 
   useEffect(() => {
     const fetchComments = async () => {
+      if (!url || !showNotification) return;
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/comments/${url}/`,
@@ -36,6 +37,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
         }
 
         const data = await response.json();
+        alert(data.comments.map((comment: RecipeComment) => comment.author).join(", "));
         setComments(data.comments);
       } catch (error) {
         showNotification("Fehler beim Laden der Kommentare", "error", 3000);
@@ -45,7 +47,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
     };
 
     fetchComments();
-  }, [url]);
+  }, [url, showNotification]);
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;

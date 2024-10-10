@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
         router.push("/");
       }, 8000);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
   return (
     <>

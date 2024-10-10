@@ -69,6 +69,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoggingIn(true);
       setLoading(true);
 
+      const csrf_token = await getCSRFToken();
+
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
@@ -77,6 +79,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         method: "POST",
         body: formData,
         credentials: "include",
+        headers: {
+          "X-CSRFToken": csrf_token,
+        },
       });
 
       if (!response.ok) throw new Error("Login fehlgeschlagen");
