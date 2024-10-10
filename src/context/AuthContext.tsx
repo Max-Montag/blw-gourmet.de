@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from "react";
 import { getCSRFToken } from "@/utils/cookieUtils";
 
 interface AuthContextType {
@@ -34,7 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       const response = await fetch(`${apiUrl}/auth/user/`, {
         method: "GET",
@@ -58,11 +64,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
 
   const login = async (email: string, password: string) => {
     try {

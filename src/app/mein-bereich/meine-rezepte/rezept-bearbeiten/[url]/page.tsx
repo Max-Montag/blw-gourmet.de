@@ -123,27 +123,27 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       ];
       const filteredData = {
         ...recipe,
-        dining_times: recipe.dining_times.filter((time) =>
+        dining_times: recipe.dining_times?.filter((time) =>
           validDiningTimes.includes(time),
         ),
         published: publish,
-        labels: recipe.labels.filter((label) => label !== ""),
-        ingredients: recipe.ingredients.filter(
+        labels: recipe.labels?.filter((label) => label !== ""),
+        ingredients: recipe.ingredients?.filter(
           (ingredient) =>
             ingredient.ingredient !== "" ||
             ingredient.amount !== 0 ||
             ingredient.unit !== "",
         ),
-        tools: recipe.tools.filter((tool) => tool !== ""),
-        instructions: recipe.instructions.map((instruction) => ({
+        tools: recipe.tools?.filter((tool) => tool !== ""),
+        instructions: recipe.instructions?.map((instruction) => ({
           ...instruction,
-          ingredients: instruction.ingredients.filter(
+          ingredients: instruction.ingredients?.filter(
             (ingredient) =>
               ingredient.ingredient !== "" ||
               ingredient.amount !== 0 ||
               ingredient.unit !== "",
           ),
-          tools: instruction.tools.filter((tool) => tool !== ""),
+          tools: instruction.tools?.filter((tool) => tool !== ""),
         })),
       };
 

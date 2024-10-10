@@ -34,7 +34,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
   displaySocials =
     (displaySocials === undefined ? recipe.published : displaySocials) || false;
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const combinedLabels = [...recipe.dining_times, ...recipe.labels];
+  const combinedLabels = [
+    ...(recipe.dining_times || []),
+    ...(recipe.labels || []),
+  ];
 
   return (
     <div className="max-w-4xl mx-auto min-h-48 bg-zinc-50 shadow-md rounded-md">
@@ -119,80 +122,85 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
             </div>
           </div>
         ) : null}
-        {(recipe.tools.filter((tool) => tool !== "").length > 0 ||
-          recipe.ingredients.filter(
-            (ingredient) => ingredient.ingredient !== "",
-          ).length > 0) && (
-          <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
-            {recipe.ingredients.filter(
+        {((recipe.tools &&
+          recipe.tools.filter((tool) => tool !== "").length > 0) ||
+          (recipe.ingredients &&
+            recipe.ingredients.filter(
               (ingredient) => ingredient.ingredient !== "",
-            ).length > 0 && (
-              <div className="mb-6 mr-6">
-                <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 underline">
-                  Zutaten
-                </h2>
-                <div className="flex">
-                  <div>
-                    <ul>
-                      {recipe.ingredients
-                        .filter((ingredient) => ingredient.ingredient !== "")
-                        .map((ingredient, index) => (
-                          <li
-                            key={index}
-                            className="text-zinc-700 flex font-semibold text-lg lg:text-xl"
-                          >
-                            {ingredient.amount > 0 ? (
-                              <>
-                                <DecimalToFraction
-                                  decimal={ingredient.amount}
-                                />
-                                {ingredient.unit && ` ${ingredient.unit}`}
-                              </>
-                            ) : (
-                              <span>&nbsp;</span>
-                            )}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <ul className="pl-4">
-                      {recipe.ingredients
-                        .filter((ingredient) => ingredient.ingredient !== "")
-                        .map((ingredient, index) => (
-                          <li
-                            key={index}
-                            className="text-zinc-700 font-medium text-lg lg:text-xl"
-                          >
-                            {ingredient.ingredient}
-                          </li>
-                        ))}
-                    </ul>
+            ).length > 0)) && (
+          <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
+            {recipe.ingredients &&
+              recipe.ingredients.filter(
+                (ingredient) => ingredient.ingredient !== "",
+              ).length > 0 && (
+                <div className="mb-6 mr-6">
+                  <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 underline">
+                    Zutaten
+                  </h2>
+                  <div className="flex">
+                    <div>
+                      <ul>
+                        {recipe.ingredients
+                          .filter((ingredient) => ingredient.ingredient !== "")
+                          .map((ingredient, index) => (
+                            <li
+                              key={index}
+                              className="text-zinc-700 flex font-semibold text-lg lg:text-xl"
+                            >
+                              {ingredient.amount && ingredient.amount > 0 ? (
+                                <>
+                                  <DecimalToFraction
+                                    decimal={ingredient.amount}
+                                  />
+                                  {ingredient.unit && ` ${ingredient.unit}`}
+                                </>
+                              ) : (
+                                <span>&nbsp;</span>
+                              )}
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <ul className="pl-4">
+                        {recipe.ingredients
+                          .filter((ingredient) => ingredient.ingredient !== "")
+                          .map((ingredient, index) => (
+                            <li
+                              key={index}
+                              className="text-zinc-700 font-medium text-lg lg:text-xl"
+                            >
+                              {ingredient.ingredient}
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            {recipe.tools.filter((tool) => tool !== "").length > 0 && (
-              <div className="mb-6">
-                <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 underline">
-                  Utensilien
-                </h2>
-                <ul>
-                  {recipe.tools.map((tool, index) => (
-                    <li
-                      key={index}
-                      className="text-zinc-700 font-medium text-lg lg:text-xl"
-                    >
-                      {tool}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+              )}
+            {recipe.tools &&
+              recipe.tools.filter((tool) => tool !== "").length > 0 && (
+                <div className="mb-6">
+                  <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 underline">
+                    Utensilien
+                  </h2>
+                  <ul>
+                    {recipe.tools.map((tool, index) => (
+                      <li
+                        key={index}
+                        className="text-zinc-700 font-medium text-lg lg:text-xl"
+                      >
+                        {tool}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
           </div>
         )}
         <div>
-          {recipe.instructions.length > 0 &&
+          {recipe.instructions &&
+            recipe.instructions.length > 0 &&
             recipe.instructions
               .filter(
                 (instruction) =>
@@ -208,56 +216,63 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
                       {instruction.name}
                     </h3>
                   </div>
-                  {instruction.tools.filter((tool) => tool !== "").length >
-                    0 && (
-                    <div className="text-gray-700 md:text-lg flex items-center mt-2">
-                      <PiCookingPot className="text-cyan-800 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] mr-2" />
-                      <span>
-                        {instruction.tools
-                          .filter((tool) => tool !== "")
-                          .join(" - ")}
-                      </span>
-                    </div>
-                  )}
-                  {instruction.ingredients.filter(
-                    (ingredient) => ingredient.ingredient !== "",
-                  ).length > 0 && (
-                    <div className="text-gray-700 md:text-lg flex items-center mt-2">
-                      <CiShoppingBasket className="text-cyan-800 min-w-[26px] min-h-[26px] max-w-[26px] max-h-[26px] mr-2" />
-                      <span>
-                        {instruction.ingredients
-                          .filter((ingredient) => ingredient.ingredient !== "")
-                          .map((ingredient, idx) => (
-                            <span key={idx}>
-                              {ingredient.amount > 0 ? (
-                                <>
-                                  <DecimalToFraction
-                                    decimal={ingredient.amount}
-                                  />
-                                  {" "}
-                                  {ingredient.unit
-                                    ? `${ingredient.unit} `
-                                    : null}
-                                </>
-                              ) : null}
-                              {ingredient.ingredient}
-                              {idx <
-                                instruction.ingredients.filter(
-                                  (ingredient) => ingredient.ingredient !== "",
-                                ).length -
-                                  1 && " - "}
-                            </span>
-                          ))}
-                      </span>
-                    </div>
-                  )}
+                  {instruction.tools &&
+                    instruction.tools.filter((tool) => tool !== "").length >
+                      0 && (
+                      <div className="text-gray-700 md:text-lg flex items-center mt-2">
+                        <PiCookingPot className="text-cyan-800 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] mr-2" />
+                        <span>
+                          {instruction.tools
+                            .filter((tool) => tool !== "")
+                            .join(" - ")}
+                        </span>
+                      </div>
+                    )}
+                  {instruction.ingredients &&
+                    instruction.ingredients.filter(
+                      (ingredient) => ingredient.ingredient !== "",
+                    ).length > 0 && (
+                      <div className="text-gray-700 md:text-lg flex items-center mt-2">
+                        <CiShoppingBasket className="text-cyan-800 min-w-[26px] min-h-[26px] max-w-[26px] max-h-[26px] mr-2" />
+                        <span>
+                          {instruction.ingredients
+                            .filter(
+                              (ingredient) => ingredient.ingredient !== "",
+                            )
+                            .map((ingredient, idx) => (
+                              <span key={idx}>
+                                {ingredient.amount && ingredient.amount > 0 ? (
+                                  <>
+                                    <DecimalToFraction
+                                      decimal={ingredient.amount}
+                                    />
+                                    {" "}
+                                    {ingredient.unit
+                                      ? `${ingredient.unit} `
+                                      : null}
+                                  </>
+                                ) : null}
+                                {ingredient.ingredient}
+                                {instruction.ingredients &&
+                                  idx <
+                                    instruction.ingredients.filter(
+                                      (ingredient) =>
+                                        ingredient.ingredient !== "",
+                                    ).length -
+                                      1 &&
+                                  " - "}
+                              </span>
+                            ))}
+                        </span>
+                      </div>
+                    )}
                   <p className="text-gray-900 text-lg xs:text-xl mt-4">
                     {instruction.instruction}
                   </p>
                 </div>
               ))}
         </div>
-        {displaySocials && <RecipeComments url={recipe.url} />}
+        {displaySocials && recipe.url && <RecipeComments url={recipe.url} />}
       </div>
     </div>
   );

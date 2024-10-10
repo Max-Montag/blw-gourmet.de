@@ -37,11 +37,6 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
         }
 
         const data = await response.json();
-        alert(
-          data.comments
-            .map((comment: RecipeComment) => comment.author)
-            .join(", "),
-        );
         setComments(data.comments);
       } catch (error) {
         showNotification("Fehler beim Laden der Kommentare", "error", 3000);
@@ -153,7 +148,9 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
                   {isAuthenticated && comment.author === username && (
                     <button
                       className="mt-2 text-red-600 text-sm"
-                      onClick={() => handleDeleteComment(comment.id)}
+                      onClick={() => {
+                        comment.id ? handleDeleteComment(comment.id) : null;
+                      }}
                     >
                       Kommentar löschen
                     </button>

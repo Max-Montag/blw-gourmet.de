@@ -90,19 +90,25 @@ const EditRecipeList: React.FC<EditRecipeListProps> = ({
             <MdDeleteOutline
               className="absolute top-2 right-2 text-red-500 cursor-pointer"
               size={24}
-              onClick={() => openDeleteRecipeModal(recipe.url)}
+              onClick={() => {
+                recipe.url && openDeleteRecipeModal(recipe.url);
+              }}
             />
             {recipe.published ? (
               <FaRegEye
                 className="absolute top-2 left-2 text-emerald-500 cursor-pointer"
                 size={24}
-                onClick={() => handleUnpublishRecipe(recipe.url)}
+                onClick={() => {
+                  recipe.url && handleUnpublishRecipe(recipe.url);
+                }}
               />
             ) : (
               <FaRegEyeSlash
                 className="absolute top-2 left-2 text-gray-700 cursor-pointer"
                 size={24}
-                onClick={() => openPublishModal(recipe.url)}
+                onClick={() => {
+                  recipe.url && openPublishModal(recipe.url);
+                }}
               />
             )}
           </li>

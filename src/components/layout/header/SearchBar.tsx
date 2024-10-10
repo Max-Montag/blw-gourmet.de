@@ -79,7 +79,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
       e.preventDefault();
       setSelectedItem((prev) => (prev > 0 ? prev - 1 : 0));
     } else if (e.key === "Enter") {
-      if (selectedItem >= 0 && suggestions[selectedItem]) {
+      if (
+        selectedItem >= 0 &&
+        suggestions[selectedItem] &&
+        suggestions[selectedItem].name
+      ) {
         e.preventDefault();
         handleLinkClick(suggestions[selectedItem].name);
         router.push(`/rezept/${suggestions[selectedItem].url}`);
@@ -107,7 +111,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
           {suggestions.map((suggestion, index) => (
             <Link
               href={`/rezept/${suggestion.url}`}
-              onClick={() => handleLinkClick(suggestion.name)}
+              onClick={() => {
+                suggestion.name && handleLinkClick(suggestion.name);
+              }}
               key={suggestion.url}
               className={`flex items-center p-2 transition-all ${
                 selectedItem === index ? "bg-cyan-100" : "hover:bg-cyan-100"
@@ -116,7 +122,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               {suggestion.thumbnail ? (
                 <Image
                   src={apiUrl + suggestion.thumbnail}
-                  alt={suggestion.name}
+                  alt={suggestion.name || ""}
                   width={48}
                   height={48}
                   className="w-12 h-12 rounded-md object-cover mr-3"

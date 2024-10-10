@@ -9,7 +9,10 @@ interface RecipeListCardProps {
 }
 
 const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
-  const combinedLabels = [...recipe.dining_times, ...recipe.labels];
+  const combinedLabels = [
+    ...(recipe.dining_times || []),
+    ...(recipe.labels || []),
+  ];
   return (
     <Link
       href={`/rezept/${recipe.url}`}
@@ -22,7 +25,7 @@ const RecipeListCard: React.FC<RecipeListCardProps> = ({ recipe }) => {
             <Image
               key={recipe.url + "thumbnail"}
               src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.thumbnail}`}
-              alt={recipe.name}
+              alt={recipe.name || "Rezeptbild"}
               fill
               sizes="280px"
               className="w-full h-auto object-cover group-hover:scale-105 overflow-hidden transition-transform duration-50"
