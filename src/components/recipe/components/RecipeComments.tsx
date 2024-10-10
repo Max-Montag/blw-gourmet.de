@@ -37,7 +37,11 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
         }
 
         const data = await response.json();
-        alert(data.comments.map((comment: RecipeComment) => comment.author).join(", "));
+        alert(
+          data.comments
+            .map((comment: RecipeComment) => comment.author)
+            .join(", "),
+        );
         setComments(data.comments);
       } catch (error) {
         showNotification("Fehler beim Laden der Kommentare", "error", 3000);

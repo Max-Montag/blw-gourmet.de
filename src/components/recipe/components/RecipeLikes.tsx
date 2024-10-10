@@ -26,7 +26,12 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
 
   useEffect(() => {
     const fetchLikes = async () => {
-      if (!url || isAuthenticated === undefined || checkIfLikedByLocalStorage === undefined) return;
+      if (
+        !url ||
+        isAuthenticated === undefined ||
+        checkIfLikedByLocalStorage === undefined
+      )
+        return;
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/likes/${url}/`,
