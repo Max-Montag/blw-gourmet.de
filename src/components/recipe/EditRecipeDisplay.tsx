@@ -414,6 +414,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                       : "border-gray-300"
                   } rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500`}
                 />
+                {/**  TODO */}
                 <input
                   type="number"
                   placeholder="Menge"
@@ -422,7 +423,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                     handleIngredientChange(
                       index,
                       "amount",
-                      parseFloat(e.target.value) || 0,
+                      parseFloat(e.target.value) || e.target.value || 0,
                     )
                   }
                   onBlur={handleValidate}

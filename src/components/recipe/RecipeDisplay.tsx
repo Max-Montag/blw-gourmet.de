@@ -76,7 +76,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
             {recipe.name}
           </h1>
         )}
-        <div className="flex justify-center items-center space-x-4 lg:space-x-10 2xl:space-x-16 my-4">
+        <div className="flex justify-center items-center my-4">
           {displaySocials && recipe.url ? (
             <RecipeLikes url={recipe.url} className="w-16 h-10" />
           ) : (
@@ -86,7 +86,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
             url={"rezept/" + recipe.url}
             shareText="Teile dieses Rezept"
             socialText="Dieses leckere Rezept habe ich auf blw-gourmet.de gefunden:"
-            className="w-16 h-10"
+            className="w-16 h-10 ml-4 lg:ml-10 2xl:ml-16"
           />
         </div>
         {recipe.description && (

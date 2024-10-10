@@ -6,37 +6,32 @@ import {
   TbChefHat,
   TbCookie,
 } from "react-icons/tb";
-import { PiOven } from "react-icons/pi";
+import { PiOven, PiBread } from "react-icons/pi";
 import {
   FaRegSnowflake,
   FaRegCalendarCheck,
   FaCookieBite,
   FaBabyCarriage,
-  FaPizzaSlice,
   FaSeedling,
   FaEgg,
 } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 import { IoHandLeftOutline, IoFastFoodOutline } from "react-icons/io5";
 import { GiCookingPot, GiForkKnifeSpoon } from "react-icons/gi";
-import { LuVegan, LuClock7, LuClock9, LuClock12 } from "react-icons/lu";
+import { LuVegan, LuClock7, LuClock9, LuClock12, LuBaby } from "react-icons/lu";
 
 const icons: { [key: string]: JSX.Element } = {
-  kühlschrank: <TbFridge />,
-  gefrier: <FaRegSnowflake />,
-  tiefkühl: <FaRegSnowflake />,
   fingerfood: <IoHandLeftOutline />,
   vegan: <LuVegan />,
   vegetarisch: <TbMeatOff />,
   fleisch: <TbMeat />,
-  beikostreife: <FaRegCalendarCheck />,
+  ab_beikostreife: <LuBaby />,
   jahr: <FaRegCalendarCheck />,
   monat: <FaRegCalendarCheck />,
   snack: <FaCookieBite />,
   frühstück: <LuClock9 />,
   mittagessen: <LuClock12 />,
   abendessen: <LuClock7 />,
-  default: <TbFridge />,
   proteinreich: <FaEgg />,
   einfach: <GiCookingPot />,
   wenige_zutaten: <TbCookie />,
@@ -47,12 +42,13 @@ const icons: { [key: string]: JSX.Element } = {
   süß: <TbCookie />,
   zuckerfrei: <FaSeedling />,
   backen: <PiOven />,
-  brot: <FaPizzaSlice />,
+  brot: <PiBread />,
   ab_9_monaten: <FaBabyCarriage />,
   schnell: <GiForkKnifeSpoon />,
   herzhaft: <TbChefHat />,
   familienessen: <FaHome />,
   ofengericht: <PiOven />,
+  default: <LuBaby />,
 };
 
 export const getIconForCategory = (category: string): JSX.Element => {

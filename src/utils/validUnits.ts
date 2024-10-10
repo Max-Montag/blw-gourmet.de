@@ -39,4 +39,6 @@ export const validUnits: string[] = [
   "Tropfen",
   "Strich",
   "Handvoll",
+  "Würfel",
+  "Etwas",
 ];
