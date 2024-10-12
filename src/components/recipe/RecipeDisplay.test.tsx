@@ -89,7 +89,7 @@ describe("RecipeDisplay Component", () => {
     const lists = screen.getAllByRole("list");
     const amountList = lists[0];
     const ingredientList = lists[1];
- 
+
     const amountItems = within(amountList).getAllByRole("listitem");
     const amountTexts = amountItems.map((item) => item.textContent);
     const expectedAmounts = ["1", "1/2", "1 1/2\u2009Tassen"];
@@ -100,14 +100,14 @@ describe("RecipeDisplay Component", () => {
     const expectedIngredients = ["Karotte", "Zucchini", "Mehl"];
     expect(ingredientTexts).toEqual(expectedIngredients);
   });
-  
+
   it("displays the tools needed for the recipe", () => {
     render(<RecipeDisplay recipe={mockRecipe} displaySocials={false} />);
     const muffinformTools = screen.getAllByText(/Muffinform/i);
     const reibeTool = screen.getByText(/Reibe/i);
     expect(muffinformTools).toHaveLength(2);
     expect(reibeTool).toBeInTheDocument();
-  });  
+  });
 
   it("displays the instructions steps correctly", () => {
     render(<RecipeDisplay recipe={mockRecipe} displaySocials={false} />);
@@ -125,5 +125,4 @@ describe("RecipeDisplay Component", () => {
     expect(step2Title).toBeInTheDocument();
     expect(step2Instruction).toBeInTheDocument();
   });
-
 });

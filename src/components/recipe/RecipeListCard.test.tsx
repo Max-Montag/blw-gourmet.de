@@ -18,23 +18,23 @@ describe("RecipeListCard", () => {
   };
 
   it("renders the recipe name and description correctly", () => {
-    render(
-      <RecipeListCard recipe={mockRecipe} />,
-      { wrapper: MemoryRouterProvider }
-    );
+    render(<RecipeListCard recipe={mockRecipe} />, {
+      wrapper: MemoryRouterProvider,
+    });
 
     const nameElement = screen.getByText("Test Rezept");
-    const descriptionElement = screen.getByText("Dies ist eine Testbeschreibung");
+    const descriptionElement = screen.getByText(
+      "Dies ist eine Testbeschreibung",
+    );
 
     expect(nameElement).toBeInTheDocument();
     expect(descriptionElement).toBeInTheDocument();
   });
 
   it("displays the correct labels and dining times", () => {
-    render(
-      <RecipeListCard recipe={mockRecipe} />,
-      { wrapper: MemoryRouterProvider }
-    );
+    render(<RecipeListCard recipe={mockRecipe} />, {
+      wrapper: MemoryRouterProvider,
+    });
 
     const vegetarianLabel = screen.getByText("Vegetarisch");
     const glutenFreeLabel = screen.getByText("Glutenfrei");
@@ -48,10 +48,9 @@ describe("RecipeListCard", () => {
   });
 
   it("displays fallback text if thumbnail is not provided", () => {
-    render(
-      <RecipeListCard recipe={mockRecipe} />,
-      { wrapper: MemoryRouterProvider }
-    );
+    render(<RecipeListCard recipe={mockRecipe} />, {
+      wrapper: MemoryRouterProvider,
+    });
 
     const fallbackText = screen.getByText("Bild nicht gefunden");
     expect(fallbackText).toBeInTheDocument();
@@ -63,12 +62,13 @@ describe("RecipeListCard", () => {
       description: undefined,
     };
 
-    render(
-      <RecipeListCard recipe={recipeWithoutDescription} />,
-      { wrapper: MemoryRouterProvider }
-    );
+    render(<RecipeListCard recipe={recipeWithoutDescription} />, {
+      wrapper: MemoryRouterProvider,
+    });
 
-    const defaultDescription = screen.getByText("Keine Beschreibung verfügbar...");
+    const defaultDescription = screen.getByText(
+      "Keine Beschreibung verfügbar...",
+    );
     expect(defaultDescription).toBeInTheDocument();
   });
 });
