@@ -62,12 +62,21 @@ const CookieBanner: React.FC = () => {
         <div className="w-full flex items-center justify-center">
           <div className="w-2/3 md:w-full flex flex-col md:flex-row items-end justify-end md:justify-between mb-4 md:space-x-8 space-y-4 md:space-y-0">
             <div className="w-full flex justify-between items-center">
-              <span className="text-cyan-900 mr-2">Notwendige Cookies</span>
-              <NiceToggle enabled={necessary} setEnabled={setNecessary} />
+              <label htmlFor="necessary" className="text-cyan-900 mr-2">
+                Notwendige Cookies
+              </label>
+              <NiceToggle
+                id="necessary"
+                enabled={necessary}
+                setEnabled={setNecessary}
+              />
             </div>
             <div className="w-full flex justify-between items-center">
-              <span className="text-cyan-900 mr-2">Optionale Cookies</span>
+              <label htmlFor="optional" className="text-cyan-900 mr-2">
+                Optionale Cookies
+              </label>
               <NiceToggle
+                id="optional"
                 enabled={optional}
                 setEnabled={setOptional}
                 disabled={!necessary}
@@ -77,8 +86,11 @@ const CookieBanner: React.FC = () => {
               />
             </div>
             <div className="w-full flex justify-between items-center">
-              <span className="text-cyan-900 mr-2">Drittanbieter-Cookies</span>
+              <label htmlFor="thirdParty" className="text-cyan-900 mr-2">
+                Drittanbieter-Cookies
+              </label>
               <NiceToggle
+                id="thirdParty"
                 enabled={thirdParty}
                 setEnabled={setThirdParty}
                 disabled={!necessary}

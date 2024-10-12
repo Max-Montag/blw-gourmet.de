@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect } from "react";
 
 interface NiceToggleProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  id?: string;
   enabled: boolean;
   setEnabled: (enabled: boolean) => void;
   disabled?: boolean;
 }
 
 const NiceToggle: React.FC<NiceToggleProps> = ({
+  id = "toggle",
   enabled,
   setEnabled,
   disabled = false,
@@ -26,6 +28,7 @@ const NiceToggle: React.FC<NiceToggleProps> = ({
       <div>
         <label className="relative inline-block w-[64px] h-[32px]">
           <input
+            id={id}
             type="checkbox"
             className="opacity-0 w-0 h-0"
             checked={enabled}
