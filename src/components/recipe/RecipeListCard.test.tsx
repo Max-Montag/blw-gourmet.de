@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import React from "react";
+import { render, screen } from "@testing-library/react";
 import RecipeListCard from "./RecipeListCard";
 import { RecipePreview } from "@/types/recipeTypes";
 import { MemoryRouterProvider } from "next-router-mock/MemoryRouterProvider";

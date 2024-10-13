@@ -1,3 +1,5 @@
+import React from "react";
+
 const standardText =
   "Bist du sicher, dass du diese Aktion durchführen möchtest?";
 const standartButtonText = "Löschen";

@@ -1,3 +1,4 @@
+import React from "react";
 import CategoryCard from "./CategoryCard";
 import { getIconForCategory } from "@/components/common/IconText";
 

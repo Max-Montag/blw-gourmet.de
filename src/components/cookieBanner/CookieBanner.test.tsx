@@ -1,3 +1,5 @@
+import "@testing-library/jest-dom";
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import CookieBanner from "./CookieBanner";
 import { useCookieConsent } from "@/context/CookieConsentContext";

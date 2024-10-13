@@ -1,3 +1,5 @@
+import "@testing-library/jest-dom";
+import React from "react";
 import { render } from "@testing-library/react";
 import CategoryCard from "./CategoryCard";
 import { MemoryRouterProvider } from "next-router-mock/MemoryRouterProvider";

@@ -1,3 +1,5 @@
+import "@testing-library/jest-dom";
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouterProvider } from "next-router-mock/MemoryRouterProvider";
 import ArticleList from "./ArticleList";

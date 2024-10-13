@@ -1,6 +1,12 @@
-module.exports = {
-  presets: ["next/babel"],
-};
+// module.exports = {
+//   presets: ["next/babel"],
+// };
 
-// TODO if this file is present in the root dir, the build fails and the test runs, if it is not present it is vice versa
-// RENAME to babel.config.js
+module.exports = {
+  presets: [
+    // "next/babel",
+    "@babel/preset-env",
+    "@babel/preset-react",
+    "@babel/preset-typescript",
+  ],
+};

@@ -1,9 +1,10 @@
+import "@testing-library/jest-dom";
+import React from "react";
 import { render, screen, act } from "@testing-library/react";
 import {
   NotificationProvider,
   useNotification,
 } from "@/context/NotificationContext";
-import React from "react";
 
 const TestNotificationComponent = () => {
   const { showNotification } = useNotification();

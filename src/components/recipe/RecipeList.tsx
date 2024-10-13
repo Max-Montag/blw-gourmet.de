@@ -1,3 +1,4 @@
+import React from "react";
 import { RecipePreview } from "@/types/recipeTypes";
 import NoRecipesAvailable from "@/components/error/NoRecipesAvailable";
 import RecipeListCard from "@/components/recipe/RecipeListCard";
