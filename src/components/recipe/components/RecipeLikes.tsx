@@ -38,7 +38,7 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
           {
             method: "GET",
             credentials: "include",
-          },
+          }
         );
 
         if (!response.ok) {
@@ -82,7 +82,7 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
           showNotification(
             "Da du nicht angemeldet bist, speichern wir deine Lieblingsrezepte in deinem Browser. Denke darüber nach, dich zu anzumelden oder zu registrieren, um sie auch auf anderen Geräten zu sehen.",
             "info",
-            8000,
+            8000
           );
         }
         localStorage.setItem(`liked_${url}`, newLikedStatus.toString());
@@ -91,7 +91,7 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
         showNotification(
           "Bitte melde dich an, um deine Lieblingsrezepte geräteübergreifend zu speichern oder akzeptiere optionale Cookies, um sie in deinem Browser zu speichern.",
           "error",
-          8000,
+          8000
         );
       }
     } catch (error) {
@@ -114,7 +114,7 @@ const RecipeLikes: React.FC<RecipeLikesProps> = ({ className, url }) => {
           "Content-Type": "application/json",
           "X-CSRFToken": csrf_token,
         },
-      },
+      }
     );
 
     if (!response.ok) {

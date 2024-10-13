@@ -24,7 +24,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    >
   ) => {
     const { name, value } = e.target;
     const newRecipe = {
@@ -85,7 +85,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   const handleIngredientChange = (
     index: number,
     field: keyof Ingredient,
-    value: string | number,
+    value: string | number
   ) => {
     const newIngredients = [...(recipe.ingredients || [])];
     newIngredients[index] = { ...newIngredients[index], [field]: value };
@@ -134,7 +134,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   const handleInstructionChange = (
     index: number,
     field: keyof Instruction,
-    value: string,
+    value: string
   ) => {
     const newInstructions = [...(recipe.instructions || [])];
     newInstructions[index] = { ...newInstructions[index], [field]: value };
@@ -177,7 +177,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
     instructionIndex: number,
     ingredientIndex: number,
     field: keyof Ingredient,
-    value: string | number,
+    value: string | number
   ) => {
     const newInstructions = [...(recipe.instructions || [])];
     const newIngredients = [
@@ -199,7 +199,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
 
   const handleRemoveInstructionIngredient = (
     instructionIndex: number,
-    ingredientIndex: number,
+    ingredientIndex: number
   ) => {
     const newInstructions = [...(recipe.instructions || [])];
     const newIngredients = newInstructions[
@@ -220,7 +220,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
   const handleInstructionToolChange = (
     instructionIndex: number,
     toolIndex: number,
-    value: string,
+    value: string
   ) => {
     const newInstructions = [...(recipe.instructions || [])];
     const newTools = [...(newInstructions[instructionIndex].tools || [])];
@@ -237,11 +237,11 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
 
   const handleRemoveInstructionTool = (
     instructionIndex: number,
-    toolIndex: number,
+    toolIndex: number
   ) => {
     const newInstructions = [...(recipe.instructions || [])];
     const newTools = newInstructions[instructionIndex].tools?.filter(
-      (_, i) => i !== toolIndex,
+      (_, i) => i !== toolIndex
     );
     newInstructions[instructionIndex] = {
       ...newInstructions[instructionIndex],
@@ -424,7 +424,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                       handleIngredientChange(
                         index,
                         "ingredient",
-                        e.target.value,
+                        e.target.value
                       )
                     }
                     onBlur={handleValidate}
@@ -444,7 +444,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                       handleIngredientChange(
                         index,
                         "amount",
-                        parseFloat(e.target.value) || "",
+                        parseFloat(e.target.value) || ""
                       )
                     }
                     onBlur={handleValidate}
@@ -595,7 +595,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                                 index,
                                 ingIndex,
                                 "ingredient",
-                                e.target.value,
+                                e.target.value
                               )
                             }
                             onBlur={handleValidate}
@@ -621,7 +621,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                                 index,
                                 ingIndex,
                                 "amount",
-                                parseFloat(e.target.value) || "",
+                                parseFloat(e.target.value) || ""
                               )
                             }
                             onBlur={handleValidate}
@@ -647,7 +647,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                                 index,
                                 ingIndex,
                                 "unit",
-                                e.target.value,
+                                e.target.value
                               )
                             }
                             onBlur={handleValidate}
@@ -730,7 +730,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                               handleInstructionToolChange(
                                 index,
                                 toolIndex,
-                                e.target.value,
+                                e.target.value
                               )
                             }
                             onBlur={handleValidate}
@@ -777,7 +777,7 @@ const EditRecipeDisplay: React.FC<EditRecipeProps> = ({
                     handleInstructionChange(
                       index,
                       "instruction",
-                      e.target.value,
+                      e.target.value
                     )
                   }
                   onBlur={handleValidate}

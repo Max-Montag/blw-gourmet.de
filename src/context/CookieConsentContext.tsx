@@ -45,7 +45,7 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
       Cookies.set(
         "cookieConsent",
         JSON.stringify({ necessary, optional, thirdParty }),
-        { expires: 365 },
+        { expires: 365 }
       );
     }
   };

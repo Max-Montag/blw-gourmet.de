@@ -30,7 +30,7 @@ const Captcha: React.FC<CaptchaProps> = ({
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       if (!response.ok) {

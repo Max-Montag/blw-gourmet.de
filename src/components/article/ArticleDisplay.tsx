@@ -17,20 +17,26 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
         switch (node.type) {
           case "paragraph":
             return (
-              <p key={index} className="text-gray-700 text-lg mb-4">
-                {node.children.map((child, idx) => renderText(child, idx))}
+              <p key={"p_" + index} className="text-gray-700 text-lg mb-4">
+                {node.children.map((child, idx) =>
+                  renderText(child, index, idx)
+                )}
               </p>
             );
           case "heading-one":
             return (
-              <h2 key={index} className="text-2xl font-semibold mb-4">
-                {node.children.map((child, idx) => renderText(child, idx))}
+              <h2 key={"h1_" + index} className="text-2xl font-semibold mb-4">
+                {node.children.map((child, idx) =>
+                  renderText(child, index, idx)
+                )}
               </h2>
             );
           case "heading-two":
             return (
-              <h3 key={index} className="text-xl font-semibold mb-4">
-                {node.children.map((child, idx) => renderText(child, idx))}
+              <h3 key={"h2_" + index} className="text-xl font-semibold mb-4">
+                {node.children.map((child, idx) =>
+                  renderText(child, index, idx)
+                )}
               </h3>
             );
           default:
@@ -42,7 +48,7 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
     });
   };
 
-  const renderText = (node: Descendant, index: number) => {
+  const renderText = (node: Descendant, parentIndex: number, index: number) => {
     if (!SlateText.isText(node)) {
       return null;
     }
@@ -50,26 +56,18 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
     let text = <>{node.text}</>;
 
     if (node.bold) {
-      text = <strong key={index}>{text}</strong>;
+      text = <strong key={parentIndex + "_bold_" + index}>{text}</strong>;
     }
 
     if (node.italic) {
-      text = <em key={index}>{text}</em>;
+      text = <em key={parentIndex + "_italic_" + index}>{text}</em>;
     }
 
     if (node.underline) {
-      text = <u key={index}>{text}</u>;
+      text = <u key={parentIndex + "_underline_" + index}>{text}</u>;
     }
 
-    if (node.code) {
-      text = (
-        <code key={index} className="bg-gray-100 p-1 rounded">
-          {text}
-        </code>
-      );
-    }
-
-    return text;
+    return <span key={parentIndex + "_text_" + index}>{text}</span>;
   };
 
   return (

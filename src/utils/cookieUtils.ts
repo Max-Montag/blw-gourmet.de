@@ -7,7 +7,7 @@ async function fetchCSRFToken(): Promise<string | undefined> {
       {
         method: "GET",
         credentials: "include",
-      },
+      }
     );
 
     if (!response.ok) {
@@ -34,7 +34,7 @@ async function getCSRFToken(): Promise<string> {
 
     if (!token) {
       console.warn(
-        "CSRF-Token nicht gefunden. Versuche Token vom Server zu holen.",
+        "CSRF-Token nicht gefunden. Versuche Token vom Server zu holen."
       );
 
       token = await fetchCSRFToken();

@@ -73,7 +73,7 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
   const [value, setValue] = useState<Descendant[]>(
     articleData.content && articleData.content.length > 0
       ? articleData.content
-      : [{ type: "paragraph", children: [{ text: "" }] }],
+      : [{ type: "paragraph", children: [{ text: "" }] }]
   );
   const [title, setTitle] = useState<string>(articleData.title);
 
@@ -108,7 +108,7 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
     const [match] = Array.from(
       Editor.nodes(editor, {
         match: (n) => SlateElement.isElement(n) && n.type === format,
-      }),
+      })
     );
     return !!match;
   };
@@ -120,7 +120,7 @@ const EditArticleDisplay: React.FC<EditArticleDisplayProps> = ({
       { type: isActive ? "paragraph" : format },
       {
         match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
-      },
+      }
     );
   };
 

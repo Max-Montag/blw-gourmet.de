@@ -21,7 +21,7 @@ const UserSettings: React.FC = () => {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState<string | null>(
-    null,
+    null
   );
   const [saveError, setSaveError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +63,7 @@ const UserSettings: React.FC = () => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${newUsername}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${newUsername}`
       );
 
       if (response.ok) {
@@ -98,7 +98,7 @@ const UserSettings: React.FC = () => {
           },
           credentials: "include",
           body: JSON.stringify(data),
-        },
+        }
       );
 
       if (response.ok) {
@@ -175,7 +175,7 @@ const UserSettings: React.FC = () => {
 
   const handleSubmit = (
     e: React.FormEvent<HTMLFormElement>,
-    action: (formData: FormData) => void,
+    action: (formData: FormData) => void
   ) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);

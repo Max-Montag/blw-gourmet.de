@@ -63,7 +63,7 @@ interface IconTextProps {
 
 const IconText: React.FC<IconTextProps> = ({ text }) => {
   const matchedIcon = Object.keys(icons).find((key) =>
-    text.toLowerCase().includes(key),
+    text.toLowerCase().includes(key)
   );
 
   return (

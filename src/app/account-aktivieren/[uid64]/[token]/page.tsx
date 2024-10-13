@@ -25,7 +25,7 @@ const ActivateAccount: React.FC<ActivateAccountProps> = ({ params }) => {
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       )
         .then((response) => {
           if (response.ok) {

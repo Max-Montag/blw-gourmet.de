@@ -37,7 +37,7 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
           {
             method: "GET",
             credentials: "include",
-          },
+          }
         );
 
         if (!response.ok) {
@@ -94,7 +94,7 @@ const EditArticlePage: React.FC<PageProps> = ({ params }) => {
           },
           credentials: "include",
           body: JSON.stringify(data),
-        },
+        }
       );
 
       if (!response.ok) {

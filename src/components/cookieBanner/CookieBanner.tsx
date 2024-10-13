@@ -19,7 +19,7 @@ const CookieBanner: React.FC = () => {
 
   useEffect(() => {
     const storedConsent = document.cookie.match(
-      /^(.*;)?\s*cookieConsent\s*=\s*[^;]+(.*)?$/,
+      /^(.*;)?\s*cookieConsent\s*=\s*[^;]+(.*)?$/
     );
     if (!storedConsent) {
       setShowBanner(true);

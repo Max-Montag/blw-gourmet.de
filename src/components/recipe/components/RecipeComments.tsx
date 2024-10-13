@@ -29,7 +29,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
           {
             method: "GET",
             credentials: "include",
-          },
+          }
         );
 
         if (!response.ok) {
@@ -65,7 +65,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
             "Content-Type": "application/json",
             "X-CSRFToken": csrf_token,
           },
-        },
+        }
       );
 
       if (!response.ok) {
@@ -95,7 +95,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
           headers: {
             "X-CSRFToken": csrf_token,
           },
-        },
+        }
       );
 
       if (!response.ok) {

@@ -9,7 +9,7 @@ const footerLinks = [
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-cyan-100 z-30 text-cyan-950 py-4 px-6 mt-auto ">
+    <footer className="bg-cyan-100 z-30 text-cyan-950 py-4 px-6 mt-auto">
       <div className="flex flex-col md:flex-row justify-between items-center">
         <p className="text-center md:text-left mb-4 md:mb-0">
           &copy; {new Date().getFullYear()} BLW-Gourmet.de. Alle Rechte

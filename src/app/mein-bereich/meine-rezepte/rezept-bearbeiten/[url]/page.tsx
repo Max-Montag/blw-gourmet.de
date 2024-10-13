@@ -75,7 +75,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
           {
             method: "GET",
             credentials: "include",
-          },
+          }
         );
         if (!response.ok) {
           throw new Error("Fehler beim Abrufen vom Server.");
@@ -124,7 +124,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
       const filteredData = {
         ...recipe,
         dining_times: recipe.dining_times?.filter((time) =>
-          validDiningTimes.includes(time),
+          validDiningTimes.includes(time)
         ),
         published: publish,
         labels: recipe.labels?.filter((label) => label !== ""),
@@ -132,7 +132,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
           (ingredient) =>
             ingredient.ingredient !== "" ||
             ingredient.amount !== 0 ||
-            ingredient.unit !== "",
+            ingredient.unit !== ""
         ),
         tools: recipe.tools?.filter((tool) => tool !== ""),
         instructions: recipe.instructions?.map((instruction) => ({
@@ -141,7 +141,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
             (ingredient) =>
               ingredient.ingredient !== "" ||
               ingredient.amount !== 0 ||
-              ingredient.unit !== "",
+              ingredient.unit !== ""
           ),
           tools: instruction.tools?.filter((tool) => tool !== ""),
         })),
@@ -207,7 +207,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({ params }) => {
   const handleJsonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     try {
       const updatedRecipe = ensureEmptyFields(
-        JSON.parse(e.target.value.trim()),
+        JSON.parse(e.target.value.trim())
       );
       const imageUrl = recipe?.optimized_image;
       if (imageUrl) {

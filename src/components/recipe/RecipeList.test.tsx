@@ -25,9 +25,7 @@ describe("RecipeList Component", () => {
   it("renders NoRecipesAvailable text when no recipes are provided", () => {
     render(<RecipeList name="frühstück" recipes={[]} />);
     expect(
-      screen.getByText(
-        "In dieser Kategorie sind noch keine Rezepte verfügbar.",
-      ),
+      screen.getByText("In dieser Kategorie sind noch keine Rezepte verfügbar.")
     ).toBeInTheDocument();
   });
 

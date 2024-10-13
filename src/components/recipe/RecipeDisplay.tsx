@@ -66,7 +66,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
                 >
                   <IconText text={label} />
                 </Link>
-              ) : null,
+              ) : null
             )}
           </div>
         )}
@@ -126,12 +126,12 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
           recipe.tools.filter((tool) => tool !== "").length > 0) ||
           (recipe.ingredients &&
             recipe.ingredients.filter(
-              (ingredient) => ingredient.ingredient !== "",
+              (ingredient) => ingredient.ingredient !== ""
             ).length > 0)) && (
           <div className="w-full flex flex-wrap justify-between sm:justify-around xs:px-12 sm:px-0">
             {recipe.ingredients &&
               recipe.ingredients.filter(
-                (ingredient) => ingredient.ingredient !== "",
+                (ingredient) => ingredient.ingredient !== ""
               ).length > 0 && (
                 <div className="mb-6 mr-6">
                   <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 mb-2 underline">
@@ -204,7 +204,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
             recipe.instructions
               .filter(
                 (instruction) =>
-                  instruction.name !== "" || instruction.instruction !== "",
+                  instruction.name !== "" || instruction.instruction !== ""
               )
               .map((instruction, index) => (
                 <div key={index} className="py-4">
@@ -230,14 +230,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
                     )}
                   {instruction.ingredients &&
                     instruction.ingredients.filter(
-                      (ingredient) => ingredient.ingredient !== "",
+                      (ingredient) => ingredient.ingredient !== ""
                     ).length > 0 && (
                       <div className="text-gray-700 md:text-lg flex items-center mt-2">
                         <CiShoppingBasket className="text-cyan-800 min-w-[26px] min-h-[26px] max-w-[26px] max-h-[26px] mr-2" />
                         <span>
                           {instruction.ingredients
                             .filter(
-                              (ingredient) => ingredient.ingredient !== "",
+                              (ingredient) => ingredient.ingredient !== ""
                             )
                             .map((ingredient, idx) => (
                               <span key={idx}>
@@ -257,7 +257,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
                                   idx <
                                     instruction.ingredients.filter(
                                       (ingredient) =>
-                                        ingredient.ingredient !== "",
+                                        ingredient.ingredient !== ""
                                     ).length -
                                       1 &&
                                   " - "}

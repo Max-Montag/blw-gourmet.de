@@ -8,7 +8,7 @@ import { IoCloseOutline, IoMailOutline } from "react-icons/io5";
 interface SharePopUpProps {
   className?: string;
   url: string;
-  shareText: string;
+  shareText?: string;
   socialText?: string;
 }
 
@@ -25,6 +25,7 @@ const SharePopUp: React.FC<SharePopUpProps> = ({
     setIsOpen(!isOpen);
   };
 
+  // disable scrolling when share menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";

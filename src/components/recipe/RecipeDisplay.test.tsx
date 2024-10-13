@@ -50,7 +50,7 @@ describe("RecipeDisplay Component", () => {
   it("displays the recipe description", () => {
     render(<RecipeDisplay recipe={mockRecipe} displaySocials={false} />);
     const recipeDescription = screen.getByText(
-      /Leckere und gesunde Gemüsemuffins für kleine Hände/i,
+      /Leckere und gesunde Gemüsemuffins für kleine Hände/i
     );
     expect(recipeDescription).toBeInTheDocument();
   });
@@ -113,11 +113,11 @@ describe("RecipeDisplay Component", () => {
     render(<RecipeDisplay recipe={mockRecipe} displaySocials={false} />);
     const step1Title = screen.getByText(/Vorbereitung/i);
     const step1Instruction = screen.getByText(
-      /Karotten und Zucchini fein raspeln und Mehl hinzufügen/i,
+      /Karotten und Zucchini fein raspeln und Mehl hinzufügen/i
     );
     const step2Title = screen.getByText(/Just cook it/i);
     const step2Instruction = screen.getByText(
-      /Die Form befüllen und bei 180°C 20 Minuten backen/i,
+      /Die Form befüllen und bei 180°C 20 Minuten backen/i
     );
 
     expect(step1Title).toBeInTheDocument();

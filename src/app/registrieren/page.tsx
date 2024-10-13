@@ -19,7 +19,7 @@ const Register: React.FC = () => {
   const [loadingError, setLoadingError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState<string | null>(
-    null,
+    null
   );
   const [saveError, setSaveError] = useState("");
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -48,7 +48,7 @@ const Register: React.FC = () => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${username}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/check_username/?username=${username}`
       );
 
       if (response.ok) {
@@ -87,17 +87,17 @@ const Register: React.FC = () => {
         .required("Passwort ist erforderlich.")
         .matches(
           /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\W_]).{8,128}$/,
-          "Passwort muss zwischen 8 und 128 Zeichen lang sein und mindestens eine Zahl, einen Buchstaben und ein Sonderzeichen enthalten.",
+          "Passwort muss zwischen 8 und 128 Zeichen lang sein und mindestens eine Zahl, einen Buchstaben und ein Sonderzeichen enthalten."
         ),
       confirmPassword: Yup.string()
         .oneOf(
           [Yup.ref("password"), undefined],
-          "Passwörter stimmen nicht überein.",
+          "Passwörter stimmen nicht überein."
         )
         .required("Passwort wiederholen ist erforderlich."),
       consentTermsOfService: Yup.boolean().oneOf(
         [true],
-        "Bitte bestätige die Nutzungsbedingungen.",
+        "Bitte bestätige die Nutzungsbedingungen."
       ),
     }),
     onSubmit: async (values) => {
@@ -115,7 +115,7 @@ const Register: React.FC = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ ...values, captcha }),
-          },
+          }
         );
 
         if (response.ok) {

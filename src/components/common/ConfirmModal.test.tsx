@@ -15,7 +15,7 @@ describe("ConfirmModal", () => {
         show={false}
         onClose={onCloseMock}
         onConfirm={onConfirmMock}
-      />,
+      />
     );
     const modalElement = screen.queryByRole("dialog");
     expect(modalElement).toBeNull();
@@ -27,7 +27,7 @@ describe("ConfirmModal", () => {
         show={true}
         onClose={onCloseMock}
         onConfirm={onConfirmMock}
-      />,
+      />
     );
     const modalElement = screen.getByRole("dialog");
     expect(modalElement).toBeInTheDocument();
@@ -39,10 +39,10 @@ describe("ConfirmModal", () => {
         show={true}
         onClose={onCloseMock}
         onConfirm={onConfirmMock}
-      />,
+      />
     );
     const defaultText = screen.getByText(
-      "Bist du sicher, dass du diese Aktion durchführen möchtest?",
+      "Bist du sicher, dass du diese Aktion durchführen möchtest?"
     );
     expect(defaultText).toBeInTheDocument();
   });
@@ -55,7 +55,7 @@ describe("ConfirmModal", () => {
         onClose={onCloseMock}
         onConfirm={onConfirmMock}
         text={customText}
-      />,
+      />
     );
     const textElement = screen.getByText(customText);
     expect(textElement).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe("ConfirmModal", () => {
         show={true}
         onClose={onCloseMock}
         onConfirm={onConfirmMock}
-      />,
+      />
     );
     const defaultButtonText = screen.getByText("Löschen");
     expect(defaultButtonText).toBeInTheDocument();
@@ -81,7 +81,7 @@ describe("ConfirmModal", () => {
         onClose={onCloseMock}
         onConfirm={onConfirmMock}
         buttonText={customButtonText}
-      />,
+      />
     );
     const buttonTextElement = screen.getByText(customButtonText);
     expect(buttonTextElement).toBeInTheDocument();
@@ -93,7 +93,7 @@ describe("ConfirmModal", () => {
         show={true}
         onClose={onCloseMock}
         onConfirm={onConfirmMock}
-      />,
+      />
     );
     const cancelButton = screen.getByText("Abbrechen");
     fireEvent.click(cancelButton);
@@ -106,7 +106,7 @@ describe("ConfirmModal", () => {
         show={true}
         onClose={onCloseMock}
         onConfirm={onConfirmMock}
-      />,
+      />
     );
     const confirmButton = screen.getByText("Löschen");
     fireEvent.click(confirmButton);

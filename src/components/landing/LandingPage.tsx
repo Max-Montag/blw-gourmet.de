@@ -23,7 +23,7 @@ export default async function LandingPage() {
   const category = await Promise.all(
     categories.map(async (category) => {
       return await getRecipesByCategory(category);
-    }),
+    })
   );
   const articles = await getAllArticlesData();
 
@@ -96,7 +96,7 @@ export default async function LandingPage() {
                         recipes={recipes}
                       />
                     </div>
-                  ),
+                  )
               )}
             </div>
           </section>

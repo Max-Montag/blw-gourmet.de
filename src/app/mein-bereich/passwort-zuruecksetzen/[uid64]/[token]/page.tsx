@@ -31,7 +31,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ params }) => {
           },
           body: JSON.stringify({ password }),
           credentials: "include",
-        },
+        }
       );
 
       if (response.ok) {

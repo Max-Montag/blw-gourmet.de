@@ -9,7 +9,7 @@ const BrowseRecipes: React.FC = async () => {
       // {cache: "no-cache",},
       {
         next: { revalidate: 86400 },
-      },
+      }
     );
     if (!res.ok) {
       throw new Error("Failed to fetch categories");
@@ -28,7 +28,7 @@ const BrowseRecipes: React.FC = async () => {
   const category = await Promise.all(
     categories.map(async (category) => {
       return await getRecipesByCategory(category);
-    }),
+    })
   );
 
   return (
@@ -47,7 +47,7 @@ const BrowseRecipes: React.FC = async () => {
                   <div className="mt-8 md:mt-12" key={categories[index]}>
                     <RecipeSlider name={categories[index]} recipes={recipes} />
                   </div>
-                ),
+                )
             )}
           </div>
         </section>

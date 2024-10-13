@@ -38,7 +38,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           headers: {
             "X-CSRFToken": csrf_token,
           },
-        },
+        }
       );
 
       if (response.ok) {

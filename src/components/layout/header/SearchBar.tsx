@@ -28,7 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     if (searchQuery) {
       try {
         const response = await fetch(
-          `${apiUrl}/recipes/recipe/search/?query=${searchQuery}`,
+          `${apiUrl}/recipes/recipe/search/?query=${searchQuery}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -73,7 +73,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setSelectedItem((prev) =>
-        prev < suggestions.length - 1 ? prev + 1 : prev,
+        prev < suggestions.length - 1 ? prev + 1 : prev
       );
     } else if (e.key === "ArrowUp") {
       e.preventDefault();

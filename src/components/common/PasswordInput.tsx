@@ -19,6 +19,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     return (
       <div className="relative">
         <input
+          role="textbox"
           ref={inputRef}
           type={showPassword ? "text" : "password"}
           className={`${className} pr-10`}
@@ -37,7 +38,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         </button>
       </div>
     );
-  },
+  }
 );
 
 PasswordInput.displayName = "PasswordInput";

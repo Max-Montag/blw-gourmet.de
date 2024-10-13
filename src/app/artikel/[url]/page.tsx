@@ -11,7 +11,7 @@ async function getArticleData(url: string): Promise<ArticleData | null> {
     `${process.env.NEXT_PUBLIC_API_URL}/articles/article/${url}/`,
     {
       next: { revalidate: 3600 },
-    },
+    }
   );
   if (!res.ok) {
     return null;
@@ -24,7 +24,7 @@ export async function generateStaticParams() {
     `${process.env.NEXT_PUBLIC_API_URL}/articles/all-articles/`,
     {
       next: { revalidate: 3600 },
-    },
+    }
   );
   if (!res.ok) {
     return [];

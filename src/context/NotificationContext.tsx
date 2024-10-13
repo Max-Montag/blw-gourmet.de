@@ -44,7 +44,7 @@ export const NotificationProvider = ({
 
     setTimeout(() => {
       setNotifications((prev) =>
-        prev.filter((notification) => notification.id !== id),
+        prev.filter((notification) => notification.id !== id)
       );
     }, time);
   };

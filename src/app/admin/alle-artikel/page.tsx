@@ -23,7 +23,7 @@ const ArticleOverview: React.FC = () => {
     useState<boolean>(false);
 
   const [selectedArticleUrl, setSelectedArticleUrl] = useState<string | null>(
-    null,
+    null
   );
 
   const router = useRouter();
@@ -66,7 +66,7 @@ const ArticleOverview: React.FC = () => {
       if (response.status === 201) {
         const data = await response.json();
         router.push(
-          `/admin/alle-artikel/artikel-bearbeiten/${data.article_url}`,
+          `/admin/alle-artikel/artikel-bearbeiten/${data.article_url}`
         );
       }
     } catch (error) {
@@ -87,10 +87,10 @@ const ArticleOverview: React.FC = () => {
               "X-CSRFToken": csrf_token,
             },
             credentials: "include",
-          },
+          }
         );
         setArticles((prevArticles) =>
-          prevArticles.filter((article) => article.url !== selectedArticleUrl),
+          prevArticles.filter((article) => article.url !== selectedArticleUrl)
         );
         setShowDeleteArticleModal(false);
         setSelectedArticleUrl(null);

@@ -25,7 +25,7 @@ describe("NotificationList Component", () => {
     return render(
       <NotificationProvider>
         <TestNotificationComponent />
-      </NotificationProvider>,
+      </NotificationProvider>
     );
   };
 
@@ -86,7 +86,7 @@ describe("NotificationList Component", () => {
     render(
       <NotificationProvider>
         <TestNotificationComponent />
-      </NotificationProvider>,
+      </NotificationProvider>
     );
 
     const triggerButton = screen.getByTestId("trigger-notification");

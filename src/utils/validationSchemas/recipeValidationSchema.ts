@@ -24,7 +24,7 @@ export const recipeValidationSchema = Yup.object({
           return true;
         }
         return false;
-      },
+      }
     ),
   preparation_time: Yup.number()
     .min(1, "Bitte gebe eine Zubereitungszeit von mindestens einer Minute an")
@@ -49,12 +49,12 @@ export const recipeValidationSchema = Yup.object({
             ) {
               return schema
                 .required(
-                  "Zutatenbezeichnung darf nicht leer sein, sofern Menge oder Einheit angegeben ist",
+                  "Zutatenbezeichnung darf nicht leer sein, sofern Menge oder Einheit angegeben ist"
                 )
                 .max(100, "Zutat darf nicht länger als 100 Zeichen sein");
             }
             return schema;
-          },
+          }
         ),
         amount: Yup.number().when(["unit"], ([unit], schema) => {
           if (unit !== undefined && unit !== null && unit !== "") {
@@ -78,7 +78,7 @@ export const recipeValidationSchema = Yup.object({
             }
             return true;
           }),
-      }),
+      })
     )
     .test(
       "ingredients",
@@ -91,16 +91,16 @@ export const recipeValidationSchema = Yup.object({
             (ingredient) =>
               ingredient.ingredient?.trim() ||
               (ingredient.amount && ingredient.amount > 0) ||
-              ingredient.unit?.trim(),
+              ingredient.unit?.trim()
           )
         ) {
           return true;
         }
         return false;
-      },
+      }
     ),
   tools: Yup.array().of(
-    Yup.string().max(100, "Utensil darf nicht länger als 100 Zeichen sein"),
+    Yup.string().max(100, "Utensil darf nicht länger als 100 Zeichen sein")
   ),
   instructions: Yup.array()
     .of(
@@ -108,11 +108,11 @@ export const recipeValidationSchema = Yup.object({
         .shape({
           name: Yup.string().max(
             100,
-            "Bezeichnung des Arbeitsschrittes darf nicht länger als 100 Zeichen sein",
+            "Bezeichnung des Arbeitsschrittes darf nicht länger als 100 Zeichen sein"
           ),
           instruction: Yup.string().max(
             2000,
-            "Anweisung darf nicht länger als 2000 Zeichen sein",
+            "Anweisung darf nicht länger als 2000 Zeichen sein"
           ),
           ingredients: Yup.array().of(
             Yup.object().shape({
@@ -128,22 +128,22 @@ export const recipeValidationSchema = Yup.object({
                   ) {
                     return schema
                       .required(
-                        "Zutatenbezeichnung darf nicht leer sein, sofern Menge oder Einheit angegeben ist",
+                        "Zutatenbezeichnung darf nicht leer sein, sofern Menge oder Einheit angegeben ist"
                       )
                       .max(100, "Zutat darf nicht länger als 100 Zeichen sein");
                   }
                   return schema;
-                },
+                }
               ),
               amount: Yup.number().when(["unit"], ([unit], schema) => {
                 if (unit !== undefined && unit !== null && unit !== "") {
                   return schema
                     .required(
-                      "Die Menge ist erforderlich, sofern eine Einheit angegeben ist",
+                      "Die Menge ist erforderlich, sofern eine Einheit angegeben ist"
                     )
                     .moreThan(
                       0,
-                      "Die Menge muss größer als 0 sein, sofern eine Einheit angegeben ist",
+                      "Die Menge muss größer als 0 sein, sofern eine Einheit angegeben ist"
                     )
                     .max(10000, "Die Menge darf nicht mehr als 10000 sein");
                 }
@@ -162,13 +162,13 @@ export const recipeValidationSchema = Yup.object({
                   }
                   return true;
                 }),
-            }),
+            })
           ),
           tools: Yup.array().of(
             Yup.string().max(
               100,
-              "Utensil darf nicht länger als 100 Zeichen sein",
-            ),
+              "Utensil darf nicht länger als 100 Zeichen sein"
+            )
           ),
         })
         .test(
@@ -179,7 +179,7 @@ export const recipeValidationSchema = Yup.object({
               (ingredient) =>
                 ingredient.ingredient?.trim() ||
                 (ingredient.amount && ingredient.amount > 0) ||
-                ingredient.unit?.trim(),
+                ingredient.unit?.trim()
             );
             const validTools = value.tools?.some((tool) => (tool ?? "").trim());
             const hasIngredientsOrTools = validIngredients || validTools;
@@ -189,8 +189,8 @@ export const recipeValidationSchema = Yup.object({
               return !!hasNameOrInstruction;
             }
             return true;
-          },
-        ),
+          }
+        )
     )
     .test(
       "instructions",
@@ -198,12 +198,12 @@ export const recipeValidationSchema = Yup.object({
       function (value) {
         const validInstructions = value?.some(
           (instruction) =>
-            instruction.name?.trim() || instruction.instruction?.trim(),
+            instruction.name?.trim() || instruction.instruction?.trim()
         );
         if (validInstructions) {
           return true;
         }
         return false;
-      },
+      }
     ),
 });

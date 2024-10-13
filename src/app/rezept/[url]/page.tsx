@@ -12,7 +12,7 @@ async function getRecipeData(url: string): Promise<RecipeData | null> {
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/recipe/recipe-detail/${url}/`,
     {
       next: { revalidate: 3600 },
-    },
+    }
   );
   if (!res.ok) {
     return null;
@@ -25,7 +25,7 @@ export async function generateStaticParams() {
     `${process.env.NEXT_PUBLIC_API_URL}/recipes/all-recipe-urls/`,
     {
       next: { revalidate: 3600 },
-    },
+    }
   );
   if (!res.ok) {
     return [];

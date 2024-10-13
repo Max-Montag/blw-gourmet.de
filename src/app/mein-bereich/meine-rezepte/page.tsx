@@ -23,7 +23,7 @@ const MyRecipesPage: React.FC = () => {
   const [showDeleteRecipeModal, setShowDeleteRecipeModal] =
     useState<boolean>(false);
   const [selectedRecipeUrl, setSelectedRecipeUrl] = useState<string | null>(
-    null,
+    null
   );
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const MyRecipesPage: React.FC = () => {
       if (response.status === 201) {
         const data = await response.json();
         router.push(
-          `/mein-bereich/meine-rezepte/rezept-bearbeiten/${data.recipe_url}`,
+          `/mein-bereich/meine-rezepte/rezept-bearbeiten/${data.recipe_url}`
         );
       }
     } catch (error) {
@@ -91,7 +91,7 @@ const MyRecipesPage: React.FC = () => {
           credentials: "include",
         });
         setRecipes((prevRecipes) =>
-          prevRecipes.filter((recipe) => recipe.url !== selectedRecipeUrl),
+          prevRecipes.filter((recipe) => recipe.url !== selectedRecipeUrl)
         );
         setShowDeleteRecipeModal(false);
         setSelectedRecipeUrl(null);
@@ -106,7 +106,7 @@ const MyRecipesPage: React.FC = () => {
 
   const handlePublishRecipe = async (
     newStatus: boolean,
-    recipeUrl?: string | null,
+    recipeUrl?: string | null
   ) => {
     recipeUrl = recipeUrl || selectedRecipeUrl;
     setShowPublishModal(false);
@@ -124,11 +124,11 @@ const MyRecipesPage: React.FC = () => {
             },
             body: JSON.stringify({ is_published: newStatus }),
             credentials: "include",
-          },
+          }
         );
         if (response.status === 400) {
           throw new Error(
-            "Bitte behebe vor der Veröffentlichung die Fehler im Rezept.",
+            "Bitte behebe vor der Veröffentlichung die Fehler im Rezept."
           );
         } else if (response.status !== 200) {
           throw new Error("Fehler beim Veröffentlichen.");
@@ -138,14 +138,14 @@ const MyRecipesPage: React.FC = () => {
           prevRecipes.map((recipe) =>
             recipe.url === recipeUrl
               ? { ...recipe, published: newStatus }
-              : recipe,
-          ),
+              : recipe
+          )
         );
       } catch (err) {
         console.error(err);
         showNotification(
           err instanceof Error ? err.message : "Fehler beim Veröffentlichen.",
-          "error",
+          "error"
         );
       }
     }

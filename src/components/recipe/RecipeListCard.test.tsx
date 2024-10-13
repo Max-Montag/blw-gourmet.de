@@ -24,7 +24,7 @@ describe("RecipeListCard", () => {
 
     const nameElement = screen.getByText("Test Rezept");
     const descriptionElement = screen.getByText(
-      "Dies ist eine Testbeschreibung",
+      "Dies ist eine Testbeschreibung"
     );
 
     expect(nameElement).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe("RecipeListCard", () => {
     });
 
     const defaultDescription = screen.getByText(
-      "Keine Beschreibung verfügbar...",
+      "Keine Beschreibung verfügbar..."
     );
     expect(defaultDescription).toBeInTheDocument();
   });
