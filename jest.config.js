@@ -9,14 +9,10 @@ module.exports = {
     "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
     "^@/context/(.*)$": "<rootDir>/src/context/$1",
   },
-  // setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": [
       "babel-jest",
       { configFile: "./babel-jest.config.js" },
     ],
   },
-  // transform: {
-  //   "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
-  // },
 };
