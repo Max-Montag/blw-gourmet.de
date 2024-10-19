@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    domains: ['blw-gourmet.de'],
     remotePatterns: [
       {
         protocol: process.env.NEXT_PUBLIC_IMAGE_PROTOCOL,
