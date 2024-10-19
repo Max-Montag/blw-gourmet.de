@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { RiMailSendLine } from "react-icons/ri";
-import { FaCheck } from "react-icons/fa6";
+import { FaCheck, FaS, FaSpinner } from "react-icons/fa6";
 import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import PasswordInput from "@/components/common/PasswordInput";
@@ -285,10 +285,16 @@ const Register: React.FC = () => {
             <div className="w-full flex justify-center mt-8">
               <button
                 type="submit"
-                className="bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-cyan-800 transition duration-50 ease-in-out"
+                className="w-80 bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-cyan-800 transition duration-50 ease-in-out"
                 disabled={isSaving}
               >
-                {isSaving ? "Registrieren..." : "Registrieren"}
+                {isSaving ? (
+                  <div className="w-full flex items-center justify-center">
+                    <FaSpinner className="animate-spin" />
+                  </div>
+                ) : (
+                  "Registrieren"
+                )}
               </button>
             </div>
             {saveError && (
