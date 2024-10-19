@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { RiMailSendLine } from "react-icons/ri";
-import { FaCheck, FaS, FaSpinner } from "react-icons/fa6";
+import { FaCheck, FaSpinner } from "react-icons/fa6";
 import Captcha from "@/components/captcha/Captcha";
 import LoadingAnimation from "@/components/common/loadingAnimation/LoadingAnimation";
 import PasswordInput from "@/components/common/PasswordInput";
