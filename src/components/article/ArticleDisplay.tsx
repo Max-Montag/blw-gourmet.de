@@ -72,18 +72,19 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ article }) => {
 
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md">
-      <div className="relative">
+      <div className="relative h-56 lg:h-72">
         {article.optimized_image ? (
           <Image
             src={`${apiUrl}${article.optimized_image}`}
             alt={article.title}
-            height={288}
-            width={512}
-            className="w-full h-72 object-cover"
+            // height={288}
+            // width={512}
+            fill
+            className="w-full h-auto object-cover"
           />
         ) : (
-          <div className="w-full h-72 bg-gray-200">
-            <span className="text-xs text-gray-600">Bild nicht gefunden</span>
+          <div className="flex justify-center items-center w-full h-56 lg:h-72 bg-zinc-300">
+            <span className="text-xs text-zinc-600">Bild nicht gefunden</span>
           </div>
         )}
       </div>
