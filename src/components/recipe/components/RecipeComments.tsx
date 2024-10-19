@@ -46,7 +46,7 @@ const RecipeComments: React.FC<RecipeCommentsProps> = ({ url }) => {
     };
 
     fetchComments();
-  }, [url, showNotification]);
+  }, [url]);
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
