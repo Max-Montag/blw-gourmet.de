@@ -1,5 +1,7 @@
 # <img src="public/logo/logo.svg" alt="BLW-Gourmet.de Logo" width="50" style="vertical-align: middle;"> BLW-Gourmet.de
 
+![CI](https://github.com/Max-Montag/blw-gourmet.de/actions/workflows/ci.yml/badge.svg)
+
 BLW-Gourmet.de ist eine Plattform für Baby-Led Weaning Rezepte, entwickelt mit Next.js. Die Seite bietet Eltern eine benutzerfreundliche Ressource für die Beikost-Einführung nach dem BLW-Prinzip.
 
 ## 🚀 Live Demo
